@@ -1,0 +1,60 @@
+﻿syntax = "proto3";
+option csharp_namespace = "GrpcShared";
+package PocketBook.AccountBook;
+
+service AccountBook {
+  rpc RegisterUser (PocketUserInfo) returns (UserResponse);
+  rpc LoginUser (UserRequest) returns (UserResponse);
+  rpc AddTransaction (TransactionRequest) returns (TransactionResponse);
+  rpc GetDailySummary (UserRequest) returns (DailySummaryResponse);
+  rpc GetCategorySummary (UserRequest) returns (CategorySummaryResponse);
+}
+
+message PocketUserInfo {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  string phoneNumber = 4;
+}
+
+message UserRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message UserResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message TransactionRequest {
+  string username = 1;
+  double amount = 2;
+  bool isIncome = 3;
+  string category = 4;
+  string transactionDate = 5;
+}
+
+message TransactionResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message DailySummaryResponse {
+  repeated DailySummary dailySummaries = 1;
+}
+
+message DailySummary {
+  string date = 1;
+  double totalIncome = 2;
+  double totalExpense = 3;
+}
+
+message CategorySummaryResponse {
+  repeated CategorySummary categorySummaries = 1;
+}
+
+message CategorySummary {
+  string category = 1;
+  double totalAmount = 2;
+}

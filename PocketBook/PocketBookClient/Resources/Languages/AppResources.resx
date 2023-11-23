@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GameTypeTitle" xml:space="preserve">
+    <value>Math Study</value>
+  </data>
+  <data name="HelloWorld" xml:space="preserve">
+    <value>Hello, World!</value>
+  </data>
+  <data name="History_Header_Description" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="History_Header_Number" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="History_Header_Point" xml:space="preserve">
+    <value>Point</value>
+  </data>
+  <data name="History_Header_Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="History_Header_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="History_Summary_End" xml:space="preserve">
+    <value>points,keep going!</value>
+  </data>
+  <data name="History_Summary_Excecise" xml:space="preserve">
+    <value>excecise,you have got</value>
+  </data>
+  <data name="History_Summary_Good" xml:space="preserve">
+    <value>You did a great job!You have finished</value>
+  </data>
+  <data name="History_Summary_Welcome" xml:space="preserve">
+    <value>Dear</value>
+  </data>
+  <data name="History_Title" xml:space="preserve">
+    <value>Record/History</value>
+  </data>
+  <data name="LangText" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="LoginPageTitle" xml:space="preserve">
+    <value>Welcome To Mr Yang Space</value>
+  </data>
+  <data name="Mistake_Correct" xml:space="preserve">
+    <value>Correct</value>
+  </data>
+  <data name="Mistake_Title" xml:space="preserve">
+    <value>Mistake Note</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password：</value>
+  </data>
+  <data name="Password_Hint" xml:space="preserve">
+    <value>Enter your Password</value>
+  </data>
+  <data name="Register_Email" xml:space="preserve">
+    <value>Email:</value>
+  </data>
+  <data name="Register_Mobile" xml:space="preserve">
+    <value>Mobile:</value>
+  </data>
+  <data name="RepeatPassword" xml:space="preserve">
+    <value>Repeat Password:</value>
+  </data>
+  <data name="SettingTitle" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="Setting_BK_music" xml:space="preserve">
+    <value>Background Music</value>
+  </data>
+  <data name="Setting_BK_music_No" xml:space="preserve">
+    <value>No Music</value>
+  </data>
+  <data name="Setting_BK_music_Yes" xml:space="preserve">
+    <value>You are my sunshine</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="SpeedOption_Button_text" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="SpeedOption_picker1" xml:space="preserve">
+    <value>Level:</value>
+  </data>
+  <data name="SpeedOption_picker2" xml:space="preserve">
+    <value>Range:</value>
+  </data>
+  <data name="SpeedOption_picker3" xml:space="preserve">
+    <value>Quanlity:</value>
+  </data>
+  <data name="SpeedOption_Warning_Text" xml:space="preserve">
+    <value>Please select number of Questions(Quanlity) first!</value>
+  </data>
+  <data name="SpeedOption_Warning_Title" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="SpeedOption_Welcome" xml:space="preserve">
+    <value>Welcome:</value>
+  </data>
+  <data name="SpeedResult_Header_Answer" xml:space="preserve">
+    <value>Answ</value>
+  </data>
+  <data name="SpeedResult_Header_Check" xml:space="preserve">
+    <value>R?W</value>
+  </data>
+  <data name="SpeedResult_Header_Nr" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="SpeedResult_Header_Question" xml:space="preserve">
+    <value>Ques</value>
+  </data>
+  <data name="SpeedResult_Retest_Label" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="SpeedResult_Summary_first" xml:space="preserve">
+    <value>You answered </value>
+  </data>
+  <data name="SpeedResult_Summary_fourth" xml:space="preserve">
+    <value>You get award point:</value>
+  </data>
+  <data name="SpeedResult_Summary_second" xml:space="preserve">
+    <value>questions this time.Right:</value>
+  </data>
+  <data name="SpeedResult_Summary_third" xml:space="preserve">
+    <value>Wrong:</value>
+  </data>
+  <data name="SpeedResult_Title" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="SpeedResult_Welcome" xml:space="preserve">
+    <value>Congratulations!</value>
+  </data>
+  <data name="Speed_Finish" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="Speed_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Speed_Previous" xml:space="preserve">
+    <value>Prev</value>
+  </data>
+  <data name="Speed_Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="ThemeText" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>UserName：</value>
+  </data>
+  <data name="UserName_Hint" xml:space="preserve">
+    <value>Enter your UserName</value>
+  </data>
+</root>

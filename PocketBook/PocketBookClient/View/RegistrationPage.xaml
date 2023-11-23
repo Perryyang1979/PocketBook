@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PocketBookClient.View.RegistrationPage"
+             Title="{Binding LocalizationResourceManager[SignIn], Mode=OneWay}">
+
+    <VerticalStackLayout Margin="10" Spacing="10" >
+        <VerticalStackLayout Padding="20" CompressedLayout.IsHeadless="True">
+            <Label Text="{Binding LocalizationResourceManager[SignIn], Mode=OneWay}" TextColor="{StaticResource Primary}" FontSize="25"/>
+        </VerticalStackLayout>
+
+        <Label Text="{Binding LocalizationResourceManager[UserName], Mode=OneWay}"/>
+        <Entry
+            x:Name="UserName"
+            IsSpellCheckEnabled="False"
+            Text="{Binding UserName}"
+            Keyboard="Text"
+            />
+
+        <Label Text="{Binding LocalizationResourceManager[Password], Mode=OneWay}"/>
+        <Entry
+            x:Name="Password"
+            IsPassword="True"
+            Text="{Binding Password}"
+            Keyboard ="Numeric"
+           />
+
+        <Label Text="{Binding LocalizationResourceManager[RepeatPassword], Mode=OneWay}"/>
+        <Entry
+            x:Name="RePeatPassword"
+            IsPassword="True"
+            Text="{Binding RepeatPassword}"
+            Keyboard="Numeric"
+           />
+
+        <Label Text="{Binding LocalizationResourceManager[Register_Email], Mode=OneWay}"/>
+        <Entry
+            x:Name="EmailAdress"
+            IsSpellCheckEnabled="False"
+            Text="{Binding Email}"
+            Keyboard="Email"/>
+
+        <Label Text="{Binding LocalizationResourceManager[Register_Mobile], Mode=OneWay}"/>
+        <Entry
+            x:Name="MobileNumber"
+            IsSpellCheckEnabled="False"
+            Text="{Binding MobileNumber}"
+            Keyboard="Telephone"/>
+
+        <VerticalStackLayout>
+            <!--<ActivityIndicator HeightRequest="50" IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>-->
+            <Button 
+                x:Name="Signin"
+                Command="{Binding  SignUpCommand}"
+                Text="{Binding LocalizationResourceManager[SignIn], Mode=OneWay}"
+                HeightRequest="40"
+                CornerRadius="20"/>
+
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

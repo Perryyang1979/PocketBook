@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GameTypeTitle" xml:space="preserve">
+    <value>数学学习</value>
+  </data>
+  <data name="HelloWorld" xml:space="preserve">
+    <value>你好</value>
+  </data>
+  <data name="History_Header_Description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="History_Header_Number" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="History_Header_Point" xml:space="preserve">
+    <value>积分</value>
+  </data>
+  <data name="History_Header_Time" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="History_Header_Type" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="History_Summary_End" xml:space="preserve">
+    <value>奖励积分,继续加油！</value>
+  </data>
+  <data name="History_Summary_Excecise" xml:space="preserve">
+    <value>次练习,一共得到</value>
+  </data>
+  <data name="History_Summary_Good" xml:space="preserve">
+    <value>你很棒，你已经完成了</value>
+  </data>
+  <data name="History_Summary_Welcome" xml:space="preserve">
+    <value>亲爱的</value>
+  </data>
+  <data name="History_Title" xml:space="preserve">
+    <value>练习记录</value>
+  </data>
+  <data name="LangText" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="LoginPageTitle" xml:space="preserve">
+    <value>欢迎来到杨老师的天地</value>
+  </data>
+  <data name="Mistake_Correct" xml:space="preserve">
+    <value>更正</value>
+  </data>
+  <data name="Mistake_Title" xml:space="preserve">
+    <value>错题本</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="Password_Hint" xml:space="preserve">
+    <value>请输入你的密码</value>
+  </data>
+  <data name="Register_Email" xml:space="preserve">
+    <value>邮箱地址：</value>
+  </data>
+  <data name="Register_Mobile" xml:space="preserve">
+    <value>手机号码：</value>
+  </data>
+  <data name="RepeatPassword" xml:space="preserve">
+    <value>重复密码：</value>
+  </data>
+  <data name="SettingTitle" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Setting_BK_music" xml:space="preserve">
+    <value>背景音乐</value>
+  </data>
+  <data name="Setting_BK_music_No" xml:space="preserve">
+    <value>无音乐</value>
+  </data>
+  <data name="Setting_BK_music_Yes" xml:space="preserve">
+    <value>你是我的阳光</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>注册</value>
+  </data>
+  <data name="SpeedOption_Button_text" xml:space="preserve">
+    <value>开始练习</value>
+  </data>
+  <data name="SpeedOption_picker1" xml:space="preserve">
+    <value>年级：</value>
+  </data>
+  <data name="SpeedOption_picker2" xml:space="preserve">
+    <value>练习范围：</value>
+  </data>
+  <data name="SpeedOption_picker3" xml:space="preserve">
+    <value>练习数量：</value>
+  </data>
+  <data name="SpeedOption_Warning_Text" xml:space="preserve">
+    <value>请选择正确的练习题目数量。</value>
+  </data>
+  <data name="SpeedOption_Warning_Title" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="SpeedOption_Welcome" xml:space="preserve">
+    <value>欢迎你：</value>
+  </data>
+  <data name="SpeedResult_Header_Answer" xml:space="preserve">
+    <value>答案</value>
+  </data>
+  <data name="SpeedResult_Header_Check" xml:space="preserve">
+    <value>对错</value>
+  </data>
+  <data name="SpeedResult_Header_Nr" xml:space="preserve">
+    <value>序号</value>
+  </data>
+  <data name="SpeedResult_Header_Question" xml:space="preserve">
+    <value>问题</value>
+  </data>
+  <data name="SpeedResult_Retest_Label" xml:space="preserve">
+    <value>再试一次</value>
+  </data>
+  <data name="SpeedResult_Summary_first" xml:space="preserve">
+    <value>本次答题共计：</value>
+  </data>
+  <data name="SpeedResult_Summary_fourth" xml:space="preserve">
+    <value>道，本次得到奖励积分：</value>
+  </data>
+  <data name="SpeedResult_Summary_second" xml:space="preserve">
+    <value>道，其中答对：</value>
+  </data>
+  <data name="SpeedResult_Summary_third" xml:space="preserve">
+    <value>道，答错：</value>
+  </data>
+  <data name="SpeedResult_Title" xml:space="preserve">
+    <value>练习结果</value>
+  </data>
+  <data name="SpeedResult_Welcome" xml:space="preserve">
+    <value>恭喜你！</value>
+  </data>
+  <data name="Speed_Finish" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="Speed_Next" xml:space="preserve">
+    <value>下一题</value>
+  </data>
+  <data name="Speed_Previous" xml:space="preserve">
+    <value>上一题</value>
+  </data>
+  <data name="Speed_Submit" xml:space="preserve">
+    <value>提交</value>
+  </data>
+  <data name="ThemeText" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>暗色调</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>亮色调</value>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>系统</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="UserName_Hint" xml:space="preserve">
+    <value>请输入你的用户名</value>
+  </data>
+</root>

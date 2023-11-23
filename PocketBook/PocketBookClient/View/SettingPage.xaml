@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PocketBookClient.View.SettingPage"
+             xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
+             Title="{Binding LocalizationResourceManager[SettingTitle], Mode=OneWay}"
+             x:DataType="viewmodel:SettingPageViewModel"
+             BackgroundColor="{AppThemeBinding 
+                        Dark={StaticResource WindowBackgroundColorDark}, 
+                        Light={StaticResource WindowBackgroundColor}}">
+    <ScrollView>
+        <Grid Padding="12" ColumnDefinitions=".05*,.9*,.05*">
+            <StackLayout Grid.Column="1">
+                <Label
+                    Margin="0,12,0,0"
+                    Style="{DynamicResource MediumLabel}"
+                    Text="{Binding LocalizationResourceManager[ThemeText], Mode=OneWay}" />
+                <Frame Style="{DynamicResource CardView}">
+                    <VerticalStackLayout
+                        RadioButtonGroup.GroupName="SelectedTheme" 
+                        RadioButtonGroup.SelectedValue="{Binding SelectedTheme, Mode=TwoWay}">
+                        <RadioButton
+                            x:Name="RadioButtonSystem"
+                            Grid.Column="1"
+                            Value="System"
+                            Content="{Binding LocalizationResourceManager[Theme_System], Mode=OneWay}"           
+                           >
+                        </RadioButton>
+                        <RadioButton
+                            x:Name="RadioButtonLight"
+                            Grid.Column="2"
+                            Value="Light"
+                            Content="{Binding LocalizationResourceManager[Theme_Light], Mode=OneWay}" >
+                            <!--<RadioButton.Content>
+                                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                    --><!--<Image Scale="0.75" Source="{FontImage FontFamily=FAS, Glyph={x:Static fontAwesome:FontAwesomeIcons.Sun}, Color=#323130}" />--><!--
+                                    <Label
+                                        FontSize="Small"
+                                        Text="Light"
+                                        TextColor="#323130" />
+                                </StackLayout>
+                            </RadioButton.Content>-->
+                        </RadioButton>
+                        <RadioButton
+                            x:Name="RadioButtonDark"
+                            Grid.Column="3"                      
+                            Value="Dark"
+                            Content="{Binding LocalizationResourceManager[Theme_Dark], Mode=OneWay}"     >
+                            <!--<RadioButton.Content>
+                                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label
+                                        FontSize="Small"
+                                        Text="Dark"
+                                        TextColor="#323130" />
+                                </StackLayout>
+                            </RadioButton.Content>-->
+                        </RadioButton>
+                    </VerticalStackLayout>
+                </Frame>
+                <Label
+                    Margin="0,12,0,0"
+                    Style="{DynamicResource MediumLabel}"
+                    Text="{Binding LocalizationResourceManager[LangText], Mode=OneWay}"      />
+                <Frame Style="{DynamicResource CardView}">
+                    <VerticalStackLayout                    
+                        RadioButtonGroup.GroupName="LanguageGroup"
+                        RadioButtonGroup.SelectedValue="{Binding SelectedLanguage}">
+
+                        <RadioButton
+                            x:Name="RadioButtonNomusic"
+                            Grid.Column="1"
+                            Value="EN"
+                            Content="English"
+                            FontSize="Small">
+                        </RadioButton>
+                        <RadioButton
+                            x:Name="RadioButtonMusic"
+                            Grid.Column="2"
+                            Value="ZH"
+                            Content="中文"
+                            FontSize="Small">
+                        </RadioButton>
+
+                    </VerticalStackLayout>
+                </Frame>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

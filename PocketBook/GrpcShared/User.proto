@@ -1,0 +1,32 @@
+﻿syntax = "proto3";
+option csharp_namespace = "GrpcShared";
+package  PocketBook.User;
+
+message UserPerson {
+    int64 userId = 1;
+    string userName = 2;
+    string userPassword = 3;
+}
+
+message GetUserRequest {
+    int64 userId = 1;
+}
+
+message GetAllUserRequest {
+}
+
+message GetUserViaName {
+    string userName = 1;
+}
+
+message UserReply
+{
+    repeated UserPerson user = 1;
+}
+
+service User {
+    rpc GetUserById (GetUserRequest) returns (UserPerson);
+    rpc GetAllUser (GetAllUserRequest)  returns  (UserReply);
+    rpc GetUsersStream (GetAllUserRequest) returns (stream UserPerson);
+    rpc GetUserByName (GetUserViaName) returns (UserPerson) ;
+}

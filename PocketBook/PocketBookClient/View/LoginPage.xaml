@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PocketBookClient.View.LoginPage"
+             Shell.NavBarIsVisible="False"
+             Title="{Binding LocalizationResourceManager[LoginPageTitle], Mode=OneWay}">
+
+    <VerticalStackLayout Margin="10" Spacing="10" >
+        <VerticalStackLayout Padding="20" CompressedLayout.IsHeadless="True">
+            <Image x:Name="logo" HeightRequest="200" MinimumWidthRequest="300" WidthRequest="600" Source="math_title.jpg" />
+            <Label Text="{Binding LocalizationResourceManager[LoginPageTitle], Mode=OneWay}" TextColor="{StaticResource Primary}" FontSize="25"/>
+        </VerticalStackLayout>
+
+        <Label Text="{Binding LocalizationResourceManager[UserName], Mode=OneWay}"/>
+        <Entry
+            x:Name="UserName"
+            IsSpellCheckEnabled="False"
+            Text="{Binding UserName}"
+            Keyboard="Text"
+            Placeholder="{Binding LocalizationResourceManager[UserName_Hint], Mode=OneWay}"/>
+
+        <Label Text="{Binding LocalizationResourceManager[Password], Mode=OneWay}"/>
+        <Entry
+            x:Name="Password"
+            IsPassword="True"
+            Text="{Binding Password}"
+            Keyboard="Numeric"
+            Placeholder="{Binding LocalizationResourceManager[Password_Hint], Mode=OneWay}"/>
+        <VerticalStackLayout>
+            <ActivityIndicator HeightRequest="50" IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>
+            <Button 
+                x:Name="Signin"
+                Command="{Binding LoginCommand}"
+                Text="{Binding LocalizationResourceManager[Login], Mode=OneWay}"
+                HeightRequest="60"
+                CornerRadius="20"
+                Style="{StaticResource LoginButton}"/>
+            <Label  Text="{Binding LocalizationResourceManager[SignIn], Mode=OneWay}" HorizontalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding  Path= RegisterCommand}"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>
