@@ -64,8 +64,8 @@ public partial class LoginPageViewModel : BaseViewModel
         Settings.Current.CurrentUserName = UserName.Trim();
 
 
-        await Shell.Current.DisplayAlert("Lgin in OK", result.Message, "OK");
-        // await Shell.Current.GoToAsync($"{nameof(SettingPage)}");
+       // await Shell.Current.DisplayAlert("Lgin in OK", result.Message, "OK");
+         await Shell.Current.GoToAsync($"{nameof(PocketOperationPage)}");
     }
 
     [RelayCommand]

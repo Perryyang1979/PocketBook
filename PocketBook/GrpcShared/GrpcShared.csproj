@@ -17,7 +17,7 @@
 
 	<ItemGroup>
 		<Compile Remove="UserPerson.cs" />
-		<Compile Remove="TransactionRequest.cs"/>
+		<Compile Remove="PocketTransactionInfo.cs"/>
 		<Compile Remove="PocketUserInfo.cs" />
 	</ItemGroup>
 

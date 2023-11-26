@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PocketBookClient.View.AddTransactionPage"
+             xmlns:data="clr-namespace:PocketBookClient.Data"
+             xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
+             Title="{Binding  LocalizationResourceManager[AddTranscation_Title]}"
+             x:DataType="viewmodel:AddTransactionViewModel">
+    <VerticalStackLayout>
+
+        <StackLayout Orientation="Horizontal" Margin="10">
+            <Label Text="{Binding LocalizationResourceManager[AddTranscation_datePicker_label], Mode=OneWay}"  HorizontalOptions="Start" TextColor="blue" WidthRequest="120"/>
+        <!--date-->
+        <DatePicker MinimumDate="{Binding MinDate}" MaximumDate="{Binding MaxDate}" Date="{Binding SelectedDate}" 
+                     HorizontalOptions="Center" TextColor="Black" HeightRequest="20" WidthRequest="150"/>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" Margin="10">
+            <Label Text="{Binding LocalizationResourceManager[AddTranscation_Money_label], Mode=OneWay}"  HorizontalOptions="Start" TextColor="blue" WidthRequest="120"/>
+            <!--money-->
+            <Entry WidthRequest="150" Text="{Binding Money}" Keyboard="Numeric" HeightRequest="20" Style="{StaticResource SmallEntry}"  />
+        </StackLayout>
+
+        <!--IsIncome-->
+        <StackLayout Orientation="Horizontal" Margin="10">
+            <Label Text="{Binding LocalizationResourceManager[AddTranscation_Money_Type], Mode=OneWay}"  HorizontalOptions="Start" TextColor="blue" WidthRequest="120"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" RadioButtonGroup.GroupName="MoneyChangeTypes"
+             RadioButtonGroup.SelectedValue="{Binding  CurrentMoneyChangeType}">
+                <StackLayout Orientation="Horizontal">
+                    <RadioButton Content="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Income], Mode=OneWay}"
+                 Value="True" />
+                    <RadioButton Content="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Expense], Mode=OneWay}"
+                 Value="False" />
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+
+        <!--category-->
+        <StackLayout Orientation="Horizontal" Margin="10">
+            <Label Text="{Binding LocalizationResourceManager[AddTranscation_Category_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="blue" WidthRequest="120"/>
+            <Picker  WidthRequest="250" TitleColor="Blue" 
+                    HorizontalOptions="StartAndExpand" 
+        ItemsSource="{Binding Categories,Mode=TwoWay}"
+        ItemDisplayBinding="{Binding CategoryDescription}"
+        SelectedIndex="{Binding CategorySelectedIndex,Mode=TwoWay}">
+            </Picker>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" Margin="10">
+            <!--Comments-->
+            <Label Text="{Binding LocalizationResourceManager[AddTranscation_Comments_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="blue" WidthRequest="120" />
+            <Entry WidthRequest="250" Text="{Binding Comments}" Keyboard="Numeric" HeightRequest="60" Style="{StaticResource SmallEntry}"  />
+        </StackLayout>
+        
+        <Button Text="{Binding LocalizationResourceManager[AddTranscation_Title], Mode=OneWay}" Style="{StaticResource WiderButtonOutline}"
+                Command="{Binding AddTransactionCommand}"></Button>
+
+    </VerticalStackLayout>
+</ContentPage>

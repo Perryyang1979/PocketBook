@@ -5,7 +5,9 @@ package PocketBook.AccountBook;
 service AccountBook {
   rpc RegisterUser (PocketUserInfo) returns (UserResponse);
   rpc LoginUser (UserRequest) returns (UserResponse);
-  rpc AddTransaction (TransactionRequest) returns (TransactionResponse);
+  rpc AddTransaction (PocketTransactionInfo) returns (TransactionResponse);
+  rpc GetDailyTransations(DailyDetailTransationRequest) returns (DailyTransactionResponse);
+  rpc GetDailyTransationsStream (DailyDetailTransationRequest) returns (stream PocketTransactionInfo);
   rpc GetDailySummary (UserRequest) returns (DailySummaryResponse);
   rpc GetCategorySummary (UserRequest) returns (CategorySummaryResponse);
 }
@@ -27,17 +29,29 @@ message UserResponse {
   string message = 2;
 }
 
-message TransactionRequest {
+message DailyDetailTransationRequest
+{
+	string startDate = 1;
+	string endDate = 2;
+}
+
+message PocketTransactionInfo {
   string username = 1;
   double amount = 2;
   bool isIncome = 3;
   string category = 4;
-  string transactionDate = 5;
+  string comments = 5 ;
+  string transactionDate = 6;
 }
 
 message TransactionResponse {
   bool success = 1;
   string message = 2;
+}
+
+
+message DailyTransactionResponse {
+  repeated PocketTransactionInfo dailyTransactions = 1;
 }
 
 message DailySummaryResponse {

@@ -5,7 +5,7 @@
 namespace PocketBookServer.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialMigration2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,8 @@ namespace PocketBookServer.Migrations
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
                     Amount = table.Column<double>(type: "REAL", nullable: false),
                     IsIncome = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Category = table.Column<string>(type: "TEXT", nullable: false),
+                    Category = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
+                    Comments = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Date = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -31,9 +32,9 @@ namespace PocketBookServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
                     Password = table.Column<string>(type: "TEXT", maxLength: 12, nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     PhoneNumber = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>

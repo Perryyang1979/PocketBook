@@ -8,12 +8,14 @@ namespace PocketBookServer.Models
         public string Id { get; set; }
 
         [Required]
-        [MaxLength(255)] // Adjust the length as needed
+        [MaxLength(20)] // Adjust the length as needed
         public string Name { get; set; }
 
         [Required]
         [MaxLength(length: 12)] // 
         public string Password { get; set; }
+        [Required]
+        [MaxLength(50)] // Adjust the length as needed
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
        

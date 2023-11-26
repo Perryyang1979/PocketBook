@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PocketBookClient.View.PocketOperationPage"
+             xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
+              xmlns:data="clr-namespace:PocketBookClient.Data"
+             Title="{Binding LocalizationResourceManager[PocketOperatint_Title], Mode=OneWay}"
+             x:DataType="viewmodel:PocketOperationViewModel" MinimumWidthRequest="300">
+    <ScrollView  >
+        <Grid
+        ColumnDefinitions="*"
+        ColumnSpacing="5"
+        RowDefinitions="Auto,60,Auto"
+        RowSpacing="0">
+
+            <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="2">
+                <Button
+                Margin="2"
+                Command="{Binding PocketRecordCommand}"
+                Style="{StaticResource WiderButtonOutline}"
+                Text="{Binding LocalizationResourceManager[PocketOperation_Add_Label], Mode=OneWay}" />
+            </VerticalStackLayout>
+
+            <Grid ColumnDefinitions="30*,30*,20*,30*,50*" 
+        Grid.Row="1">
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Date], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Money], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Income], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Category], Mode=OneWay}" Grid.Row="1" Grid.Column="3" Padding="10" Style="{StaticResource HeadLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Comments], Mode=OneWay}" Grid.Row="1" Grid.Column="4" Padding="10" Style="{StaticResource HeadLabel }"/>
+            </Grid>
+
+            <CollectionView Grid.Row="2"
+                    ItemsSource="{Binding TransactionList}"
+                    SelectionMode="None"
+                        >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="data:UserTransaction">
+                        <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="30*,30*,20*,30*,50*" VerticalOptions="FillAndExpand">
+                            <!--<BoxView HeightRequest="0.1"  BackgroundColor="Black" Grid.ColumnSpan="5" VerticalOptions="Start"/>-->
+                            <Label Text="{Binding Date}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
+                            <Label Text="{Binding Amount}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1"/>
+                            <Label Text="{Binding CurrentInOutLable}" FontAttributes="Bold" Grid.Row="1" Grid.Column="2"/>
+                            <Label Text="{Binding Category}" FontAttributes="Bold" Grid.Row="1" Grid.Column="3"/>
+                            <Label Text="{Binding Comments}" FontAttributes="Bold" Grid.Row="1" Grid.Column="4"/>
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+            <ActivityIndicator
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            HorizontalOptions="Fill"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Color="{StaticResource Primary}"
+            VerticalOptions="Center" />
+        </Grid>
+    </ScrollView>
+</ContentPage>

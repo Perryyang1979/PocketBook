@@ -10,8 +10,8 @@ using PocketBookServer.Data;
 namespace PocketBookServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231122222507_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20231126224601_InitialMigration2")]
+    partial class InitialMigration2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,12 @@ namespace PocketBookServer.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Date")
@@ -54,11 +60,12 @@ namespace PocketBookServer.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")

@@ -441,6 +441,13 @@
         <Setter Property="FontSize" Value="40"/>
     </Style>
 
+    <Style x:Key="MediumEntry" BasedOn="{StaticResource baseEntry}" TargetType="Entry">
+        <Setter Property="FontSize" Value="Medium"/>
+    </Style>
+    <Style x:Key="SmallEntry" BasedOn="{StaticResource baseEntry}" TargetType="Entry">
+        <Setter Property="FontSize" Value="Small"/>
+    </Style>
+
     <Style x:Key="SquareEntry"  TargetType="Entry">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>

@@ -117,6 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddTranscation_Category_lable" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="AddTranscation_Comments_lable" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="AddTranscation_datePicker_label" xml:space="preserve">
+    <value>Transaction Date</value>
+  </data>
+  <data name="AddTranscation_IsIncome_Expense" xml:space="preserve">
+    <value>Expense</value>
+  </data>
+  <data name="AddTranscation_IsIncome_Income" xml:space="preserve">
+    <value>Income</value>
+  </data>
+  <data name="AddTranscation_Money_label" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="AddTranscation_Money_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="AddTranscation_Title" xml:space="preserve">
+    <value>Add Record</value>
+  </data>
   <data name="GameTypeTitle" xml:space="preserve">
     <value>Math Study</value>
   </data>
@@ -177,6 +201,27 @@
   <data name="Password_Hint" xml:space="preserve">
     <value>Enter your Password</value>
   </data>
+  <data name="PocketOperatint_Title" xml:space="preserve">
+    <value>PocketRecord</value>
+  </data>
+  <data name="PocketOperation_Add_Label" xml:space="preserve">
+    <value>Add Record</value>
+  </data>
+  <data name="PocketOperation_Header_Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="PocketOperation_Header_Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="PocketOperation_Header_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="PocketOperation_Header_Income" xml:space="preserve">
+    <value>In/Out</value>
+  </data>
+  <data name="PocketOperation_Header_Money" xml:space="preserve">
+    <value>Money</value>
+  </data>
   <data name="Register_Email" xml:space="preserve">
     <value>Email:</value>
   </data>
@@ -200,72 +245,6 @@
   </data>
   <data name="SignIn" xml:space="preserve">
     <value>Register</value>
-  </data>
-  <data name="SpeedOption_Button_text" xml:space="preserve">
-    <value>Start</value>
-  </data>
-  <data name="SpeedOption_picker1" xml:space="preserve">
-    <value>Level:</value>
-  </data>
-  <data name="SpeedOption_picker2" xml:space="preserve">
-    <value>Range:</value>
-  </data>
-  <data name="SpeedOption_picker3" xml:space="preserve">
-    <value>Quanlity:</value>
-  </data>
-  <data name="SpeedOption_Warning_Text" xml:space="preserve">
-    <value>Please select number of Questions(Quanlity) first!</value>
-  </data>
-  <data name="SpeedOption_Warning_Title" xml:space="preserve">
-    <value>Warning</value>
-  </data>
-  <data name="SpeedOption_Welcome" xml:space="preserve">
-    <value>Welcome:</value>
-  </data>
-  <data name="SpeedResult_Header_Answer" xml:space="preserve">
-    <value>Answ</value>
-  </data>
-  <data name="SpeedResult_Header_Check" xml:space="preserve">
-    <value>R?W</value>
-  </data>
-  <data name="SpeedResult_Header_Nr" xml:space="preserve">
-    <value>No.</value>
-  </data>
-  <data name="SpeedResult_Header_Question" xml:space="preserve">
-    <value>Ques</value>
-  </data>
-  <data name="SpeedResult_Retest_Label" xml:space="preserve">
-    <value>Retry</value>
-  </data>
-  <data name="SpeedResult_Summary_first" xml:space="preserve">
-    <value>You answered </value>
-  </data>
-  <data name="SpeedResult_Summary_fourth" xml:space="preserve">
-    <value>You get award point:</value>
-  </data>
-  <data name="SpeedResult_Summary_second" xml:space="preserve">
-    <value>questions this time.Right:</value>
-  </data>
-  <data name="SpeedResult_Summary_third" xml:space="preserve">
-    <value>Wrong:</value>
-  </data>
-  <data name="SpeedResult_Title" xml:space="preserve">
-    <value>Result</value>
-  </data>
-  <data name="SpeedResult_Welcome" xml:space="preserve">
-    <value>Congratulations!</value>
-  </data>
-  <data name="Speed_Finish" xml:space="preserve">
-    <value>Finish</value>
-  </data>
-  <data name="Speed_Next" xml:space="preserve">
-    <value>Next</value>
-  </data>
-  <data name="Speed_Previous" xml:space="preserve">
-    <value>Prev</value>
-  </data>
-  <data name="Speed_Submit" xml:space="preserve">
-    <value>Submit</value>
   </data>
   <data name="ThemeText" xml:space="preserve">
     <value>Theme</value>
