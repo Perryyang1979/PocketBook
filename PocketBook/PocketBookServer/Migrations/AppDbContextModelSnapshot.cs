@@ -16,6 +16,29 @@ namespace PocketBookServer.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.14");
 
+            modelBuilder.Entity("PocketBookServer.Models.Category", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DetailedInfo")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsIncome")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("PocketBookServer.Models.PocketTransaction", b =>
                 {
                     b.Property<string>("Id")
@@ -47,7 +70,7 @@ namespace PocketBookServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PocketTransaction");
+                    b.ToTable("PocketTransactions");
                 });
 
             modelBuilder.Entity("PocketBookServer.Models.PocketUser", b =>

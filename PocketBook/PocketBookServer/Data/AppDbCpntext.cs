@@ -8,7 +8,8 @@ namespace PocketBookServer.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<PocketTransaction> PocketTransaction =>Set<PocketTransaction>();
+        public DbSet<PocketTransaction> PocketTransactions =>Set<PocketTransaction>();
         public DbSet<PocketUser> Users =>Set<PocketUser>();
+        public DbSet<Category> Categories => Set<Category>();
     }
 }

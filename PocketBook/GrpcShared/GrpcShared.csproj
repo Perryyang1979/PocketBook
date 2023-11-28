@@ -19,6 +19,7 @@
 		<Compile Remove="UserPerson.cs" />
 		<Compile Remove="PocketTransactionInfo.cs"/>
 		<Compile Remove="PocketUserInfo.cs" />
+		<Compile Remove="CategoryInfo.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

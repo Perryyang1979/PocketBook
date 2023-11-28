@@ -111,7 +111,7 @@ namespace PocketBookServer.Services
             await _dbContext.SaveChangesAsync();
 
             return await Task.FromResult(new TransactionResponse { Success = true, Message = "Transaction added successfully." });
-            }
+          }
 
         public override async Task<DailyTransactionResponse> GetDailyTransations(DailyDetailTransationRequest request, ServerCallContext context)
         {
@@ -124,7 +124,7 @@ namespace PocketBookServer.Services
                 endDate = temp;
             }
 
-            var transactions = await _dbContext.PocketTransaction.Where(pt => DateTime.Parse(pt.Date, CultureInfo.InvariantCulture) >=startDate && DateTime.Parse(pt.Date, CultureInfo.InvariantCulture) <= endDate).ToListAsync();
+            var transactions = await _dbContext.PocketTransactions.Where(pt => DateTime.Parse(pt.Date, CultureInfo.InvariantCulture) >=startDate && DateTime.Parse(pt.Date, CultureInfo.InvariantCulture) <= endDate).ToListAsync();
 
             if (!transactions.Any())
             {
@@ -159,7 +159,7 @@ namespace PocketBookServer.Services
                 endDate = temp;
             }
 
-            var transactions = await _dbContext.PocketTransaction.Where(pt => string.Compare(pt.Date, startDate.ToShortDateString())>=0 && string.Compare(pt.Date ,endDate.ToString())<=0).ToListAsync();
+            var transactions = await _dbContext.PocketTransactions.Where(pt => string.Compare(pt.Date, startDate.ToShortDateString())>=0 && string.Compare(pt.Date ,endDate.ToString())<=0).ToListAsync();
 
             if (transactions.Any())
             {
@@ -176,12 +176,90 @@ namespace PocketBookServer.Services
                 })
                  .ToList();
 
-                foreach (var  transaction in pocketTransactions)
+                foreach (PocketTransactionInfo  transaction in pocketTransactions)
                 {
                     await responseStream.WriteAsync(transaction);
                 }
             }
         }
+
+        #region category
+        public override async Task<CategoryResponse> AddCategory(CategoryInfo request, ServerCallContext context)
+        {
+            // check required filed
+            if (string.IsNullOrEmpty(request.Description))
+            {
+                return await Task.FromResult(new CategoryResponse { Success = false, Message = $"Category need description." });
+            }
+
+            //check current description is exist 
+            if (_dbContext.Categories.Any(u => u.Description.Equals(request.Description) && u.IsIncome== request.IsIncome))
+            {
+                return await Task.FromResult(new CategoryResponse { Success = false, Message = $"Category {request.Description} have been added!" });
+            }
+
+            var category = new Category
+            {
+                Id = Guid.NewGuid().ToString(),
+                IsIncome = request.IsIncome,
+                Description = request.Description,
+                DetailedInfo = request.Detail
+            };
+
+            await _dbContext.AddAsync(category);
+            await _dbContext.SaveChangesAsync();
+
+            return await Task.FromResult(new CategoryResponse { Success = true, Message = "Category added successfully." });
+        }
+
+        public override async Task<CategoryResponse> DeleteCategory(CategoryInfo request, ServerCallContext context)
+        {
+            // check required filed
+            if (string.IsNullOrEmpty(request.Description))
+            {
+                return await Task.FromResult(new CategoryResponse { Success = false, Message = $"Category need description." });
+            }
+
+            var category =  _dbContext.Categories.SingleOrDefault(u => u.Description.Equals(request.Description) && u.IsIncome == request.IsIncome);
+            //check current description is exist 
+            if (category == null)
+            {
+                return await Task.FromResult(new CategoryResponse { Success = false, Message = $"no Category {request.Description} exist in the system!" });
+            }
+
+            _dbContext.Categories.Remove(category);
+            await _dbContext.SaveChangesAsync();
+
+            return await Task.FromResult(new CategoryResponse { Success = true, Message = "Category added successfully." });
+        }
+
+        public override async Task GetAllCategoryStream(GetCategoryRequest request, IServerStreamWriter<CategoryInfo> responseStream, ServerCallContext context)
+        {
+
+            var categories =  _dbContext.Categories;
+
+            if (categories.Any())
+            {
+                List<CategoryInfo> allCategoris = categories
+                .OrderBy(c => c.IsIncome)
+                .Select(ct => new CategoryInfo
+                {
+                    Description = ct.Description, 
+                    IsIncome = ct.IsIncome,
+                    Detail = ct.DetailedInfo,   
+                })
+                 .ToList();
+
+                foreach (var category in allCategoris)
+                {
+
+                   await responseStream.WriteAsync(category);
+                    
+                }
+            }
+        }
+
+        #endregion
 
 
         public override async Task<DailySummaryResponse> GetDailySummary(UserRequest request, ServerCallContext context)
@@ -193,7 +271,7 @@ namespace PocketBookServer.Services
 
             }
 
-            var transactions =await  _dbContext.PocketTransaction.Where(pt=>pt.UserId ==UserId(request.Username)).ToListAsync();
+            var transactions =await  _dbContext.PocketTransactions.Where(pt=>pt.UserId ==UserId(request.Username)).ToListAsync();
 
             if(!transactions.Any())
             {
@@ -222,7 +300,7 @@ namespace PocketBookServer.Services
 
             }
 
-            var transactions =await  _dbContext.PocketTransaction.Where(pt => pt.UserId == UserId(request.Username)).ToListAsync();
+            var transactions =await  _dbContext.PocketTransactions.Where(pt => pt.UserId == UserId(request.Username)).ToListAsync();
 
             var categorySummaries =  transactions
                     .GroupBy(t => t.Category)

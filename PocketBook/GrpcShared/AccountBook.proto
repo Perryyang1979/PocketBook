@@ -10,6 +10,9 @@ service AccountBook {
   rpc GetDailyTransationsStream (DailyDetailTransationRequest) returns (stream PocketTransactionInfo);
   rpc GetDailySummary (UserRequest) returns (DailySummaryResponse);
   rpc GetCategorySummary (UserRequest) returns (CategorySummaryResponse);
+  rpc AddCategory(CategoryInfo) returns(CategoryResponse);
+  rpc DeleteCategory(CategoryInfo) returns(CategoryResponse);
+  rpc GetAllCategoryStream (GetCategoryRequest) returns (stream CategoryInfo);
 }
 
 message PocketUserInfo {
@@ -72,3 +75,20 @@ message CategorySummary {
   string category = 1;
   double totalAmount = 2;
 }
+
+message CategoryInfo{
+  bool isIncome = 1;
+  string Description =2 ;
+  string detail =3;
+}
+
+
+message CategoryResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetCategoryRequest{
+}
+
+
