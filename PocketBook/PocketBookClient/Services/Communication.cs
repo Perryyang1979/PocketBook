@@ -121,7 +121,7 @@ namespace PocketBookClient.Services
             return null;
         }
 
-        public async Task<TransactionResponse> AddTransaction(UserTransaction userTransaction)
+        public async Task<TransactionResponse> AddTransactionAsync(UserTransaction userTransaction)
         {
             var transactionRequest = new PocketTransactionInfo()
             {
@@ -133,15 +133,85 @@ namespace PocketBookClient.Services
                 Username = Settings.Current.CurrentUserName
             };
 
+            TransactionResponse response = null;
+
             try
             {
 
-                await _accountBookClient.AddTransactionAsync(transactionRequest);
+               response =  await _accountBookClient.AddTransactionAsync(transactionRequest);
+            }
+            catch (Exception ex)
+            {
+                return await Task.FromResult(new TransactionResponse { Success = false, Message = ex.Message });
+            }
+
+            return response;
+        }
+
+        public async Task<CategoryResponse> AddCategoryAsync(TransactionCategory category)
+        {
+            var categoryRequest = new CategoryInfo()
+            {
+
+                IsIncome = category.IsIncome,
+                Description = category.CategoryDescription,
+                Detail = category.CategoryDetailedDescription
+            };
+
+            CategoryResponse response = null;
+
+            try
+            {
+
+                response = await _accountBookClient.AddCategoryAsync(categoryRequest);
+            }
+            catch (Exception ex)
+            {
+                return await Task.FromResult(new CategoryResponse { Success = false, Message = ex.Message });
+            }
+
+            return response;
+        }
+
+
+        public async Task<CategoryResponse> DeleteCategoryAsync(TransactionCategory category)
+        {
+            var categoryRequest = new CategoryInfo()
+            {
+
+                IsIncome = category.IsIncome,
+                Description = category.CategoryDescription,
+                Detail = category.CategoryDetailedDescription
+            };
+
+            CategoryResponse response = null;
+
+            try
+            {
+
+                response = await _accountBookClient.DeleteCategoryAsync(categoryRequest);
+            }
+            catch (Exception ex)
+            {
+                return await Task.FromResult(new CategoryResponse { Success = false, Message = ex.Message });
+            }
+
+            return response;
+        }
+
+
+        public AsyncServerStreamingCall<CategoryInfo> GetAllCategoryStream()
+        {
+            try
+            {
+
+                return _accountBookClient.GetAllCategoryStream(new GetCategoryRequest());
             }
             catch (Exception ex)
             {
 
             }
+
             return null;
         }
     }

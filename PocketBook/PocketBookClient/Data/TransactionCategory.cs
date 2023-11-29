@@ -8,6 +8,7 @@ namespace PocketBookClient.Data
 {
     public class TransactionCategory
     {
+        public bool IsIncome { get; set; }
         public string CategoryDescription { get; set; }
         public string CategoryDetailedDescription { get; set; }
     }

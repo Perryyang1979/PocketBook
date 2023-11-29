@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PocketBookClient.View.CategoryListPage"
+               xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
+              xmlns:data="clr-namespace:PocketBookClient.Data"
+             Title="{Binding LocalizationResourceManager[AddCategory_Page_Title], Mode=OneWay}"
+             x:DataType="viewmodel:CategoryListViewModel" MinimumWidthRequest="300">
+    <ScrollView  >
+        <StackLayout>
+
+            <!--IsIncome-->
+            <StackLayout Orientation="Horizontal" Margin="10">
+                <Label Text="{Binding LocalizationResourceManager[AddTranscation_Money_Type], Mode=OneWay}"  HorizontalOptions="Start" TextColor="blue" WidthRequest="120"
+                       VerticalTextAlignment="Center" VerticalOptions="Center"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" RadioButtonGroup.GroupName="MoneyChangeTypes"
+             RadioButtonGroup.SelectedValue="{Binding  CurrentCategoryType}">
+                    <StackLayout Orientation="Horizontal">
+                        <RadioButton Content="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Income], Mode=TwoWay}"
+                 Value="True" />
+                        <RadioButton Content="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Expense], Mode=TwoWay}"
+                 Value="False" />
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+
+            <Grid ColumnDefinitions="50*,50*,20*">
+                <Label Text="{Binding LocalizationResourceManager[AddCategory_Page_Description], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[AddCategory_Page_Description_Detail], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadLabel }"/>
+            </Grid>
+
+            
+            <CollectionView Grid.Row="2"
+                    ItemsSource="{Binding CategoryList}"
+                    SelectionMode="Single"
+                    BackgroundColor="Yellow"
+                            SelectedItem="{Binding CurrentSelectedItem }"
+                        >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="data:TransactionCategory">
+                        <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="50*,50*,20*" VerticalOptions="FillAndExpand">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal"></VisualState>
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="LightSkyBlue"></Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <!--<BoxView HeightRequest="0.1"  BackgroundColor="Black" Grid.ColumnSpan="5" VerticalOptions="Start"/>-->
+                            <Label Text="{Binding CategoryDescription}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0" TextColor="Blue"/>
+                            <Label Text="{Binding CategoryDetailedDescription}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1" TextColor="Blue"/>
+                            <!--<Button
+                Margin="20"
+                Command="{Binding DeleteCategoryCommand}"
+                Style="{StaticResource ButtonOutline}"
+                Text="{Binding LocalizationResourceManager[AddCategory_Page_Delete], Mode=OneWay}" />-->
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <HorizontalStackLayout>
+                <Button
+                Margin="20"
+                Command="{Binding AddCategoryCommand}"
+                Style="{StaticResource ButtonOutline}"
+                    HorizontalOptions="Center"
+                Text="{Binding LocalizationResourceManager[AddCategory_Title], Mode=OneWay}" 
+                    IsEnabled="{Binding AddButtonEnable}"
+                    HeightRequest="30"/>
+
+                <Button
+                Margin="20"
+                Command="{Binding DeleteCategoryCommand}"
+                     HorizontalOptions="Center"
+                Style="{StaticResource ButtonOutline}"
+                Text="{Binding LocalizationResourceManager[AddCategory_Page_Delete], Mode=OneWay}" 
+                     IsEnabled="{Binding DeleteButtonEnable}"
+                    HeightRequest="30"/>
+
+            </HorizontalStackLayout>
+
+
+
+            <StackLayout x:Name="AddCategoryPanel" IsVisible="{Binding AddCategoryPanelVisible}" Margin="20,20">
+                <HorizontalStackLayout >
+                <Label Text="{Binding LocalizationResourceManager[AddCategory_Page_Description], Mode=OneWay}" WidthRequest="120" TextColor="Blue"/>
+                <Entry
+            x:Name="Description"
+            IsSpellCheckEnabled="False"
+            Text="{Binding CategoryDescriptionAdd}"
+            Keyboard="Text"
+                    WidthRequest="200"
+                    Margin="20,0"/>
+            </HorizontalStackLayout >
+
+            <HorizontalStackLayout >
+                    <Label Text="{Binding LocalizationResourceManager[AddCategory_Page_Description_Detail], Mode=OneWay}" WidthRequest="120"  TextColor="Blue"/>
+                <Entry
+            x:Name="Detail"
+            IsPassword="False"
+            Text="{Binding CategoryDetailAdd}"
+            Keyboard ="Text"
+                     Margin="20,0"
+                    WidthRequest="200"
+           />
+            </HorizontalStackLayout>
+
+                <HorizontalStackLayout>
+                <Button
+                Margin="20"
+                Command="{Binding ConfirmCommand}"
+                Style="{StaticResource ButtonOutline}"
+                    HorizontalOptions="Center"
+                Text="{Binding LocalizationResourceManager[AddCategory_Confirm], Mode=OneWay}" 
+                    IsEnabled="{Binding ConfirmButtonEnable}"
+                    HeightRequest="30"/>
+
+                <Button
+                Margin="20"
+                Command="{Binding CancelCommand}"
+                     HorizontalOptions="Center"
+                Style="{StaticResource ButtonOutline}"
+                Text="{Binding LocalizationResourceManager[Button_Cancel], Mode=OneWay}" 
+                    HeightRequest="30"/>
+
+                    </HorizontalStackLayout>
+
+            </StackLayout>
+
+            <ActivityIndicator
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            HorizontalOptions="Fill"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Color="{StaticResource Primary}"
+            VerticalOptions="Center" />
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

@@ -7,4 +7,9 @@ public partial class AddTransactionPage : ContentPage
 		InitializeComponent();
 		BindingContext = viewModel;
 	}
+
+    protected override bool OnBackButtonPressed()
+    {
+        return true;
+    }
 }

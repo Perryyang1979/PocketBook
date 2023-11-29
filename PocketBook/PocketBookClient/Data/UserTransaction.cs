@@ -23,5 +23,7 @@ namespace PocketBookClient.Data
                 return IsIncome ?Income:Expense;
             }
         }
+
+        public string UserName { get; set; }
     }
 }

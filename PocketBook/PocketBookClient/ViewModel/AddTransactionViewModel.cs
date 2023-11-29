@@ -9,41 +9,43 @@ namespace PocketBookClient.ViewModel
         public DateTime MaxDate { get; private set; }
         public DateTime SelectedDate { get; set; }
 
-        public ReadOnlyCollection<string> MoneyChangeTypes { get; }
+
+        private readonly string IsIncome = "True";
 
         public AddTransactionViewModel()
         {
             MinDate = DateTime.Today.AddDays(-100);
             MaxDate = DateTime.Today.AddDays(30);
             SelectedDate = DateTime.Today;
-              var strTypes = new List<string>() { $"{LocalizationResourceManager["AddTranscation_IsIncome_Income"]}", $"{LocalizationResourceManager["AddTranscation_IsIncome_Expense"]}" };
-              MoneyChangeTypes = new ReadOnlyCollection<string>(strTypes);
-              GetCategories();
+            CurrentMoneyChangeType = IsIncome;
         }
 
-        private void GetCategories()
+        private async void GetCurrentCategories(bool isIncome)
         {
-            Categories = new ObservableCollection<TransactionCategory>();
+            Categories.Clear();
 
-            if(string.IsNullOrEmpty(CurrentMoneyChangeType))
+            using (var call = Communication.Instance.GetAllCategoryStream())
             {
-                return;
-            }
+                var token = new CancellationToken();
+                while (await call.ResponseStream.MoveNext(token))
+                {
+                    var responseInfo = call.ResponseStream.Current;
 
-            if(CurrentMoneyChangeType == "True")
-            {
-                Categories.Add(new TransactionCategory() { CategoryDescription = "salary", CategoryDetailedDescription = "recored salary" });
-                Categories.Add(new TransactionCategory() { CategoryDescription = "home rent", CategoryDetailedDescription = "recored rent home something" });
-            }
-            else
-            {
-                Categories.Add(new TransactionCategory() { CategoryDescription = "insurance", CategoryDetailedDescription = "recored insurance" });
-                Categories.Add(new TransactionCategory() { CategoryDescription = "house loan", CategoryDetailedDescription = "house loan everything" });
+                    if (responseInfo.IsIncome == isIncome)
+                    {
+                        Categories.Add(new TransactionCategory()
+                        {
+                            IsIncome = responseInfo.IsIncome,
+                            CategoryDescription = responseInfo.Description,
+                            CategoryDetailedDescription = responseInfo.Detail
+                        });
+                    }
+                }
             }
         }
 
         [ObservableProperty]
-        private ObservableCollection<TransactionCategory> categories;
+        private ObservableCollection<TransactionCategory> categories =new ObservableCollection<TransactionCategory>();
         [ObservableProperty]
         private string currentMoneyChangeType = string.Empty;
         [ObservableProperty]
@@ -55,22 +57,50 @@ namespace PocketBookClient.ViewModel
 
         partial void OnCurrentMoneyChangeTypeChanged(string value)
         {
-            GetCategories();
+            if (!string.IsNullOrEmpty(CurrentMoneyChangeType))
+            {
+                GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
+            }
         }
 
         [RelayCommand]
         async Task AddTransactionAsync()
         {
-            var transactin = new UserTransaction()
+            var transaction = new UserTransaction()
             {
                 Date = SelectedDate.ToShortDateString(),
                 Amount = Money,
-                IsIncome = CurrentMoneyChangeType.Equals("True"),
+                IsIncome = CurrentMoneyChangeType.Equals(IsIncome),
                 Category = Categories[CategorySelectedIndex].CategoryDescription,
                 Comments = Comments,
             };
 
-            await Communication.Instance.AddTransaction(transactin);
+           var response =  await Communication.Instance.AddTransactionAsync(transaction);
+
+            if(response!=null && response.Success)
+            {
+                await Shell.Current.GoToAsync(nameof(PocketOperationPage));
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Add record failed", response.Message, "OK");
+                return;
+            }
+        }
+
+        [RelayCommand]
+        async Task CancelTransactionAsync()
+        {
+            await Shell.Current.GoToAsync(nameof(PocketOperationPage));
+        }
+
+        [RelayCommand]
+        async Task AddCategoryAsync()
+        {
+            await Shell.Current.GoToAsync(nameof(CategoryListPage), true, new Dictionary<string, object>
+        {
+            {"CurrentCategoryType", CurrentMoneyChangeType}
+        });
         }
     }
 }

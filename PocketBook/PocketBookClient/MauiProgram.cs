@@ -54,12 +54,14 @@ public static class MauiProgram
         builder.Services.AddTransient<RegistrationPageViewModel>();
         builder.Services.AddTransient<PocketOperationViewModel>();
         builder.Services.AddTransient<AddTransactionViewModel>();
+        builder.Services.AddTransient<CategoryListViewModel>();
 
         builder.Services.AddSingleton<LoginPage>();
         builder.Services.AddSingleton<SettingPage>();
         builder.Services.AddTransient<RegistrationPage>();
         builder.Services.AddTransient<PocketOperationPage>();
         builder.Services.AddTransient<AddTransactionPage>();
+        builder.Services.AddTransient<CategoryListPage>();
 
         return builder.Build();
 	}

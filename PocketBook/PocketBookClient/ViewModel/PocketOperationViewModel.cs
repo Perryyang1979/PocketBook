@@ -38,6 +38,7 @@ namespace PocketBookClient.ViewModel
                         IsIncome = responseInfo.IsIncome,
                         Comments = responseInfo.Comments,
                         Amount = responseInfo.Amount,
+                        UserName = responseInfo.Username,
                     });
                 }
             }
