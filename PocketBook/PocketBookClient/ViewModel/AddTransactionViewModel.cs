@@ -20,26 +20,41 @@ namespace PocketBookClient.ViewModel
             CurrentMoneyChangeType = IsIncome;
         }
 
+        public  async void RefreshModel()
+        {
+            GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
+        }
+
+        private bool requestIsSending =false;
         private async void GetCurrentCategories(bool isIncome)
         {
-            Categories.Clear();
-
+            if(requestIsSending)
+            {
+                return;
+            }
             using (var call = Communication.Instance.GetAllCategoryStream())
             {
-                var token = new CancellationToken();
-                while (await call.ResponseStream.MoveNext(token))
-                {
-                    var responseInfo = call.ResponseStream.Current;
-
-                    if (responseInfo.IsIncome == isIncome)
+                    requestIsSending = true;
+                    CancellationToken token = new CancellationToken();
+                    Categories.Clear();
+                    while (await call.ResponseStream.MoveNext(token))
                     {
-                        Categories.Add(new TransactionCategory()
-                        {
-                            IsIncome = responseInfo.IsIncome,
-                            CategoryDescription = responseInfo.Description,
-                            CategoryDetailedDescription = responseInfo.Detail
-                        });
-                    }
+                            var responseInfo = call.ResponseStream.Current;
+
+                            if (responseInfo.IsIncome == isIncome)
+                            {
+                                Categories.Add(new TransactionCategory()
+                                {
+                                    IsIncome = responseInfo.IsIncome,
+                                    CategoryDescription = responseInfo.Description,
+                                    CategoryDetailedDescription = responseInfo.Detail
+                                });
+                            }
+                     }
+                requestIsSending = false;
+                if(Categories.Any())
+                {
+                    CategorySelectedIndex = 0;
                 }
             }
         }

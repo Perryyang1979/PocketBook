@@ -21,12 +21,12 @@
                 Text="{Binding LocalizationResourceManager[PocketOperation_Add_Label], Mode=OneWay}" />
             </VerticalStackLayout>
 
-            <Grid ColumnDefinitions="35*,30*,30*,30*,40*" Grid.Row="1">
-                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Date], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadLabel }"/>
-                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_User], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadLabel }"/>
-                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Money], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadLabel }"/>
-                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Income], Mode=OneWay}" Grid.Row="1" Grid.Column="3" Padding="10" Style="{StaticResource HeadLabel }"/>
-                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Category], Mode=OneWay}" Grid.Row="1" Grid.Column="4" Padding="10" Style="{StaticResource HeadLabel }"/>
+            <Grid ColumnDefinitions="35*,40*,25*,25*,40*" Grid.Row="1">
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Date], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_User], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Money], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Income], Mode=OneWay}" Grid.Row="1" Grid.Column="3" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Category], Mode=OneWay}" Grid.Row="1" Grid.Column="4" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
             </Grid>
 
             <CollectionView Grid.Row="2"
@@ -35,7 +35,7 @@
                         >
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="data:UserTransaction">
-                        <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="35*,30*,30*,30*,40*" VerticalOptions="FillAndExpand">
+                        <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="35*,40*,25*,25*,40*" VerticalOptions="FillAndExpand">
                             <!--<BoxView HeightRequest="0.1"  BackgroundColor="Black" Grid.ColumnSpan="5" VerticalOptions="Start"/>-->
                             <Label Text="{Binding Date}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
                             <Label Text="{Binding UserName}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1"/>

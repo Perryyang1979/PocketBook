@@ -12,6 +12,8 @@ public partial class CategoryListPage : ContentPage
 
     protected override bool OnBackButtonPressed()
     {
-        return false;
+
+		return base.OnBackButtonPressed();
+     //   return false;
     }
 }

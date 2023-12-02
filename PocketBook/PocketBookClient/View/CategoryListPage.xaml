@@ -33,7 +33,6 @@
             <CollectionView Grid.Row="2"
                     ItemsSource="{Binding CategoryList}"
                     SelectionMode="Single"
-                    BackgroundColor="Yellow"
                             SelectedItem="{Binding CurrentSelectedItem }"
                         >
                 <CollectionView.ItemTemplate>
@@ -41,7 +40,11 @@
                         <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="50*,50*,20*" VerticalOptions="FillAndExpand">
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup Name="CommonStates">
-                                    <VisualState Name="Normal"></VisualState>
+                                    <VisualState Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="lightGray"></Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
                                     <VisualState Name="Selected">
                                         <VisualState.Setters>
                                             <Setter Property="BackgroundColor" Value="LightSkyBlue"></Setter>

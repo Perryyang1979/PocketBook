@@ -12,4 +12,16 @@ public partial class AddTransactionPage : ContentPage
     {
         return true;
     }
+
+    //use method make sure when back button is pressed  to this page 
+    // page will be refresh 
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        var vm = BindingContext as AddTransactionViewModel;
+         vm?.RefreshModel();
+
+    }
+
 }
