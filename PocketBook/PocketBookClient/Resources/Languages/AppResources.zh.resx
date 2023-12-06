@@ -138,6 +138,24 @@
   <data name="AddCategory_Title" xml:space="preserve">
     <value>增加</value>
   </data>
+  <data name="AddIdentify_Confirm" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="AddIdentify_Manage" xml:space="preserve">
+    <value>管理</value>
+  </data>
+  <data name="AddIdentify_Page_Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="AddIdentify_Page_Description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="AddIdentify_Page_Title" xml:space="preserve">
+    <value>添加特别标识</value>
+  </data>
+  <data name="AddIdentify_Title" xml:space="preserve">
+    <value>增加</value>
+  </data>
   <data name="AddTranscation_Category_lable" xml:space="preserve">
     <value>分类</value>
   </data>
@@ -146,6 +164,9 @@
   </data>
   <data name="AddTranscation_datePicker_label" xml:space="preserve">
     <value>日期</value>
+  </data>
+  <data name="AddTranscation_Identify_lable" xml:space="preserve">
+    <value> 特别标识</value>
   </data>
   <data name="AddTranscation_IsIncome_Expense" xml:space="preserve">
     <value>支出</value>
@@ -251,6 +272,9 @@
   </data>
   <data name="PocketOperation_Header_User" xml:space="preserve">
     <value>录入</value>
+  </data>
+  <data name="PocketOperation_Month_Label" xml:space="preserve">
+    <value>月度更多记录</value>
   </data>
   <data name="Register_Email" xml:space="preserve">
     <value>邮箱地址：</value>

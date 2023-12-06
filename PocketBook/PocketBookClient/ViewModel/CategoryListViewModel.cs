@@ -122,9 +122,9 @@ namespace PocketBookClient.ViewModel
                 return;
             }
 
-            var confirm = await Shell.Current.DisplayPromptAsync("delete category ", "are you sure to delete", "OK","Cancel");
+            var confirm = await Shell.Current.DisplayAlert("delete category ", "Are you sure to delete?", accept: "OK", "Cancel");
 
-            if (confirm.Equals("OK"))
+            if ( confirm)
             {
                 var result = await Communication.Instance.DeleteCategoryAsync(CurrentSelectedItem);
 

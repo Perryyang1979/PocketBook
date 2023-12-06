@@ -51,6 +51,22 @@
             </Label>
         </StackLayout>
 
+        <!--Identify-->
+        <StackLayout Orientation="Horizontal" Margin="10">
+            <Label Text="{Binding LocalizationResourceManager[AddTranscation_Identify_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="blue" WidthRequest="120"/>
+            <Picker  WidthRequest="150" TitleColor="Blue" 
+                    HorizontalOptions="StartAndExpand" 
+        ItemsSource="{Binding Identifications,Mode=TwoWay}"
+        ItemDisplayBinding="{Binding IdentifyDescription}"
+        SelectedIndex="{Binding IdentificationSelectedIndex,Mode=TwoWay}">
+            </Picker>
+            <Label  Text="{Binding LocalizationResourceManager[AddIdentify_Manage], Mode=OneWay}" Margin="20,0" HorizontalOptions="StartAndExpand" TextColor="Blue" FontSize="Small">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding  Path= AddIdentifyCommand}"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+
         <StackLayout Orientation="Horizontal" Margin="10">
             <!--Comments-->
             <Label Text="{Binding LocalizationResourceManager[AddTranscation_Comments_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="blue" WidthRequest="120" />

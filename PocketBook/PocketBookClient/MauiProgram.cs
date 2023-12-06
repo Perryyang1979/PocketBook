@@ -55,6 +55,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PocketOperationViewModel>();
         builder.Services.AddTransient<AddTransactionViewModel>();
         builder.Services.AddTransient<CategoryListViewModel>();
+        builder.Services.AddTransient<IdentifyListViewModel>();
 
         builder.Services.AddSingleton<LoginPage>();
         builder.Services.AddSingleton<SettingPage>();
@@ -62,6 +63,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PocketOperationPage>();
         builder.Services.AddTransient<AddTransactionPage>();
         builder.Services.AddTransient<CategoryListPage>();
+        builder.Services.AddTransient<IdentifyListPage>();
 
         return builder.Build();
 	}

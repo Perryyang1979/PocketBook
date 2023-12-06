@@ -26,20 +26,20 @@ namespace PocketBookServer.Services
         private string UserId(string userName) => _dbContext?.Users.SingleOrDefault(u => u.Name.Equals(userName)).Id;
         private string UserName(string userId) => _dbContext?.Users.SingleOrDefault(u => u.Id.Equals(userId)).Name;
 
-        public override async Task<UserResponse> RegisterUser(PocketUserInfo request, ServerCallContext context)
+        public override async Task<MessageResponse> RegisterUser(PocketUserInfo request, ServerCallContext context)
         {
             // use sign up logic 
 
             if(string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
             {
-                return await Task.FromResult(new UserResponse { Success = false, Message = "User registered Failed with empty failed." });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = "User registered Failed with empty failed." });
             }
 
             //if find same name ,will return username are exist 
 
            if(IsUserExist(request.Username))
             {
-                return await Task.FromResult(new UserResponse { Success = false, Message = "UserName have been registered already!" });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = "UserName have been registered already!" });
             }
 
             var pocketUser = new PocketUser()
@@ -54,45 +54,45 @@ namespace PocketBookServer.Services
 
             await _dbContext.AddAsync(pocketUser);
             await _dbContext.SaveChangesAsync();
-            return await Task.FromResult(new UserResponse { Success = true, Message = "User registered successfully." });
+            return await Task.FromResult(new MessageResponse { Success = true, Message = "User registered successfully." });
         }
 
-        public override async Task<UserResponse> LoginUser(UserRequest request, ServerCallContext context)
+        public override async Task<MessageResponse> LoginUser(UserRequest request, ServerCallContext context)
         {
             // implement User Login 
 
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
             {
-                return await Task.FromResult(new UserResponse { Success = false, Message = "User registered Failed with empty failed." });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = "User registered Failed with empty failed." });
             }
 
             if (!_dbContext.Users.Any(u => u.Name.Equals(request.Username) 
             && u.Password.Equals(request.Password)))
             {
-                return await Task.FromResult(new UserResponse { Success = false, Message = "UserName or password is wrong!" });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = "UserName or password is wrong!" });
             }
             
             
-            return await Task.FromResult(new UserResponse { Success = true, Message = "User logged in successfully." });
+            return await Task.FromResult(new MessageResponse { Success = true, Message = "User logged in successfully." });
         }
 
-        public override async Task<TransactionResponse> AddTransaction(PocketTransactionInfo request, ServerCallContext context)
+        public override async Task<MessageResponse> AddTransaction(PocketTransactionInfo request, ServerCallContext context)
         {
             // if not find user, return fail message
             if (!IsUserExist(request.Username))
             {
-                return await Task.FromResult(new TransactionResponse { Success = false, Message = $"User {request.Username} not found." });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"User {request.Username} not found." });
             }
             //need to do 
             if(request.Amount < 0 )
             {
-                return await Task.FromResult(new TransactionResponse { Success = false, Message = $"Money should not less than 0." });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Money should not less than 0." });
             }
 
             //need to do duble compare
             if (request.Amount == 0)
             {
-                return await Task.FromResult(new TransactionResponse { Success = false, Message = $"No need to record since money is 0." });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"No need to record since money is 0." });
             }
 
             var transaction = new PocketTransaction
@@ -103,14 +103,14 @@ namespace PocketBookServer.Services
                     IsIncome = request.IsIncome,
                     Category = request.Category,
                     Date = request.TransactionDate,
-                    Comments = request.Comments
-                // Date = DateTime.Now.ToShortDateString()
+                    Comments = request.Comments,
+                    Identification = request.Identification,    
             };
 
             await _dbContext.AddAsync(transaction);
             await _dbContext.SaveChangesAsync();
 
-            return await Task.FromResult(new TransactionResponse { Success = true, Message = "Transaction added successfully." });
+            return await Task.FromResult(new MessageResponse { Success = true, Message = "Transaction added successfully." });
           }
 
         public override async Task<DailyTransactionResponse> GetDailyTransations(DailyDetailTransationRequest request, ServerCallContext context)
@@ -141,6 +141,7 @@ namespace PocketBookServer.Services
                     Category = transaction.Category,
                     Comments = transaction.Comments,
                     TransactionDate = transaction.Date,
+                    Identification = transaction.Identification
              })
              .ToList();
 
@@ -159,12 +160,13 @@ namespace PocketBookServer.Services
                 endDate = temp;
             }
 
-            var transactions = await _dbContext.PocketTransactions.Where(pt => string.Compare(pt.Date, startDate.ToShortDateString())>=0 && string.Compare(pt.Date ,endDate.ToString())<=0).ToListAsync();
+            var transactions =  _dbContext.PocketTransactions.ToList().Where(pt => DateTime.Compare(DateTime.Parse(pt.Date, CultureInfo.InvariantCulture),startDate)>=0 
+            && DateTime.Compare(DateTime.Parse(pt.Date, CultureInfo.InvariantCulture),endDate)<=0).ToList();
 
             if (transactions.Any())
             {
                 List<PocketTransactionInfo>? pocketTransactions = transactions
-                .OrderBy(t => t.Date)
+                .OrderBy(t => DateTime.Parse(t.Date, CultureInfo.InvariantCulture))
                 .Select(transaction => new PocketTransactionInfo
                 {
                     Username = UserName(transaction.UserId),
@@ -173,6 +175,7 @@ namespace PocketBookServer.Services
                     Category = transaction.Category,
                     Comments = transaction.Comments,
                     TransactionDate = transaction.Date,
+                    Identification = transaction.Identification
                 })
                  .ToList();
 
@@ -184,18 +187,18 @@ namespace PocketBookServer.Services
         }
 
         #region category
-        public override async Task<CategoryResponse> AddCategory(CategoryInfo request, ServerCallContext context)
+        public override async Task<MessageResponse> AddCategory(CategoryInfo request, ServerCallContext context)
         {
             // check required filed
             if (string.IsNullOrEmpty(request.Description))
             {
-                return await Task.FromResult(new CategoryResponse { Success = false, Message = $"Category need description." });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Category need description." });
             }
 
             //check current description is exist 
             if (_dbContext.Categories.Any(u => u.Description.Equals(request.Description) && u.IsIncome== request.IsIncome))
             {
-                return await Task.FromResult(new CategoryResponse { Success = false, Message = $"Category {request.Description} have been added!" });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Category {request.Description} have been added!" });
             }
 
             var category = new Category
@@ -209,28 +212,28 @@ namespace PocketBookServer.Services
             await _dbContext.AddAsync(category);
             await _dbContext.SaveChangesAsync();
 
-            return await Task.FromResult(new CategoryResponse { Success = true, Message = "Category added successfully." });
+            return await Task.FromResult(new MessageResponse { Success = true, Message = "Category added successfully." });
         }
 
-        public override async Task<CategoryResponse> DeleteCategory(CategoryInfo request, ServerCallContext context)
+        public override async Task<MessageResponse> DeleteCategory(CategoryInfo request, ServerCallContext context)
         {
             // check required filed
             if (string.IsNullOrEmpty(request.Description))
             {
-                return await Task.FromResult(new CategoryResponse { Success = false, Message = $"Category need description." });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Category need description." });
             }
 
             var category =  _dbContext.Categories.SingleOrDefault(u => u.Description.Equals(request.Description) && u.IsIncome == request.IsIncome);
             //check current description is exist 
             if (category == null)
             {
-                return await Task.FromResult(new CategoryResponse { Success = false, Message = $"no Category {request.Description} exist in the system!" });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"no Category {request.Description} exist in the system!" });
             }
 
             _dbContext.Categories.Remove(category);
             await _dbContext.SaveChangesAsync();
 
-            return await Task.FromResult(new CategoryResponse { Success = true, Message = "Category added successfully." });
+            return await Task.FromResult(new MessageResponse { Success = true, Message = "Category delete successfully." });
         }
 
         public override async Task GetAllCategoryStream(GetCategoryRequest request, IServerStreamWriter<CategoryInfo> responseStream, ServerCallContext context)
@@ -261,34 +264,119 @@ namespace PocketBookServer.Services
 
         #endregion
 
+        #region Identification
+        public override async Task<MessageResponse> AddIdentification(IdentificationInfo request, ServerCallContext context)
+        {
+            // check required filed
+            if (string.IsNullOrEmpty(request.Description))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Identification need description." });
+            }
 
-        public override async Task<DailySummaryResponse> GetDailySummary(UserRequest request, ServerCallContext context)
+            //check current description is exist 
+            if (_dbContext.Identifications.Any(u => u.Name.Equals(request.Description)))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Identification {request.Description} have been added!" });
+            }
+
+            var identify = new Identification
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = request.Description,
+            };
+
+            await _dbContext.AddAsync(identify);
+            await _dbContext.SaveChangesAsync();
+
+            return await Task.FromResult(new MessageResponse { Success = true, Message = $"Identification {identify.Name} added successfully." });
+        }
+
+        public override async Task<MessageResponse> DeleteIdentification(IdentificationInfo request, ServerCallContext context)
+        {
+            // check required filed
+            if (string.IsNullOrEmpty(request.Description))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Identification need description." });
+            }
+
+            var Identy = _dbContext.Identifications.SingleOrDefault(u => u.Name.Equals(request.Description) );
+            //check current description is exist 
+            if (Identy == null)
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"no Identification {request.Description} exist in the system!" });
+            }
+
+            _dbContext.Identifications.Remove(Identy);
+            await _dbContext.SaveChangesAsync();
+
+            return await Task.FromResult(new MessageResponse { Success = true, Message = $"Identification {Identy.Name} deleted successfully." });
+        }
+
+        public override async Task GetAllIdentificationStream(GetIdentificationRequest request, IServerStreamWriter<IdentificationInfo> responseStream, ServerCallContext context)
+        {
+
+            var identifies = _dbContext.Identifications;
+
+            if (identifies.Any())
+            {
+                List<IdentificationInfo> identificationInfos = identifies
+                .Select(ct => new IdentificationInfo
+                {
+                    Description = ct.Name,
+                })
+                 .ToList();
+
+                foreach (var iden in identificationInfos)
+                {
+
+                    await responseStream.WriteAsync(iden);
+
+                }
+            }
+        }
+
+        #endregion
+
+
+        public override async Task GetDailySummaryStream(UserRequest request, IServerStreamWriter<DailySummary> responseStream, ServerCallContext contextServerCallContext)
         {
             // if not find user, or userName is null empty return fail message
             if (!IsUserExist(request.Username) || string.IsNullOrEmpty(request.Username))
             {
-                return await Task.FromResult(new DailySummaryResponse());
+                 await Task.FromResult(new DailySummaryResponse());
 
             }
 
-            var transactions =await  _dbContext.PocketTransactions.Where(pt=>pt.UserId ==UserId(request.Username)).ToListAsync();
+            var currentYear = DateTime.Now.Year;
+
+            var transactions =  _dbContext.PocketTransactions.ToList().Where(pt=>pt.UserId ==UserId(request.Username) 
+            && Convert.ToDateTime(pt.Date).Year == currentYear
+           ).ToList();
 
             if(!transactions.Any())
             {
-                return await Task.FromResult(new DailySummaryResponse());
+                 await Task.FromResult(new DailySummaryResponse());
             }
                 
             var dailySummaries = transactions
-                    .GroupBy(t => t.Date)
+                    .GroupBy(t => new
+                    {
+                        DateTime.Parse(t.Date, CultureInfo.InvariantCulture).Date.Year,
+                        DateTime.Parse(t.Date, CultureInfo.InvariantCulture).Date.Month
+                    })
+                    .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month) // optional
                     .Select(group => new DailySummary
                     {
-                        Date = group.Key,
+                        Date = $"{ group.Key.Year} - {group.Key.Month}",
                         TotalIncome = group.Where(t => t.IsIncome).Sum(t => t.Amount),
                         TotalExpense = group.Where(t => !t.IsIncome).Sum(t => t.Amount)
                     })
                     .ToList();
 
-           return await Task.FromResult(new DailySummaryResponse { DailySummaries = { dailySummaries } });
+            foreach (DailySummary ds in dailySummaries)
+            {
+                await responseStream.WriteAsync(ds);
+            }
         }
 
         public override async Task<CategorySummaryResponse> GetCategorySummary(UserRequest request, ServerCallContext context)

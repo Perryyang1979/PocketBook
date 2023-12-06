@@ -3,16 +3,19 @@ option csharp_namespace = "GrpcShared";
 package PocketBook.AccountBook;
 
 service AccountBook {
-  rpc RegisterUser (PocketUserInfo) returns (UserResponse);
-  rpc LoginUser (UserRequest) returns (UserResponse);
-  rpc AddTransaction (PocketTransactionInfo) returns (TransactionResponse);
+  rpc RegisterUser (PocketUserInfo) returns (MessageResponse);
+  rpc LoginUser (UserRequest) returns (MessageResponse);
+  rpc AddTransaction (PocketTransactionInfo) returns (MessageResponse);
   rpc GetDailyTransations(DailyDetailTransationRequest) returns (DailyTransactionResponse);
   rpc GetDailyTransationsStream (DailyDetailTransationRequest) returns (stream PocketTransactionInfo);
-  rpc GetDailySummary (UserRequest) returns (DailySummaryResponse);
+  rpc GetDailySummaryStream (UserRequest) returns (stream DailySummary);
   rpc GetCategorySummary (UserRequest) returns (CategorySummaryResponse);
-  rpc AddCategory(CategoryInfo) returns(CategoryResponse);
-  rpc DeleteCategory(CategoryInfo) returns(CategoryResponse);
+  rpc AddCategory(CategoryInfo) returns(MessageResponse);
+  rpc DeleteCategory(CategoryInfo) returns(MessageResponse);
   rpc GetAllCategoryStream (GetCategoryRequest) returns (stream CategoryInfo);
+  rpc AddIdentification(IdentificationInfo) returns(MessageResponse);
+  rpc DeleteIdentification(IdentificationInfo) returns(MessageResponse);
+  rpc GetAllIdentificationStream (GetIdentificationRequest) returns (stream IdentificationInfo);
 }
 
 message PocketUserInfo {
@@ -27,7 +30,7 @@ message UserRequest {
   string password = 2;
 }
 
-message UserResponse {
+message MessageResponse {
   bool success = 1;
   string message = 2;
 }
@@ -45,13 +48,8 @@ message PocketTransactionInfo {
   string category = 4;
   string comments = 5 ;
   string transactionDate = 6;
+  string identification = 7;
 }
-
-message TransactionResponse {
-  bool success = 1;
-  string message = 2;
-}
-
 
 message DailyTransactionResponse {
   repeated PocketTransactionInfo dailyTransactions = 1;
@@ -82,13 +80,16 @@ message CategoryInfo{
   string detail =3;
 }
 
-
-message CategoryResponse {
-  bool success = 1;
-  string message = 2;
+message GetCategoryRequest{
 }
 
-message GetCategoryRequest{
+
+message IdentificationInfo{
+  string Description =1 ;
+}
+
+
+message GetIdentificationRequest{
 }
 
 

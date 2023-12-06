@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PocketBookClient.View.IdentifyListPage"
+               xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
+              xmlns:data="clr-namespace:PocketBookClient.Data"
+             Title="{Binding LocalizationResourceManager[AddIdentify_Page_Title], Mode=OneWay}"
+             x:DataType="viewmodel:IdentifyListViewModel" MinimumWidthRequest="300">
+    <ScrollView  >
+        <StackLayout>
+
+            <Grid ColumnDefinitions="50*,50*">
+                <Label Text="{Binding LocalizationResourceManager[AddIdentify_Page_Description], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadLabel }"/>
+              </Grid>
+
+            
+            <CollectionView Grid.Row="2"
+                    ItemsSource="{Binding IdentifyList}"
+                    SelectionMode="Single"
+                            SelectedItem="{Binding CurrentSelectedItem }"
+                        >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="data:TransactionIdentification">
+                        <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="50*,50*,20*" VerticalOptions="FillAndExpand">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="lightGray"></Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="LightSkyBlue"></Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <!--<BoxView HeightRequest="0.1"  BackgroundColor="Black" Grid.ColumnSpan="5" VerticalOptions="Start"/>-->
+                            <Label Text="{Binding IdentifyDescription}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0" TextColor="Blue"/>
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <HorizontalStackLayout>
+                <Button
+                Margin="20"
+                Command="{Binding AddIdentifyCommand}"
+                Style="{StaticResource ButtonOutline}"
+                    HorizontalOptions="Center"
+                Text="{Binding LocalizationResourceManager[AddIdentify_Title], Mode=OneWay}" 
+                    IsEnabled="{Binding AddButtonEnable}"
+                    HeightRequest="30"/>
+
+                <Button
+                Margin="20"
+                Command="{Binding DeleteIdentifyCommand}"
+                     HorizontalOptions="Center"
+                Style="{StaticResource ButtonOutline}"
+                Text="{Binding LocalizationResourceManager[AddIdentify_Page_Delete], Mode=OneWay}" 
+                     IsEnabled="{Binding DeleteButtonEnable}"
+                    HeightRequest="30"/>
+
+            </HorizontalStackLayout>
+
+
+
+            <StackLayout x:Name="AddIdentifyPanel" IsVisible="{Binding AddPanelVisible}" Margin="20,20">
+                <HorizontalStackLayout >
+                <Label Text="{Binding LocalizationResourceManager[AddIdentify_Page_Description], Mode=OneWay}" WidthRequest="120" TextColor="Blue"/>
+                <Entry
+            x:Name="Description"
+            IsSpellCheckEnabled="False"
+            Text="{Binding IdentifyDescriptionAdd}"
+            Keyboard="Text"
+                    WidthRequest="200"
+                    Margin="20,0"/>
+            </HorizontalStackLayout >
+
+          
+                <HorizontalStackLayout>
+                <Button
+                Margin="20"
+                Command="{Binding ConfirmCommand}"
+                Style="{StaticResource ButtonOutline}"
+                    HorizontalOptions="Center"
+                Text="{Binding LocalizationResourceManager[AddIdentify_Confirm], Mode=OneWay}" 
+                    IsEnabled="{Binding ConfirmButtonEnable}"
+                    HeightRequest="30"/>
+
+                <Button
+                Margin="20"
+                Command="{Binding CancelCommand}"
+                     HorizontalOptions="Center"
+                Style="{StaticResource ButtonOutline}"
+                Text="{Binding LocalizationResourceManager[Button_Cancel], Mode=OneWay}" 
+                    HeightRequest="30"/>
+
+                    </HorizontalStackLayout>
+
+            </StackLayout>
+
+            <ActivityIndicator
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            HorizontalOptions="Fill"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Color="{StaticResource Primary}"
+            VerticalOptions="Center" />
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

@@ -14,10 +14,11 @@ public class PocketTransaction
     [Required]
     [MaxLength(30)] // Adjust the length as needed
     public string Category { get; set; }
+    [Required]
+    public string Date { get; set; }
 
+    public string Identification { get; set; }
     [MaxLength(100)] // Adjust the length as needed
     public string Comments { get; set; }
-    [Required]
 
-    public string Date { get; set; }
 }

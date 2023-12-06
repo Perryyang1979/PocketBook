@@ -11,5 +11,6 @@ namespace PocketBookServer.Data
         public DbSet<PocketTransaction> PocketTransactions =>Set<PocketTransaction>();
         public DbSet<PocketUser> Users =>Set<PocketUser>();
         public DbSet<Category> Categories => Set<Category>();
+        public DbSet<Identification> Identifications => Set<Identification>();
     }
 }

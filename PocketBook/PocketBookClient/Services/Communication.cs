@@ -39,7 +39,7 @@ namespace PocketBookClient.Services
             private get { return _accountBookClient; }
         }
 
-        public async Task<UserResponse> RegisterUserAsync(PocketBookClient.Data.User user)
+        public async Task<MessageResponse> RegisterUserAsync(PocketBookClient.Data.User user)
         {
             var userRegisterRequest = new PocketUserInfo()
             {
@@ -61,7 +61,7 @@ namespace PocketBookClient.Services
             return null;
           }
 
-        public async Task<UserResponse> UserLoginAsync(string userName,string password)
+        public async Task<MessageResponse> UserLoginAsync(string userName,string password)
         {
             var userLoginRequest = new UserRequest()
             {
@@ -121,7 +121,32 @@ namespace PocketBookClient.Services
             return null;
         }
 
-        public async Task<TransactionResponse> AddTransactionAsync(UserTransaction userTransaction)
+
+        public AsyncServerStreamingCall<PocketTransactionInfo> GetDailyTransationsInCurrentMonthAsync()
+        {
+            var currentDay = DateTime.Today.Day;
+
+            var startDate = DateTime.Today.AddDays(1-currentDay);
+            var endDate = DateTime.Today.AddDays(31-currentDay);
+            var dailyDetailTransationRequest = new DailyDetailTransationRequest()
+            {
+                StartDate = startDate.ToShortDateString(),
+                EndDate = endDate.ToShortDateString(),
+            };
+
+            try
+            {
+
+                return _accountBookClient.GetDailyTransationsStream(dailyDetailTransationRequest);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
+        }
+
+        public async Task<MessageResponse> AddTransactionAsync(UserTransaction userTransaction)
         {
             var transactionRequest = new PocketTransactionInfo()
             {
@@ -133,7 +158,7 @@ namespace PocketBookClient.Services
                 Username = Settings.Current.CurrentUserName
             };
 
-            TransactionResponse response = null;
+            MessageResponse response = null;
 
             try
             {
@@ -142,13 +167,13 @@ namespace PocketBookClient.Services
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(new TransactionResponse { Success = false, Message = ex.Message });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = ex.Message });
             }
 
             return response;
         }
 
-        public async Task<CategoryResponse> AddCategoryAsync(TransactionCategory category)
+        public async Task<MessageResponse> AddCategoryAsync(TransactionCategory category)
         {
             var categoryRequest = new CategoryInfo()
             {
@@ -158,7 +183,7 @@ namespace PocketBookClient.Services
                 Detail = category.CategoryDetailedDescription
             };
 
-            CategoryResponse response = null;
+            MessageResponse response = null;
 
             try
             {
@@ -167,14 +192,14 @@ namespace PocketBookClient.Services
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(new CategoryResponse { Success = false, Message = ex.Message });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = ex.Message });
             }
 
             return response;
         }
 
 
-        public async Task<CategoryResponse> DeleteCategoryAsync(TransactionCategory category)
+        public async Task<MessageResponse> DeleteCategoryAsync(TransactionCategory category)
         {
             var categoryRequest = new CategoryInfo()
             {
@@ -184,7 +209,7 @@ namespace PocketBookClient.Services
                 Detail = category.CategoryDetailedDescription
             };
 
-            CategoryResponse response = null;
+            MessageResponse response = null;
 
             try
             {
@@ -193,7 +218,7 @@ namespace PocketBookClient.Services
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(new CategoryResponse { Success = false, Message = ex.Message });
+                return await Task.FromResult(new MessageResponse { Success = false, Message = ex.Message });
             }
 
             return response;
@@ -206,6 +231,85 @@ namespace PocketBookClient.Services
             {
 
                 return _accountBookClient.GetAllCategoryStream(new GetCategoryRequest());
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return null;
+        }
+
+        public async Task<MessageResponse> AddIdentificationAsync(TransactionIdentification identification)
+        {
+            var request = new IdentificationInfo()
+            {
+                Description = identification.IdentifyDescription,
+            };
+
+            MessageResponse response = null;
+
+            try
+            {
+
+                response = await _accountBookClient.AddIdentificationAsync(request);
+            }
+            catch (Exception ex)
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = ex.Message });
+            }
+
+            return response;
+        }
+
+
+        public async Task<MessageResponse> DeleteIdentificationAsync(TransactionIdentification identification)
+        {
+            var request = new IdentificationInfo()
+            {
+                Description = identification.IdentifyDescription,
+            };
+
+            MessageResponse response = null;
+
+            try
+            {
+
+                response = await _accountBookClient.DeleteIdentificationAsync(request);
+            }
+            catch (Exception ex)
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = ex.Message });
+            }
+
+            return response;
+        }
+
+
+        public AsyncServerStreamingCall<IdentificationInfo> GetAllIdentificationStream()
+        {
+            try
+            {
+
+                return _accountBookClient.GetAllIdentificationStream(new GetIdentificationRequest());
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return null;
+        }
+
+        public AsyncServerStreamingCall<DailySummary> GetMonthlyReport()
+        {
+            try
+            {
+
+                return _accountBookClient.GetDailySummaryStream(new UserRequest()
+                {
+                    Username = Settings.Current.CurrentUserName
+                }); 
             }
             catch (Exception ex)
             {

@@ -39,6 +39,21 @@ namespace PocketBookServer.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("PocketBookServer.Models.Identification", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Identifications");
+                });
+
             modelBuilder.Entity("PocketBookServer.Models.PocketTransaction", b =>
                 {
                     b.Property<string>("Id")
@@ -58,6 +73,10 @@ namespace PocketBookServer.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Date")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Identification")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

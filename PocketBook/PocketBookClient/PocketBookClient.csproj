@@ -74,6 +74,9 @@
 	
 
 	<ItemGroup>
+	  <Compile Update="View\IdentifyListPage.xaml.cs">
+	    <DependentUpon>IdentifyListPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\PocketOperationPage.xaml.cs">
 	    <DependentUpon>PocketOperationPage.xaml</DependentUpon>
 	  </Compile>
@@ -82,6 +85,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="View\AddTransactionPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\IdentifyListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\CategoryListPage.xaml">

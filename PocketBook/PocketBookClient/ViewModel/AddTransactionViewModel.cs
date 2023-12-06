@@ -20,10 +20,12 @@ namespace PocketBookClient.ViewModel
             CurrentMoneyChangeType = IsIncome;
         }
 
-        public  async void RefreshModel()
+        public async void RefreshModel()
         {
             GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
+            GetCurrentIdentification();
         }
+
 
         private bool requestIsSending =false;
         private async void GetCurrentCategories(bool isIncome)
@@ -59,6 +61,33 @@ namespace PocketBookClient.ViewModel
             }
         }
 
+        private bool identificationrequestIsSending = false;
+        private async void GetCurrentIdentification()
+        {
+            if (identificationrequestIsSending)
+            {
+                return;
+            }
+            using (var call = Communication.Instance.GetAllIdentificationStream())
+            {
+                requestIsSending = true;
+                CancellationToken token = new CancellationToken();
+                Identifications.Clear();
+                while (await call.ResponseStream.MoveNext(token))
+                {
+                    var responseInfo = call.ResponseStream.Current;
+
+
+                    Identifications.Add(new TransactionIdentification()
+                    {
+                            IdentifyDescription = responseInfo.Description,
+                    });
+                    
+                }
+                identificationrequestIsSending = false;
+            }
+        }
+
         [ObservableProperty]
         private ObservableCollection<TransactionCategory> categories =new ObservableCollection<TransactionCategory>();
         [ObservableProperty]
@@ -69,6 +98,12 @@ namespace PocketBookClient.ViewModel
         private int categorySelectedIndex = -1;
         [ObservableProperty]
         private string comments = string.Empty;
+
+        [ObservableProperty]
+        private ObservableCollection<TransactionIdentification> identifications = new ObservableCollection<TransactionIdentification>();
+
+        [ObservableProperty]
+        private int identificationSelectedIndex = -1;
 
         partial void OnCurrentMoneyChangeTypeChanged(string value)
         {
@@ -116,6 +151,12 @@ namespace PocketBookClient.ViewModel
         {
             {"CurrentCategoryType", CurrentMoneyChangeType}
         });
+        }
+
+        [RelayCommand]
+        async Task AddIdentifyAsync()
+        {
+            await Shell.Current.GoToAsync(nameof(IdentifyListPage));
         }
     }
 }
