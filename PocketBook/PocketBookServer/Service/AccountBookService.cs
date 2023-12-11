@@ -6,6 +6,7 @@ using PocketBookServer.Models;
 using System.Globalization;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using RSAService = PocketBookClient.Helper.RSAService;
 
 namespace PocketBookServer.Services
 {
@@ -67,8 +68,9 @@ namespace PocketBookServer.Services
                 return await Task.FromResult(new MessageResponse { Success = false, Message = "User registered Failed with empty failed." });
             }
 
-            if (!_dbContext.Users.Any(u => u.Name.Equals(request.Username) 
-            && u.Password.Equals(request.Password)))
+            // use function need emunalble first
+            if (!_dbContext.Users.AsEnumerable().Any(u => u.Name.Equals(request.Username) 
+            && RSAService.DecryptData(u.Password).Equals(RSAService.DecryptData(request.Password))))
             {
                 return await Task.FromResult(new MessageResponse { Success = false, Message = "UserName or password is wrong!" });
             }

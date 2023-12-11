@@ -9,7 +9,6 @@ public partial class LoginPageViewModel : BaseViewModel
 {
     public LoginPageViewModel()
     {
-
     }
 
     [ObservableProperty]
@@ -43,7 +42,7 @@ public partial class LoginPageViewModel : BaseViewModel
             return;
         }
 
-        var result = await Communication.Instance.UserLoginAsync(UserName.Trim(), Password);
+        var result = await Communication.Instance.UserLoginAsync(UserName.Trim(), RSAService.EncryptData(Password));
 
         if (result == null )
         {

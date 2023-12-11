@@ -12,7 +12,7 @@ namespace PocketBookServer.Models
         public string Name { get; set; }
 
         [Required]
-        [MaxLength(length: 12)] // 
+        [MaxLength(length: 256)] // 
         public string Password { get; set; }
         [Required]
         [MaxLength(50)] // Adjust the length as needed

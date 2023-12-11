@@ -1,6 +1,7 @@
 ﻿
 using PocketBookClient.Data;
 using PocketBookClient.Services;
+using PocketBookClient.Helper;
 
 namespace PocketBookClient.ViewModel;
 
@@ -65,7 +66,7 @@ public partial class RegistrationPageViewModel : BaseViewModel
         var user = new User()
         {
             Name = UserName.Trim(),
-            Password = Password,
+            Password = RSAService.EncryptData(Password),
             Email = Email,
             PhoneNumber = MobileNumber,
         };
