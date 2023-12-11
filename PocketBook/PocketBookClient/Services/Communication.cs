@@ -318,5 +318,23 @@ namespace PocketBookClient.Services
 
             return null;
         }
+
+        public AsyncServerStreamingCall<CategorySummary> GetMonthlyCategoryReport()
+        {
+            try
+            {
+
+                return _accountBookClient.GetMonthlyCategorySummaryStream(new UserRequest()
+                {
+                    Username = Settings.Current.CurrentUserName
+                });
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return null;
+        }
     }
 }

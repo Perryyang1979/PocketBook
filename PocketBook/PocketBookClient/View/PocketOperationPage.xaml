@@ -2,15 +2,17 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PocketBookClient.View.PocketOperationPage"
-             xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
+              xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
+              xmlns:local="clr-namespace:PocketBookClient.View"
               xmlns:data="clr-namespace:PocketBookClient.Data"
+             xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              Title="{Binding LocalizationResourceManager[PocketOperatint_Title], Mode=OneWay}"
              x:DataType="viewmodel:PocketOperationViewModel" MinimumWidthRequest="300">
     <ScrollView  >
         <Grid
         ColumnDefinitions="*"
         ColumnSpacing="5"
-        RowDefinitions="Auto,60,Auto,Auto,60,Auto"
+        RowDefinitions="Auto,60,Auto,60,Auto"
         RowSpacing="0">
 
             <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="2">
@@ -47,17 +49,15 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <HorizontalStackLayout Grid.Row="3"  Grid.ColumnSpan="2">
+            <Label  
+              Text="{Binding LocalizationResourceManager[PocketOperation_Month_Label], Mode=OneWay}" Margin="5,10" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small">
+            </Label>
+                <Switch x:Name="MonthReportSwitch" ThumbColor="{StaticResource Primary}" OnColor="{StaticResource Gray200}"  HeightRequest="50"  Margin="10" IsToggled="{Binding ReportSwtichToggled}"/>
+            </HorizontalStackLayout>
 
-            <StackLayout Grid.Row="3" Grid.RowSpan="3" Grid.ColumnSpan="2">
-            <VerticalStackLayout Grid.Row="3" Grid.ColumnSpan="1">
-                <Button
-                Margin="2"
-                Command="{Binding PocketMonthRecordCommand}"
-                Style="{StaticResource ButtonOutline}"
-                Text="{Binding LocalizationResourceManager[PocketOperation_Month_Label], Mode=OneWay}" HorizontalOptions="Start" />
-            </VerticalStackLayout>
-
-            <Grid ColumnDefinitions="35*,40*,25*,25*,40*" Grid.Row="4">
+            <StackLayout Grid.Row="4"  Grid.ColumnSpan="2" x:Name="MonthlyReportPanel" IsVisible="{Binding MonthlyReprotPanelVisible,Mode=TwoWay}">
+                <Grid ColumnDefinitions="35*,40*,25*,25*,40*" >
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Date], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_User], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Money], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
@@ -65,7 +65,7 @@
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Category], Mode=OneWay}" Grid.Row="1" Grid.Column="4" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
             </Grid>
 
-            <CollectionView Grid.Row="5"
+            <CollectionView 
                     ItemsSource="{Binding MonthTransactionList}"
                     SelectionMode="None"
                         >
@@ -84,20 +84,19 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-                <Grid ColumnDefinitions="35*,35*,30*" Grid.Row="4">
+                <Label  Text="{Binding LocalizationResourceManager[PocketOperation_Month_ShowReportTitle], Mode=OneWay}" Margin="0,10" HorizontalOptions="Center" TextColor="{StaticResource Primary}" FontSize="Micro"/>
+                <Grid ColumnDefinitions="30*,35*,35*" >
                     <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Date], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                     <Label Text="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Income], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                     <Label Text="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Expense], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
-                   
                 </Grid>
 
-                <CollectionView Grid.Row="3"
+                <CollectionView 
                     ItemsSource="{Binding MonthSummaryList}"
-                    SelectionMode="None"
-                        >
+                    SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="data:MonthlySummary">
-                            <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="35*,35*,30*" VerticalOptions="FillAndExpand">
+                            <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="30*,35*,35*" VerticalOptions="FillAndExpand">
                                 <!--<BoxView HeightRequest="0.1"  BackgroundColor="Black" Grid.ColumnSpan="5" VerticalOptions="Start"/>-->
                                 <Label Text="{Binding Date}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
                                 <Label Text="{Binding TotalIncome}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1"/>
@@ -107,6 +106,40 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+
+                <microcharts:ChartView x:Name="chartView"   Margin="10,10,10,10"                                                                                                       
+                                                       BackgroundColor="White"
+                                                       Chart="{Binding Chart}"
+                                                       HeightRequest="250" />
+
+
+                <HorizontalStackLayout Grid.Row="3"  Grid.ColumnSpan="2">
+                    <Label  
+                    Text="{Binding LocalizationResourceManager[PocketOperation_CategoryMonth_ShowReport], Mode=OneWay}" HeightRequest="60"
+                        Margin="5,10,0,0" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small">
+                    </Label>
+                    <Switch x:Name="MonthCategoryReportSwitch" ThumbColor="{StaticResource Primary}" OnColor="{StaticResource Gray200}"  HeightRequest="60"  Margin="10,0" IsToggled="{Binding CategoryReportSwtichToggled}"/>
+                </HorizontalStackLayout>
+                
+                <StackLayout x:Name="CategorySummaryPanel" IsVisible="{Binding MonthlyCategoryReprotPanelVisible,Mode=TwoWay}">
+
+                <Label  Text="{Binding LocalizationResourceManager[PocketOperation_CategoryMonth_ShowReportTitle], Mode=OneWay}" Margin="0,10" HorizontalOptions="Center" TextColor="{StaticResource Primary}" FontSize="Micro"/>
+
+                  <StackLayout Orientation="Vertical" Margin="10">
+
+                        <!--<local:MultiCheckBoxContentView Title ="{Binding LocalizationResourceManager[AddTranscation_Identify_lable], Mode=OneWay}"
+                        ItemsOptionSource="{Binding CurrrentIdentifications, Mode=TwoWay}" SelectedOptionItems="{Binding SelectedIdentifications,Mode=TwoWay}" MinimumWidthRequest="300"/>-->
+
+
+                        <local:MultiCheckBoxContentView Title ="{Binding LocalizationResourceManager[PocketOperation_Header_Category], Mode=OneWay}"
+                        ItemsOptionSource="{Binding CurrentCategorys, Mode=TwoWay}" SelectedOptionItems="{Binding SelectedCurrentCategorys,Mode=TwoWay}" MinimumWidthRequest="300" />
+
+                    </StackLayout>
+                    <microcharts:ChartView x:Name="categorychartView"   Margin="10,10,10,10"                                                                                                       
+                                                       BackgroundColor="White"
+                                                       Chart="{Binding CategoryChart}"
+                                                       HeightRequest="250" IsVisible="{Binding CategoryChartVisble}"/>
+                </StackLayout>
 
             </StackLayout>
             <ActivityIndicator

@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using GrpcShared;
 using Microsoft.Maui.Handlers;
+using Microcharts;
+using Microcharts.Maui;
 
 namespace PocketBookClient;
 
@@ -13,6 +15,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+            .UseMicrocharts()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

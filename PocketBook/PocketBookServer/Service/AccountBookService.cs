@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GrpcShared;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PocketBookServer.Data;
 using PocketBookServer.Models;
@@ -379,27 +380,49 @@ namespace PocketBookServer.Services
             }
         }
 
-        public override async Task<CategorySummaryResponse> GetCategorySummary(UserRequest request, ServerCallContext context)
+        public override async Task GetMonthlyCategorySummaryStream(UserRequest request, IServerStreamWriter<CategorySummary> responseStream, ServerCallContext contextServerCallContext)
         {
             // if not find user, or userName is null empty return fail message
             if (!IsUserExist(request.Username) || string.IsNullOrEmpty(request.Username))
             {
-                return await Task.FromResult(new CategorySummaryResponse());
+                await Task.FromResult(new MessageResponse());
 
             }
 
-            var transactions =await  _dbContext.PocketTransactions.Where(pt => pt.UserId == UserId(request.Username)).ToListAsync();
+            var currentYear = DateTime.Now.Year;
 
-            var categorySummaries =  transactions
-                    .GroupBy(t => t.Category)
-                    .Select(group => new CategorySummary
-                    {
-                        Category = group.Key,
-                        TotalAmount = group.Sum(t => t.Amount)
-                    })
-                    .ToList();
+            var transactions = _dbContext.PocketTransactions.ToList().Where(pt => pt.UserId == UserId(request.Username)
+            && Convert.ToDateTime(pt.Date).Year == currentYear
+           ).ToList();
 
-             return await Task.FromResult(new CategorySummaryResponse { CategorySummaries = { categorySummaries } });
+            if (!transactions.Any())
+            {
+                await Task.FromResult(new MessageResponse() { Success = false,Message="No record Is find"});
+            }
+
+            var categorySummaries = transactions
+                   .GroupBy(t => new
+                   {
+                       DateTime.Parse(t.Date, CultureInfo.InvariantCulture).Date.Year,
+                       DateTime.Parse(t.Date, CultureInfo.InvariantCulture).Date.Month,
+                       t.Identification,
+                       t.Category
+                   })
+                   .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month) // optional
+                   .Select(group => new CategorySummary
+                   {
+                       Date = $"{group.Key.Year} - {group.Key.Month}",
+                       Category=group.Key.Category,
+                       TotalIncome = group.Where(t => t.IsIncome).Sum(t => t.Amount),
+                       TotalExpense = group.Where(t => !t.IsIncome).Sum(t => t.Amount),
+                       Identification = group.Key.Identification,
+                   })
+                   .ToList();
+
+            foreach (var ds in categorySummaries)
+            {
+                await responseStream.WriteAsync(ds);
+            }
 
         }
     }

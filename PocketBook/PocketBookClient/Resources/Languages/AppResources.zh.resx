@@ -255,6 +255,12 @@
   <data name="PocketOperation_Add_Label" xml:space="preserve">
     <value>记录</value>
   </data>
+  <data name="PocketOperation_CategoryMonth_ShowReport" xml:space="preserve">
+    <value>显示月度分类报告</value>
+  </data>
+  <data name="PocketOperation_CategoryMonth_ShowReportTitle" xml:space="preserve">
+    <value>本年月度分类报告</value>
+  </data>
   <data name="PocketOperation_Header_Category" xml:space="preserve">
     <value>分类</value>
   </data>
@@ -274,7 +280,10 @@
     <value>录入</value>
   </data>
   <data name="PocketOperation_Month_Label" xml:space="preserve">
-    <value>月度更多记录</value>
+    <value>显示月度记录</value>
+  </data>
+  <data name="PocketOperation_Month_ShowReportTitle" xml:space="preserve">
+    <value>本年月度报告</value>
   </data>
   <data name="Register_Email" xml:space="preserve">
     <value>邮箱地址：</value>

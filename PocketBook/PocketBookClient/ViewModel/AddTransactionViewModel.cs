@@ -85,6 +85,10 @@ namespace PocketBookClient.ViewModel
                     
                 }
                 identificationrequestIsSending = false;
+                //if (Identifications.Any())
+                //{
+                //    IdentificationSelectedIndex = 0;
+                //}
             }
         }
 
@@ -103,7 +107,7 @@ namespace PocketBookClient.ViewModel
         private ObservableCollection<TransactionIdentification> identifications = new ObservableCollection<TransactionIdentification>();
 
         [ObservableProperty]
-        private int identificationSelectedIndex = -1;
+        public int identificationSelectedIndex = -1;
 
         partial void OnCurrentMoneyChangeTypeChanged(string value)
         {
@@ -116,12 +120,25 @@ namespace PocketBookClient.ViewModel
         [RelayCommand]
         async Task AddTransactionAsync()
         {
+            //if(IdentificationSelectedIndex<0)
+            //{
+            //    await Shell.Current.DisplayAlert("Add Record Fail ", "Identification need be specified ", "OK");
+            //    return;
+            //}
+
+            if (CategorySelectedIndex < 0)
+            {
+                await Shell.Current.DisplayAlert("Add Record Fail ", "Category need be specified ", "OK");
+                return;
+            }
+
             var transaction = new UserTransaction()
             {
                 Date = SelectedDate.ToShortDateString(),
                 Amount = Money,
                 IsIncome = CurrentMoneyChangeType.Equals(IsIncome),
                 Category = Categories[CategorySelectedIndex].CategoryDescription,
+                IdentifyDescription =IdentificationSelectedIndex>-1? Identifications[IdentificationSelectedIndex].IdentifyDescription:string.Empty,
                 Comments = Comments,
             };
 

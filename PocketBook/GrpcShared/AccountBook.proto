@@ -9,7 +9,7 @@ service AccountBook {
   rpc GetDailyTransations(DailyDetailTransationRequest) returns (DailyTransactionResponse);
   rpc GetDailyTransationsStream (DailyDetailTransationRequest) returns (stream PocketTransactionInfo);
   rpc GetDailySummaryStream (UserRequest) returns (stream DailySummary);
-  rpc GetCategorySummary (UserRequest) returns (CategorySummaryResponse);
+  rpc GetMonthlyCategorySummaryStream (UserRequest) returns (stream CategorySummary);
   rpc AddCategory(CategoryInfo) returns(MessageResponse);
   rpc DeleteCategory(CategoryInfo) returns(MessageResponse);
   rpc GetAllCategoryStream (GetCategoryRequest) returns (stream CategoryInfo);
@@ -65,13 +65,12 @@ message DailySummary {
   double totalExpense = 3;
 }
 
-message CategorySummaryResponse {
-  repeated CategorySummary categorySummaries = 1;
-}
-
 message CategorySummary {
-  string category = 1;
-  double totalAmount = 2;
+  string date = 1;
+  string category = 2;
+  double totalExpense = 3;
+  double totalIncome = 4;
+  string identification = 5;
 }
 
 message CategoryInfo{

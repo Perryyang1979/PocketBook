@@ -252,6 +252,12 @@
   <data name="PocketOperation_Add_Label" xml:space="preserve">
     <value>Add Record</value>
   </data>
+  <data name="PocketOperation_CategoryMonth_ShowReport" xml:space="preserve">
+    <value>Show Monthly Category Report</value>
+  </data>
+  <data name="PocketOperation_CategoryMonth_ShowReportTitle" xml:space="preserve">
+    <value>Monthly Category Report</value>
+  </data>
   <data name="PocketOperation_Header_Category" xml:space="preserve">
     <value>Category</value>
   </data>
@@ -271,7 +277,10 @@
     <value>Recorder</value>
   </data>
   <data name="PocketOperation_Month_Label" xml:space="preserve">
-    <value>More Record In Month</value>
+    <value>Show Record In Month</value>
+  </data>
+  <data name="PocketOperation_Month_ShowReportTitle" xml:space="preserve">
+    <value>Monthly Report</value>
   </data>
   <data name="Register_Email" xml:space="preserve">
     <value>Email:</value>
