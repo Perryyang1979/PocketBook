@@ -5,6 +5,7 @@ using PocketBookClient.Helper;
 
 namespace PocketBookClient.ViewModel;
 
+[QueryProperty(nameof(UserGroupId), "UserGroupId")]
 public partial class RegistrationPageViewModel : BaseViewModel
 {
     public RegistrationPageViewModel()
@@ -23,6 +24,9 @@ public partial class RegistrationPageViewModel : BaseViewModel
     public string email;
     [ObservableProperty]
     public string mobileNumber;
+
+    [ObservableProperty]
+    string userGroupId= string.Empty;
 
     [RelayCommand]
     public async Task SignUpAsync()
@@ -69,6 +73,7 @@ public partial class RegistrationPageViewModel : BaseViewModel
             Password = RSAService.EncryptData(Password),
             Email = Email,
             PhoneNumber = MobileNumber,
+            GroupId = UserGroupId,
         };
 
         var response = await Communication.Instance.RegisterUserAsync(user);

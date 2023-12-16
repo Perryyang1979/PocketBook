@@ -47,6 +47,7 @@ namespace PocketBookClient.Services
                 Password = user.Password,
                 PhoneNumber =user.PhoneNumber,
                 Email =user.Email,
+                GroupId = user.GroupId,
             };
 
             try
@@ -61,7 +62,7 @@ namespace PocketBookClient.Services
             return null;
           }
 
-        public async Task<MessageResponse> UserLoginAsync(string userName,string password)
+        public async Task<UserLoginResponse> UserLoginAsync(string userName,string password)
         {
             var userLoginRequest = new UserRequest()
             {
@@ -155,7 +156,7 @@ namespace PocketBookClient.Services
                 Category = userTransaction.Category,
                 Comments = userTransaction.Comments,
                 IsIncome = userTransaction.IsIncome,
-                Username = Settings.Current.CurrentUserName
+                Username = Settings.Current.CurrentUserSetting.UserName
             };
 
             MessageResponse response = null;
@@ -308,7 +309,7 @@ namespace PocketBookClient.Services
 
                 return _accountBookClient.GetDailySummaryStream(new UserRequest()
                 {
-                    Username = Settings.Current.CurrentUserName
+                    Username = Settings.Current.CurrentUserSetting.UserName
                 }); 
             }
             catch (Exception ex)
@@ -326,7 +327,7 @@ namespace PocketBookClient.Services
 
                 return _accountBookClient.GetMonthlyCategorySummaryStream(new UserRequest()
                 {
-                    Username = Settings.Current.CurrentUserName
+                    Username = Settings.Current.CurrentUserSetting.UserName
                 });
             }
             catch (Exception ex)

@@ -44,13 +44,21 @@ namespace PocketBookServer.Services
                 return await Task.FromResult(new MessageResponse { Success = false, Message = "UserName have been registered already!" });
             }
 
+            //create groupId on server if not GroupId means this is the first user to create PocketBook
+            var groupId = request.GroupId;
+            if(string.IsNullOrEmpty(groupId)) {
+                groupId = Guid.NewGuid().ToString();
+            }
+
             var pocketUser = new PocketUser()
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = request.Username,
                 Email = request.Email,
                 Password = request.Password,
-                PhoneNumber = request.PhoneNumber
+                PhoneNumber = request.PhoneNumber,
+                GroupId = groupId,
+                
             };
 
 
@@ -59,24 +67,24 @@ namespace PocketBookServer.Services
             return await Task.FromResult(new MessageResponse { Success = true, Message = "User registered successfully." });
         }
 
-        public override async Task<MessageResponse> LoginUser(UserRequest request, ServerCallContext context)
+        public override async Task<UserLoginResponse> LoginUser(UserRequest request, ServerCallContext context)
         {
             // implement User Login 
 
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
             {
-                return await Task.FromResult(new MessageResponse { Success = false, Message = "User registered Failed with empty failed." });
+                return await Task.FromResult(new UserLoginResponse { Success = false, Message = "User registered Failed with empty failed." });
             }
 
             // use function need emunalble first
-            if (!_dbContext.Users.AsEnumerable().Any(u => u.Name.Equals(request.Username) 
-            && RSAService.DecryptData(u.Password).Equals(RSAService.DecryptData(request.Password))))
+            var user = _dbContext.Users.AsEnumerable().SingleOrDefault(u => u.Name.Equals(request.Username)
+            && RSAService.DecryptData(u.Password).Equals(RSAService.DecryptData(request.Password)));
+            if (user == null)
             {
-                return await Task.FromResult(new MessageResponse { Success = false, Message = "UserName or password is wrong!" });
+                return await Task.FromResult(new UserLoginResponse { Success = false, Message = "UserName or password is wrong!" });
             }
-            
-            
-            return await Task.FromResult(new MessageResponse { Success = true, Message = "User logged in successfully." });
+
+            return await Task.FromResult(new UserLoginResponse { Success = true, Message = "User logged in successfully.",UsergroupId = user.GroupId });
         }
 
         public override async Task<MessageResponse> AddTransaction(PocketTransactionInfo request, ServerCallContext context)

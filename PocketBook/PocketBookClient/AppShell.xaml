@@ -96,11 +96,16 @@
         Route="LoginPage" />
     </FlyoutItem>
 
-    <!--<FlyoutItem Title="Select Game">
+    <FlyoutItem Title="User">
         <ShellContent
-        ContentTemplate="{DataTemplate view:GameTypePage}"
-        Route="GameTypePage" />
-    </FlyoutItem>-->
+        ContentTemplate="{DataTemplate view:UserInfoPage}"
+        Route="UserInfoPage" />
+    </FlyoutItem>
+    <FlyoutItem Title="Scanner">
+        <ShellContent
+        ContentTemplate="{DataTemplate view:ScannerPage}"
+        Route="UserInfoPage" />
+    </FlyoutItem>
 
 
 

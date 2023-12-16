@@ -67,6 +67,8 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="ZXing.Net.Maui" Version="0.4.0" />
+		<PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
 	</ItemGroup>
 	
 
@@ -81,6 +83,9 @@
 	  </Compile>
 	  <Compile Update="View\PocketOperationPage.xaml.cs">
 	    <DependentUpon>PocketOperationPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="View\ScannerPage.xaml.cs">
+	    <DependentUpon>ScannerPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 	
@@ -107,7 +112,13 @@
 	  <MauiXaml Update="View\RegistrationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\ScannerPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\SettingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\UserInfoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

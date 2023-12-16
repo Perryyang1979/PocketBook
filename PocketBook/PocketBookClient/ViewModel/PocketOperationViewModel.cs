@@ -248,6 +248,7 @@ namespace PocketBookClient.ViewModel
 
         private void LoadMonthChart()
         {
+            if(MonthSummaryList.Count == 0) { return; }
           //  if (Chart == null)
             {
                 //  Chart = new LineChart { Entries = GetEntriesFromMonthlyReport(), IsAnimated = true,AnimationDuration =  TimeSpan.FromSeconds(1.5f) };

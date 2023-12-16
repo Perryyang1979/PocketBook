@@ -28,5 +28,11 @@ public partial class Settings : ObservableObject
         }
     }
 
-    public string CurrentUserName { get; set; } 
+    public CurrentUserLoginSetting CurrentUserSetting { get; set; } 
+
+    public class CurrentUserLoginSetting
+    {
+        public string UserName { get; set; }
+        public string UserGroupId { get; set; }
+    }
 }

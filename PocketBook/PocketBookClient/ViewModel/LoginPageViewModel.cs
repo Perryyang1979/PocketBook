@@ -2,6 +2,7 @@
 using PocketBookClient.View;
 using PocketBookClient.Helper;
 using PocketBookClient.Services;
+using GrpcShared;
 
 namespace PocketBookClient.ViewModel;
 
@@ -42,9 +43,9 @@ public partial class LoginPageViewModel : BaseViewModel
             return;
         }
 
-        var result = await Communication.Instance.UserLoginAsync(UserName.Trim(), RSAService.EncryptData(Password));
+        UserLoginResponse result = await Communication.Instance.UserLoginAsync(UserName.Trim(), RSAService.EncryptData(Password));
 
-        if (result == null )
+        if (result == null)
         {
             await Shell.Current.DisplayAlert("Missing Password", "Please provide valid Password", "OK");
             IsRunning = false;
@@ -52,7 +53,7 @@ public partial class LoginPageViewModel : BaseViewModel
             return;
         }
 
-        if(!result.Success)
+        if (!result.Success)
         {
             await Shell.Current.DisplayAlert("Lgin in failed", result.Message, "OK");
             IsRunning = false;
@@ -60,8 +61,13 @@ public partial class LoginPageViewModel : BaseViewModel
         }
 
         Settings.Current.LoggedIn = true;
-        Settings.Current.CurrentUserName = UserName.Trim();
+        Settings.Current.CurrentUserSetting =
+            new Settings.CurrentUserLoginSetting()
+            {
+                UserName = UserName.Trim(),
+                UserGroupId = result.UsergroupId,
 
+            };
 
        // await Shell.Current.DisplayAlert("Lgin in OK", result.Message, "OK");
          await Shell.Current.GoToAsync($"{nameof(PocketOperationPage)}");

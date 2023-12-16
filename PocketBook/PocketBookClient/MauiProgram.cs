@@ -4,6 +4,8 @@ using GrpcShared;
 using Microsoft.Maui.Handlers;
 using Microcharts;
 using Microcharts.Maui;
+using ZXing.Net.Maui;
+using ZXing.Net.Maui.Controls;
 
 namespace PocketBookClient;
 
@@ -16,7 +18,8 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
             .UseMicrocharts()
-			.ConfigureFonts(fonts =>
+            .UseBarcodeReader()
+            .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
@@ -31,13 +34,6 @@ public static class MauiProgram
 
 
         PocketBookClient.Helper.AppHandler.RemoveBorders(); 
-
-        //builder.Services.AddScoped(services =>
-        //{
-        //    var baseUri = new Uri(baseAddress);
-        //    var channel = GrpcChannel.ForAddress(baseUri);
-        //    return new User.UserClient(channel);
-        //});
 
         builder.Services.AddScoped(services =>
         {
@@ -59,6 +55,8 @@ public static class MauiProgram
         builder.Services.AddTransient<AddTransactionViewModel>();
         builder.Services.AddTransient<CategoryListViewModel>();
         builder.Services.AddTransient<IdentifyListViewModel>();
+        builder.Services.AddTransient<UserInfoPageViewModel>();
+
 
         builder.Services.AddSingleton<LoginPage>();
         builder.Services.AddSingleton<SettingPage>();
@@ -67,6 +65,8 @@ public static class MauiProgram
         builder.Services.AddTransient<AddTransactionPage>();
         builder.Services.AddTransient<CategoryListPage>();
         builder.Services.AddTransient<IdentifyListPage>();
+        builder.Services.AddTransient<UserInfoPage>();
+        builder.Services.AddTransient<ScannerPage>();
 
         return builder.Build();
 	}

@@ -16,8 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Remove="UserPerson.cs" />
-		<Compile Remove="PocketTransactionInfo.cs"/>
+		<Compile Remove="PocketTransactionInfo.cs" />
 		<Compile Remove="PocketUserInfo.cs" />
 		<Compile Remove="IdentificationInfo.cs" />
 		<Compile Remove="CategoryInfo.cs" />
@@ -25,8 +24,7 @@
 
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
-		<Protobuf Include="User.proto"/>
-		<Protobuf Include="AccountBook.proto"/>
+		<Protobuf Include="AccountBook.proto" />
 	</ItemGroup>
 
 

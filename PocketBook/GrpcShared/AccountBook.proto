@@ -4,7 +4,7 @@ package PocketBook.AccountBook;
 
 service AccountBook {
   rpc RegisterUser (PocketUserInfo) returns (MessageResponse);
-  rpc LoginUser (UserRequest) returns (MessageResponse);
+  rpc LoginUser (UserRequest) returns (UserLoginResponse);
   rpc AddTransaction (PocketTransactionInfo) returns (MessageResponse);
   rpc GetDailyTransations(DailyDetailTransationRequest) returns (DailyTransactionResponse);
   rpc GetDailyTransationsStream (DailyDetailTransationRequest) returns (stream PocketTransactionInfo);
@@ -23,11 +23,18 @@ message PocketUserInfo {
   string password = 2;
   string email = 3;
   string phoneNumber = 4;
+  string groupId = 5;
 }
 
 message UserRequest {
   string username = 1;
   string password = 2;
+}
+
+message UserLoginResponse {
+  bool success = 1;
+  string message = 2;
+  string usergroupId = 3;
 }
 
 message MessageResponse {
