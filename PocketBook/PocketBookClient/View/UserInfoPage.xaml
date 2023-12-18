@@ -6,15 +6,22 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
              Title="{Binding LocalizationResourceManager[SettingTitle], Mode=OneWay}"
              x:DataType="viewmodel:UserInfoPageViewModel">
-    <VerticalStackLayout IsVisible="{Binding PanelVisble}">
+    <VerticalStackLayout IsVisible="{Binding PanelVisble}" Margin="20,10">
         <Label 
             Text="{Binding UserName}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+
+        <Label  Text="{Binding LocalizationResourceManager[Password_Manage_Change], Mode=OneWay}" HorizontalOptions="Center" TextColor="{StaticResource Primary}">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding  Path=ChangePasswordCommand}"/>
+            </Label.GestureRecognizers>
+        </Label>
+        
         <Label 
             Text="Scan me to Share "
             VerticalOptions="Center" 
-            HorizontalOptions="Center" FontSize="Header" />
+            HorizontalOptions="Center" FontSize="Header" Margin="20,10"/>
         <zxing:BarcodeGeneratorView Format="QrCode" Value="{Binding UserGroupId}" ForegroundColor="{StaticResource Primary}" WidthRequest="100" HeightRequest="100"/>
     </VerticalStackLayout>
 </ContentPage>

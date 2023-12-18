@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using PocketBookServer.Data;
 using PocketBookServer.Models;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using RSAService = PocketBookClient.Helper.RSAService;
 
 namespace PocketBookServer.Services
 {
-    public class AccountBookService: AccountBook.AccountBookBase
+    public class AccountBookService : AccountBook.AccountBookBase
     {
         private static readonly Dictionary<string, List<PocketTransaction>> UserTransactions = new Dictionary<string, List<PocketTransaction>>();
         private readonly AppDbContext _dbContext;
@@ -32,21 +33,26 @@ namespace PocketBookServer.Services
         {
             // use sign up logic 
 
-            if(string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
             {
                 return await Task.FromResult(new MessageResponse { Success = false, Message = "User registered Failed with empty failed." });
             }
 
             //if find same name ,will return username are exist 
 
-           if(IsUserExist(request.Username))
+            if (IsUserExist(request.Username))
             {
                 return await Task.FromResult(new MessageResponse { Success = false, Message = "UserName have been registered already!" });
             }
 
+            if (_dbContext.Users.Any(u => u.Email.Equals(request.Email)))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = "Email have been registered already!" });
+            }
+
             //create groupId on server if not GroupId means this is the first user to create PocketBook
             var groupId = request.GroupId;
-            if(string.IsNullOrEmpty(groupId)) {
+            if (string.IsNullOrEmpty(groupId)) {
                 groupId = Guid.NewGuid().ToString();
             }
 
@@ -58,7 +64,7 @@ namespace PocketBookServer.Services
                 Password = request.Password,
                 PhoneNumber = request.PhoneNumber,
                 GroupId = groupId,
-                
+
             };
 
 
@@ -84,7 +90,61 @@ namespace PocketBookServer.Services
                 return await Task.FromResult(new UserLoginResponse { Success = false, Message = "UserName or password is wrong!" });
             }
 
-            return await Task.FromResult(new UserLoginResponse { Success = true, Message = "User logged in successfully.",UsergroupId = user.GroupId });
+            return await Task.FromResult(new UserLoginResponse { Success = true, Message = "User logged in successfully.", UsergroupId = user.GroupId });
+        }
+
+        public override async Task<MessageResponse> ResetPassword(ResetPasswordRequest request, ServerCallContext context)
+        {
+
+            if (string.IsNullOrEmpty(request.Email))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = "Email is not valid." });
+            }
+
+
+            var currentUser = _dbContext.Users.SingleOrDefault(u => u.Email.Equals(request.Email));
+
+            if (currentUser == null)
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = "Email address is not registered." });
+            }
+
+            var resetPassword = Util.Utils.GetRandomPassword(8);
+
+            if (Util.Utils.SendNewPasswordEmail(currentUser.Email, resetPassword).Result == false)
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = "Password Reset failure." });
+            }
+
+            currentUser.Password = RSAService.EncryptData(resetPassword);
+
+            _dbContext.Update(currentUser);
+            await _dbContext.SaveChangesAsync();
+            return await Task.FromResult(new MessageResponse { Success = true, Message = "Password Reset successfully." });
+        }
+
+        public override async Task<MessageResponse> ChangePassword(ChangePasswordRequest request, ServerCallContext context)
+        {
+
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.OldPassword) || string.IsNullOrEmpty(request.NewPassword))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = "Username or password is wrong." });
+            }
+
+
+            var currentUser = _dbContext.Users.AsEnumerable().SingleOrDefault(u => u.Name.Equals(request.Username) &&
+            RSAService.DecryptData(u.Password).Equals(RSAService.DecryptData(request.OldPassword)));
+
+            if (currentUser == null)
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = "Username or password is wrong." });
+            }
+
+            currentUser.Password = request.NewPassword;
+
+            _dbContext.Update(currentUser);
+            await _dbContext.SaveChangesAsync();
+            return await Task.FromResult(new MessageResponse { Success = true, Message = "Password Changed successfully." });
         }
 
         public override async Task<MessageResponse> AddTransaction(PocketTransactionInfo request, ServerCallContext context)
@@ -115,7 +175,8 @@ namespace PocketBookServer.Services
                     Category = request.Category,
                     Date = request.TransactionDate,
                     Comments = request.Comments,
-                    Identification = request.Identification,    
+                    Identification = request.Identification, 
+                    UserGroupId = request.UsergroupId
             };
 
             await _dbContext.AddAsync(transaction);
@@ -135,7 +196,13 @@ namespace PocketBookServer.Services
                 endDate = temp;
             }
 
-            var transactions = await _dbContext.PocketTransactions.Where(pt => DateTime.Parse(pt.Date, CultureInfo.InvariantCulture) >=startDate && DateTime.Parse(pt.Date, CultureInfo.InvariantCulture) <= endDate).ToListAsync();
+            var userGroupId = request.UsergroupId;
+            if (string.IsNullOrEmpty(userGroupId))
+            {
+                return  await Task.FromResult(new DailyTransactionResponse());
+            }
+
+            var transactions = await _dbContext.PocketTransactions.Where(pt => pt.UserGroupId.Equals(userGroupId) && DateTime.Parse(pt.Date, CultureInfo.InvariantCulture) >=startDate && DateTime.Parse(pt.Date, CultureInfo.InvariantCulture) <= endDate).ToListAsync();
 
             if (!transactions.Any())
             {
@@ -171,7 +238,14 @@ namespace PocketBookServer.Services
                 endDate = temp;
             }
 
-            var transactions =  _dbContext.PocketTransactions.ToList().Where(pt => DateTime.Compare(DateTime.Parse(pt.Date, CultureInfo.InvariantCulture),startDate)>=0 
+            var userGroupId = request.UsergroupId;
+
+            if (string.IsNullOrEmpty(userGroupId))
+            {
+                return;
+            }
+
+            var transactions =  _dbContext.PocketTransactions.ToList().Where(pt => pt.UserGroupId.Equals(userGroupId) && DateTime.Compare(DateTime.Parse(pt.Date, CultureInfo.InvariantCulture),startDate)>=0 
             && DateTime.Compare(DateTime.Parse(pt.Date, CultureInfo.InvariantCulture),endDate)<=0).ToList();
 
             if (transactions.Any())
@@ -212,12 +286,19 @@ namespace PocketBookServer.Services
                 return await Task.FromResult(new MessageResponse { Success = false, Message = $"Category {request.Description} have been added!" });
             }
 
+            var userGroupId = request.UsergroupId;
+            if (string.IsNullOrEmpty(userGroupId))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Invalid User." });
+            }
+
             var category = new Category
             {
                 Id = Guid.NewGuid().ToString(),
                 IsIncome = request.IsIncome,
                 Description = request.Description,
-                DetailedInfo = request.Detail
+                DetailedInfo = request.Detail,
+                UserGroupId = request.UsergroupId
             };
 
             await _dbContext.AddAsync(category);
@@ -249,8 +330,12 @@ namespace PocketBookServer.Services
 
         public override async Task GetAllCategoryStream(GetCategoryRequest request, IServerStreamWriter<CategoryInfo> responseStream, ServerCallContext context)
         {
-
-            var categories =  _dbContext.Categories;
+            var userGroupId = request.UsergroupId;
+            if (string.IsNullOrEmpty(userGroupId))
+            {
+                return ;
+            }
+            var categories =  _dbContext.Categories.Where(c=>c.UserGroupId.Equals(userGroupId));
 
             if (categories.Any())
             {
@@ -290,10 +375,17 @@ namespace PocketBookServer.Services
                 return await Task.FromResult(new MessageResponse { Success = false, Message = $"Identification {request.Description} have been added!" });
             }
 
+            var userGroupId = request.UsergroupId;
+            if (string.IsNullOrEmpty(userGroupId))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Invalid User." });
+            }
+
             var identify = new Identification
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = request.Description,
+                UserGroupId = userGroupId
             };
 
             await _dbContext.AddAsync(identify);
@@ -325,8 +417,13 @@ namespace PocketBookServer.Services
 
         public override async Task GetAllIdentificationStream(GetIdentificationRequest request, IServerStreamWriter<IdentificationInfo> responseStream, ServerCallContext context)
         {
+            var userGroupId = request.UsergroupId;
+            if (string.IsNullOrEmpty(userGroupId))
+            {
+                return;
+            }
 
-            var identifies = _dbContext.Identifications;
+            var identifies = _dbContext.Identifications.Where(c => c.UserGroupId.Equals(userGroupId));
 
             if (identifies.Any())
             {
@@ -358,9 +455,17 @@ namespace PocketBookServer.Services
 
             }
 
+            var user =  _dbContext.Users.SingleOrDefault(u => u.Name.Equals(request.Username));
+
+            if(user == null)
+            {
+                await Task.FromResult(new DailySummaryResponse());
+            }
+
+
             var currentYear = DateTime.Now.Year;
 
-            var transactions =  _dbContext.PocketTransactions.ToList().Where(pt=>pt.UserId ==UserId(request.Username) 
+            var transactions = _dbContext.PocketTransactions.ToList().Where(pt => pt.UserGroupId.Equals(user.GroupId)
             && Convert.ToDateTime(pt.Date).Year == currentYear
            ).ToList();
 
@@ -399,9 +504,16 @@ namespace PocketBookServer.Services
 
             }
 
+            var user = _dbContext.Users.SingleOrDefault(u => u.Name.Equals(request.Username));
+
+            if (user == null)
+            {
+                await Task.FromResult(new DailySummaryResponse());
+            }
+
             var currentYear = DateTime.Now.Year;
 
-            var transactions = _dbContext.PocketTransactions.ToList().Where(pt => pt.UserId == UserId(request.Username)
+            var transactions = _dbContext.PocketTransactions.ToList().Where(pt => pt.UserGroupId.Equals(user.GroupId)
             && Convert.ToDateTime(pt.Date).Year == currentYear
            ).ToList();
 

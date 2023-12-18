@@ -80,70 +80,86 @@ namespace PocketBookClient.ViewModel
 
             var startDate = endDate.AddDays(0-RecentlyDaysDefine);
 
-            using(var call = Communication.Instance.GetDailyTransationsStreamAsync(startDate, endDate))
+            try
             {
-                var token = new CancellationToken();
-                while(await call.ResponseStream.MoveNext(token))
+                using (var call = Communication.Instance.GetDailyTransationsStreamAsync(startDate, endDate))
                 {
-                    var responseInfo = call.ResponseStream.Current;
-                    TransactionList.Add(new UserTransaction()
+                    var token = new CancellationToken();
+                    while (await call.ResponseStream.MoveNext(token))
                     {
-                        Date = responseInfo.TransactionDate,
-                        Category = responseInfo.Category,
-                        IsIncome = responseInfo.IsIncome,
-                        Comments = responseInfo.Comments,
-                        Amount = responseInfo.Amount,
-                        UserName = responseInfo.Username,
-                        IdentifyDescription = responseInfo.Identification
-                    });
+                        var responseInfo = call.ResponseStream.Current;
+                        TransactionList.Add(new UserTransaction()
+                        {
+                            Date = responseInfo.TransactionDate,
+                            Category = responseInfo.Category,
+                            IsIncome = responseInfo.IsIncome,
+                            Comments = responseInfo.Comments,
+                            Amount = responseInfo.Amount,
+                            UserName = responseInfo.Username,
+                            IdentifyDescription = responseInfo.Identification
+                        });
+                    }
                 }
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
         }
 
         private async void GetCurrentMonthRecord()
         {
             MonthTransactionList.Clear();
-
-            using (var call = Communication.Instance.GetDailyTransationsInCurrentMonthAsync())
+            try
             {
-                var token = new CancellationToken();
-                while (await call.ResponseStream.MoveNext(token))
+                using (var call = Communication.Instance.GetDailyTransationsInCurrentMonthAsync())
                 {
-                    var responseInfo = call.ResponseStream.Current;
-                    MonthTransactionList.Add(new UserTransaction()
+                    var token = new CancellationToken();
+                    while (await call.ResponseStream.MoveNext(token))
                     {
-                        Date = responseInfo.TransactionDate,
-                        Category = responseInfo.Category,
-                        IsIncome = responseInfo.IsIncome,
-                        Comments = responseInfo.Comments,
-                        Amount = responseInfo.Amount,
-                        UserName = responseInfo.Username,
-                        IdentifyDescription = responseInfo.Identification
-                    });
+                        var responseInfo = call.ResponseStream.Current;
+                        MonthTransactionList.Add(new UserTransaction()
+                        {
+                            Date = responseInfo.TransactionDate,
+                            Category = responseInfo.Category,
+                            IsIncome = responseInfo.IsIncome,
+                            Comments = responseInfo.Comments,
+                            Amount = responseInfo.Amount,
+                            UserName = responseInfo.Username,
+                            IdentifyDescription = responseInfo.Identification
+                        });
+                    }
                 }
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex);
             }
         }
 
         private async void GetMonthSummary()
         {
             MonthSummaryList.Clear();
-
-            using (var call = Communication.Instance.GetMonthlyReport())
+            try
             {
-                var token = new CancellationToken();
-                while (await call.ResponseStream.MoveNext(token))
+                using (var call = Communication.Instance.GetMonthlyReport())
                 {
-                    var responseInfo = call.ResponseStream.Current;
-                    MonthSummaryList.Add(new MonthlySummary()
+                    var token = new CancellationToken();
+                    while (await call.ResponseStream.MoveNext(token))
                     {
-                        Date = responseInfo.Date,
-                        TotalIncome = responseInfo.TotalIncome,
-                        TotalExpense = responseInfo.TotalExpense
-                      
-                    });
+                        var responseInfo = call.ResponseStream.Current;
+                        MonthSummaryList.Add(new MonthlySummary()
+                        {
+                            Date = responseInfo.Date,
+                            TotalIncome = responseInfo.TotalIncome,
+                            TotalExpense = responseInfo.TotalExpense
+
+                        });
+                    }
                 }
+                LoadMonthChart();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex);
             }
-            LoadMonthChart();
         }
 
         private async void GetMonthCategorySummary()

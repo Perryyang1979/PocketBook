@@ -9,6 +9,8 @@ namespace PocketBookServer.Models
 
         [Required]
         [MaxLength(length: 30)]
-        public string Name { get; set; }
+        public string Name { get; set; }=string.Empty;
+        [Required]
+        public string UserGroupId { get; set; } = string.Empty;
     }
 }

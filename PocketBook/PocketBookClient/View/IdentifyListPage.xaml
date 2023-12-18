@@ -45,7 +45,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <HorizontalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="Center">
                 <Button
                 Margin="20"
                 Command="{Binding AddIdentifyCommand}"
@@ -53,7 +53,7 @@
                     HorizontalOptions="Center"
                 Text="{Binding LocalizationResourceManager[AddIdentify_Title], Mode=OneWay}" 
                     IsEnabled="{Binding AddButtonEnable}"
-                    HeightRequest="30"/>
+                    HeightRequest="45"/>
 
                 <Button
                 Margin="20"
@@ -62,7 +62,7 @@
                 Style="{StaticResource ButtonOutline}"
                 Text="{Binding LocalizationResourceManager[AddIdentify_Page_Delete], Mode=OneWay}" 
                      IsEnabled="{Binding DeleteButtonEnable}"
-                    HeightRequest="30"/>
+                    HeightRequest="45"/>
 
             </HorizontalStackLayout>
 
@@ -70,18 +70,18 @@
 
             <StackLayout x:Name="AddIdentifyPanel" IsVisible="{Binding AddPanelVisible}" Margin="20,20">
                 <HorizontalStackLayout >
-                <Label Text="{Binding LocalizationResourceManager[AddIdentify_Page_Description], Mode=OneWay}" WidthRequest="120" TextColor="Blue"/>
+                <Label Text="{Binding LocalizationResourceManager[AddIdentify_Page_Description], Mode=OneWay}" WidthRequest="120" TextColor="{StaticResource Primary}" VerticalTextAlignment="End"/>
                 <Entry
             x:Name="Description"
             IsSpellCheckEnabled="False"
             Text="{Binding IdentifyDescriptionAdd}"
             Keyboard="Text"
-                    WidthRequest="200"
+                    WidthRequest="150"
                     Margin="20,0"/>
             </HorizontalStackLayout >
 
           
-                <HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="Center">
                 <Button
                 Margin="20"
                 Command="{Binding ConfirmCommand}"
@@ -89,7 +89,7 @@
                     HorizontalOptions="Center"
                 Text="{Binding LocalizationResourceManager[AddIdentify_Confirm], Mode=OneWay}" 
                     IsEnabled="{Binding ConfirmButtonEnable}"
-                    HeightRequest="30"/>
+                    HeightRequest="45"/>
 
                 <Button
                 Margin="20"
@@ -97,7 +97,7 @@
                      HorizontalOptions="Center"
                 Style="{StaticResource ButtonOutline}"
                 Text="{Binding LocalizationResourceManager[Button_Cancel], Mode=OneWay}" 
-                    HeightRequest="30"/>
+                    HeightRequest="45"/>
 
                     </HorizontalStackLayout>
 

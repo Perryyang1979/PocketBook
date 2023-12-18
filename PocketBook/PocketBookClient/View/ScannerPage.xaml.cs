@@ -26,4 +26,13 @@ public partial class ScannerPage : ContentPage
             });
         }
     }
+
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        barcodereader.IsDetecting = true;
+
+    }
 }

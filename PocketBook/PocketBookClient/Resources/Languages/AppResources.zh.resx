@@ -189,6 +189,9 @@
   <data name="Button_Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
+  <data name="Forgot_Password" xml:space="preserve">
+    <value>忘记密码？</value>
+  </data>
   <data name="GameTypeTitle" xml:space="preserve">
     <value>数学学习</value>
   </data>
@@ -235,7 +238,7 @@
     <value>登录</value>
   </data>
   <data name="LoginPageTitle" xml:space="preserve">
-    <value>欢迎来到杨老师的天地</value>
+    <value>用心记录，成就美满家庭</value>
   </data>
   <data name="Mistake_Correct" xml:space="preserve">
     <value>更正</value>
@@ -248,6 +251,42 @@
   </data>
   <data name="Password_Hint" xml:space="preserve">
     <value>请输入你的密码</value>
+  </data>
+  <data name="Password_Manage" xml:space="preserve">
+    <value>密码管理</value>
+  </data>
+  <data name="Password_Manage_Change" xml:space="preserve">
+    <value>更改密码</value>
+  </data>
+  <data name="Password_Manage_Change_ButtonText" xml:space="preserve">
+    <value>更改</value>
+  </data>
+  <data name="Password_Manage_Change_Confirm_NOK" xml:space="preserve">
+    <value>更改密码失败</value>
+  </data>
+  <data name="Password_Manage_Change_Confirm_OK" xml:space="preserve">
+    <value>密码更改成功，可以使用新密码进行登录。</value>
+  </data>
+  <data name="Password_Manage_Change_new" xml:space="preserve">
+    <value>新密码</value>
+  </data>
+  <data name="Password_Manage_Change_new_repeat" xml:space="preserve">
+    <value>重复新密码</value>
+  </data>
+  <data name="Password_Manage_Change_Old" xml:space="preserve">
+    <value>旧密码</value>
+  </data>
+  <data name="Password_Manage_Reset" xml:space="preserve">
+    <value>重置密码</value>
+  </data>
+  <data name="Password_Manage_Reset_ButtonText" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="Password_Manage_Reset_Confirm_NOK" xml:space="preserve">
+    <value>密码重置失败，请再试一次</value>
+  </data>
+  <data name="Password_Manage_Reset_Confirm_OK" xml:space="preserve">
+    <value>密码重置成功，请查看您的邮件获取重置密码</value>
   </data>
   <data name="PocketOperatint_Title" xml:space="preserve">
     <value>记账</value>
@@ -290,6 +329,12 @@
   </data>
   <data name="Register_Mobile" xml:space="preserve">
     <value>手机号码：</value>
+  </data>
+  <data name="Register_RepeatEmail" xml:space="preserve">
+    <value>重复邮件：</value>
+  </data>
+  <data name="Register_RepeatEmail_hint" xml:space="preserve">
+    <value>请确保邮件正确，以用来重置密码。</value>
   </data>
   <data name="RepeatPassword" xml:space="preserve">
     <value>重复密码：</value>

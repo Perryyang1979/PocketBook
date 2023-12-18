@@ -1,12 +1,7 @@
 ﻿using Grpc.Core;
 using GrpcShared;
 using PocketBookClient.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
+using PocketBookClient.Helper;
 
 namespace PocketBookClient.Services
 {
@@ -44,7 +39,8 @@ namespace PocketBookClient.Services
             var userRegisterRequest = new PocketUserInfo()
             {
                 Username = user.Name,
-                Password = user.Password,
+                Password = RSAService.EncryptData(user.Password),
+              
                 PhoneNumber =user.PhoneNumber,
                 Email =user.Email,
                 GroupId = user.GroupId,
@@ -67,7 +63,7 @@ namespace PocketBookClient.Services
             var userLoginRequest = new UserRequest()
             {
                 Username = userName,
-                Password = password,
+                Password = RSAService.EncryptData(password)
             };
 
             try
@@ -79,6 +75,45 @@ namespace PocketBookClient.Services
             {
 
             }
+            return null;
+        }
+
+        public async Task<MessageResponse> ResetPasswordAsync(string email)
+        {
+
+            try
+            {
+
+                return await _accountBookClient.ResetPasswordAsync(new ResetPasswordRequest()
+                {
+                    Email = email
+                }); ;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return null;
+        }
+        public async Task<MessageResponse> ChangePasswordAsync(string userName,string oldPassword,string newPassword)
+        {
+
+            try
+            {
+
+                return await _accountBookClient.ChangePasswordAsync(new ChangePasswordRequest()
+                {
+                   Username = userName,
+                   OldPassword = RSAService.EncryptData(oldPassword),
+                   NewPassword = RSAService.EncryptData(newPassword),
+                }); ;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
             return null;
         }
 
@@ -108,6 +143,7 @@ namespace PocketBookClient.Services
             {
                 StartDate = startDate.ToShortDateString(),
                 EndDate = endDate.ToShortDateString(),
+                UsergroupId = Settings.Current.CurrentUserSetting.UserGroupId
             };
 
             try
@@ -133,6 +169,7 @@ namespace PocketBookClient.Services
             {
                 StartDate = startDate.ToShortDateString(),
                 EndDate = endDate.ToShortDateString(),
+                UsergroupId = Settings.Current.CurrentUserSetting.UserGroupId
             };
 
             try
@@ -156,7 +193,8 @@ namespace PocketBookClient.Services
                 Category = userTransaction.Category,
                 Comments = userTransaction.Comments,
                 IsIncome = userTransaction.IsIncome,
-                Username = Settings.Current.CurrentUserSetting.UserName
+                Username = Settings.Current.CurrentUserSetting.UserName,
+                UsergroupId = Settings.Current.CurrentUserSetting.UserGroupId,
             };
 
             MessageResponse response = null;
@@ -181,7 +219,8 @@ namespace PocketBookClient.Services
 
                 IsIncome = category.IsIncome,
                 Description = category.CategoryDescription,
-                Detail = category.CategoryDetailedDescription
+                Detail = category.CategoryDetailedDescription,
+                UsergroupId = Settings.Current.CurrentUserSetting.UserGroupId
             };
 
             MessageResponse response = null;
@@ -231,7 +270,7 @@ namespace PocketBookClient.Services
             try
             {
 
-                return _accountBookClient.GetAllCategoryStream(new GetCategoryRequest());
+                return _accountBookClient.GetAllCategoryStream(new GetCategoryRequest() { UsergroupId = Settings.Current.CurrentUserSetting.UserGroupId });
             }
             catch (Exception ex)
             {
@@ -246,6 +285,7 @@ namespace PocketBookClient.Services
             var request = new IdentificationInfo()
             {
                 Description = identification.IdentifyDescription,
+                UsergroupId = Settings.Current.CurrentUserSetting.UserGroupId
             };
 
             MessageResponse response = null;
@@ -292,7 +332,7 @@ namespace PocketBookClient.Services
             try
             {
 
-                return _accountBookClient.GetAllIdentificationStream(new GetIdentificationRequest());
+                return _accountBookClient.GetAllIdentificationStream(new GetIdentificationRequest(){ UsergroupId = Settings.Current.CurrentUserSetting.UserGroupId });
             }
             catch (Exception ex)
             {

@@ -23,6 +23,8 @@ public partial class RegistrationPageViewModel : BaseViewModel
     [ObservableProperty]
     public string email;
     [ObservableProperty]
+    public string repeatEmail;
+    [ObservableProperty]
     public string mobileNumber;
 
     [ObservableProperty]
@@ -60,6 +62,13 @@ public partial class RegistrationPageViewModel : BaseViewModel
             return;
         }
 
+        if (string.IsNullOrEmpty(RepeatEmail))
+        {
+            await Shell.Current.DisplayAlert("Missing Email Address", "Please provide valid Email Address", "OK");
+            IsRunning = false;
+            return;
+        }
+
         if (string.IsNullOrEmpty(MobileNumber))
         {
             await Shell.Current.DisplayAlert("Missing MobileNumber", "Please provide valid Mobile", "OK");
@@ -67,10 +76,17 @@ public partial class RegistrationPageViewModel : BaseViewModel
             return;
         }
 
+        if (!RepeatEmail.Equals(Email))
+        {
+            await Shell.Current.DisplayAlert("Missing Email Match", "Please make sure Email Address are same", "OK");
+            IsRunning = false;
+            return;
+        }
+
         var user = new User()
         {
             Name = UserName.Trim(),
-            Password = RSAService.EncryptData(Password),
+            Password = Password,
             Email = Email,
             PhoneNumber = MobileNumber,
             GroupId = UserGroupId,

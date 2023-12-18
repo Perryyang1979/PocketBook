@@ -186,6 +186,9 @@
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Forgot_Password" xml:space="preserve">
+    <value>Forgot Password ?</value>
+  </data>
   <data name="GameTypeTitle" xml:space="preserve">
     <value>Math Study</value>
   </data>
@@ -232,7 +235,7 @@
     <value>Login</value>
   </data>
   <data name="LoginPageTitle" xml:space="preserve">
-    <value>Welcome To Mr Yang Space</value>
+    <value>Record with heart,Happy In Family</value>
   </data>
   <data name="Mistake_Correct" xml:space="preserve">
     <value>Correct</value>
@@ -245,6 +248,42 @@
   </data>
   <data name="Password_Hint" xml:space="preserve">
     <value>Enter your Password</value>
+  </data>
+  <data name="Password_Manage" xml:space="preserve">
+    <value>Password Manage</value>
+  </data>
+  <data name="Password_Manage_Change" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="Password_Manage_Change_ButtonText" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="Password_Manage_Change_Confirm_NOK" xml:space="preserve">
+    <value>Change Password failure.</value>
+  </data>
+  <data name="Password_Manage_Change_Confirm_OK" xml:space="preserve">
+    <value>Change Password Successfully,you can login using your new password.</value>
+  </data>
+  <data name="Password_Manage_Change_new" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="Password_Manage_Change_new_repeat" xml:space="preserve">
+    <value>Repeat New Password</value>
+  </data>
+  <data name="Password_Manage_Change_Old" xml:space="preserve">
+    <value>Old Password</value>
+  </data>
+  <data name="Password_Manage_Reset" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+  <data name="Password_Manage_Reset_ButtonText" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Password_Manage_Reset_Confirm_NOK" xml:space="preserve">
+    <value>Password Reset Fail,Please retry it.</value>
+  </data>
+  <data name="Password_Manage_Reset_Confirm_OK" xml:space="preserve">
+    <value>Password Reset Successfully,Please check your email to get the new password.</value>
   </data>
   <data name="PocketOperatint_Title" xml:space="preserve">
     <value>PocketRecord</value>
@@ -287,6 +326,12 @@
   </data>
   <data name="Register_Mobile" xml:space="preserve">
     <value>Mobile:</value>
+  </data>
+  <data name="Register_RepeatEmail" xml:space="preserve">
+    <value>Repeat Email:</value>
+  </data>
+  <data name="Register_RepeatEmail_hint" xml:space="preserve">
+    <value>Make sure the email address is right to reset the password</value>
   </data>
   <data name="RepeatPassword" xml:space="preserve">
     <value>Repeat Password:</value>

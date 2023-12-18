@@ -43,7 +43,7 @@ public partial class LoginPageViewModel : BaseViewModel
             return;
         }
 
-        UserLoginResponse result = await Communication.Instance.UserLoginAsync(UserName.Trim(), RSAService.EncryptData(Password));
+        UserLoginResponse result = await Communication.Instance.UserLoginAsync(UserName.Trim(), Password);
 
         if (result == null)
         {
@@ -77,5 +77,19 @@ public partial class LoginPageViewModel : BaseViewModel
     public async Task RegisterAsync()
     {
         await Shell.Current.GoToAsync($"{nameof(RegistrationPage)}");
+    }
+
+    [RelayCommand]
+    public async Task ForgotPasswordAsync()
+    {
+        await Shell.Current.GoToAsync(nameof(PasswordManagePage), true, new Dictionary<string, object>
+        {
+            {"PasswordOperation", 0}
+        });
+    }
+
+    public async Task GotoPocketOperation()
+    {
+        await Shell.Current.GoToAsync($"{nameof(PocketOperationPage)}");
     }
 }

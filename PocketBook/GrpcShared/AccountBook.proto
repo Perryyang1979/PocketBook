@@ -16,6 +16,8 @@ service AccountBook {
   rpc AddIdentification(IdentificationInfo) returns(MessageResponse);
   rpc DeleteIdentification(IdentificationInfo) returns(MessageResponse);
   rpc GetAllIdentificationStream (GetIdentificationRequest) returns (stream IdentificationInfo);
+  rpc ResetPassword (ResetPasswordRequest) returns (MessageResponse);
+  rpc ChangePassword (ChangePasswordRequest) returns (MessageResponse);
 }
 
 message PocketUserInfo {
@@ -46,6 +48,7 @@ message DailyDetailTransationRequest
 {
 	string startDate = 1;
 	string endDate = 2;
+	string usergroupId =3;
 }
 
 message PocketTransactionInfo {
@@ -56,6 +59,7 @@ message PocketTransactionInfo {
   string comments = 5 ;
   string transactionDate = 6;
   string identification = 7;
+  string usergroupId =8;
 }
 
 message DailyTransactionResponse {
@@ -84,18 +88,32 @@ message CategoryInfo{
   bool isIncome = 1;
   string Description =2 ;
   string detail =3;
+  string usergroupId =4;
 }
 
 message GetCategoryRequest{
+	string usergroupId =1;
 }
 
 
 message IdentificationInfo{
   string Description =1 ;
+  string usergroupId =2;
 }
 
 
-message GetIdentificationRequest{
+message GetIdentificationRequest
+{
+	string usergroupId =2;
 }
 
+message ResetPasswordRequest{
+	string email = 1;
+}
+
+message ChangePasswordRequest{
+	string username = 1;
+	string oldPassword = 2;
+	string newPassword = 3;
+}
 

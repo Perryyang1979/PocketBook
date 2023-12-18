@@ -40,6 +40,15 @@
             Text="{Binding Email}"
             Keyboard="Email"/>
 
+        <Label Text="{Binding LocalizationResourceManager[Register_RepeatEmail], Mode=OneWay}"/>
+        <Entry
+            x:Name="RepeatEmailAdress"
+            IsSpellCheckEnabled="False"
+            Text="{Binding RepeatEmail}"
+            Keyboard="Email"
+            Placeholder="{Binding  LocalizationResourceManager[Register_RepeatEmail_hint] }"
+            />
+
         <Label Text="{Binding LocalizationResourceManager[Register_Mobile], Mode=OneWay}"/>
         <Entry
             x:Name="MobileNumber"

@@ -67,7 +67,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <HorizontalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="Center">
                 <Button
                 Margin="20"
                 Command="{Binding AddCategoryCommand}"
@@ -75,7 +75,7 @@
                     HorizontalOptions="Center"
                 Text="{Binding LocalizationResourceManager[AddCategory_Title], Mode=OneWay}" 
                     IsEnabled="{Binding AddButtonEnable}"
-                    HeightRequest="30"/>
+                    HeightRequest="45"/>
 
                 <Button
                 Margin="20"
@@ -84,7 +84,7 @@
                 Style="{StaticResource ButtonOutline}"
                 Text="{Binding LocalizationResourceManager[AddCategory_Page_Delete], Mode=OneWay}" 
                      IsEnabled="{Binding DeleteButtonEnable}"
-                    HeightRequest="30"/>
+                    HeightRequest="45"/>
 
             </HorizontalStackLayout>
 
@@ -92,29 +92,29 @@
 
             <StackLayout x:Name="AddCategoryPanel" IsVisible="{Binding AddCategoryPanelVisible}" Margin="20,20">
                 <HorizontalStackLayout >
-                <Label Text="{Binding LocalizationResourceManager[AddCategory_Page_Description], Mode=OneWay}" WidthRequest="120" TextColor="Blue"/>
+                <Label Text="{Binding LocalizationResourceManager[AddCategory_Page_Description], Mode=OneWay}" WidthRequest="100" TextColor="{StaticResource Primary}" HeightRequest="30" VerticalTextAlignment="End"/>
                 <Entry
             x:Name="Description"
             IsSpellCheckEnabled="False"
             Text="{Binding CategoryDescriptionAdd}"
             Keyboard="Text"
-                    WidthRequest="200"
+                    WidthRequest="150"
                     Margin="20,0"/>
             </HorizontalStackLayout >
 
             <HorizontalStackLayout >
-                    <Label Text="{Binding LocalizationResourceManager[AddCategory_Page_Description_Detail], Mode=OneWay}" WidthRequest="120"  TextColor="Blue"/>
+                    <Label Text="{Binding LocalizationResourceManager[AddCategory_Page_Description_Detail], Mode=OneWay}" WidthRequest="100"  VerticalTextAlignment="End" HeightRequest="30" TextColor="{StaticResource Primary}"/>
                 <Entry
             x:Name="Detail"
             IsPassword="False"
             Text="{Binding CategoryDetailAdd}"
             Keyboard ="Text"
                      Margin="20,0"
-                    WidthRequest="200"
+                    WidthRequest="150"
            />
             </HorizontalStackLayout>
 
-                <HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="Center">
                 <Button
                 Margin="20"
                 Command="{Binding ConfirmCommand}"
@@ -122,7 +122,7 @@
                     HorizontalOptions="Center"
                 Text="{Binding LocalizationResourceManager[AddCategory_Confirm], Mode=OneWay}" 
                     IsEnabled="{Binding ConfirmButtonEnable}"
-                    HeightRequest="30"/>
+                    HeightRequest="45"/>
 
                 <Button
                 Margin="20"
@@ -130,7 +130,7 @@
                      HorizontalOptions="Center"
                 Style="{StaticResource ButtonOutline}"
                 Text="{Binding LocalizationResourceManager[Button_Cancel], Mode=OneWay}" 
-                    HeightRequest="30"/>
+                    HeightRequest="45"/>
 
                     </HorizontalStackLayout>
 

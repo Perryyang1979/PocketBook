@@ -17,7 +17,7 @@ public partial class App : Application
         Communication.Instance.AccountBookClient = accountBookClient;
         Settings.Current.LoggedIn = false;
         MainPage = new AppShell();
-        CheckLoginStatusAsync();
+      //  CheckLoginStatusAsync();
     }
 
     public LocalizationResourceManager LocalizationResourceManager
@@ -43,7 +43,7 @@ public partial class App : Application
     }
     public static System.Threading.Tasks.Task GoToHome()
     {
-        return Shell.Current.GoToAsync($"{nameof(LoginPage)}");
+        return Shell.Current.GoToAsync($"{nameof(AddTransactionPage)}");
     }
 
     protected override void OnStart()

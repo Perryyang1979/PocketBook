@@ -7,7 +7,7 @@
 
     <VerticalStackLayout Margin="10" Spacing="10" >
         <VerticalStackLayout Padding="20" CompressedLayout.IsHeadless="True">
-            <Image x:Name="logo" HeightRequest="200" MinimumWidthRequest="300" WidthRequest="600" Source="math_title.jpg" />
+            <Image x:Name="logo" HeightRequest="200" MinimumWidthRequest="300" WidthRequest="600" Source="family_head.jpg" />
             <Label Text="{Binding LocalizationResourceManager[LoginPageTitle], Mode=OneWay}" TextColor="{StaticResource Primary}" FontSize="25"/>
         </VerticalStackLayout>
 
@@ -35,11 +35,19 @@
                 HeightRequest="60"
                 CornerRadius="20"
                 Style="{StaticResource LoginButton}"/>
-            <Label  Text="{Binding LocalizationResourceManager[SignIn], Mode=OneWay}" HorizontalOptions="Center">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding  Path= RegisterCommand}"/>
-                </Label.GestureRecognizers>
-            </Label>
+            <HorizontalStackLayout HorizontalOptions="Center">
+                <Label  Text="{Binding LocalizationResourceManager[Forgot_Password], Mode=OneWay}" HorizontalOptions="Center" TextColor="{StaticResource Gray300}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding  Path=ForgotPasswordCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                
+                <Label  Text="{Binding LocalizationResourceManager[SignIn], Mode=OneWay}" HorizontalOptions="Center" Margin="50,0,0,0" TextColor="{StaticResource Primary}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding  Path= RegisterCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
         </VerticalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

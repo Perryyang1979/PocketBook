@@ -23,7 +23,7 @@
                 Text="{Binding LocalizationResourceManager[PocketOperation_Add_Label], Mode=OneWay}" />
             </VerticalStackLayout>
 
-            <Grid ColumnDefinitions="35*,40*,25*,25*,40*" Grid.Row="1">
+            <Grid ColumnDefinitions="45*,30*,25*,25*,40*" Grid.Row="1">
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Date], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_User], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Money], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
@@ -37,7 +37,7 @@
                         >
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="data:UserTransaction">
-                        <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="35*,40*,25*,25*,40*" VerticalOptions="FillAndExpand">
+                        <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="45*,30*,25*,25*,40*" VerticalOptions="FillAndExpand">
                             <!--<BoxView HeightRequest="0.1"  BackgroundColor="Black" Grid.ColumnSpan="5" VerticalOptions="Start"/>-->
                             <Label Text="{Binding Date}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
                             <Label Text="{Binding UserName}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1"/>
@@ -53,11 +53,11 @@
             <Label  
               Text="{Binding LocalizationResourceManager[PocketOperation_Month_Label], Mode=OneWay}" Margin="5,10" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small">
             </Label>
-                <Switch x:Name="MonthReportSwitch" ThumbColor="{StaticResource Primary}" OnColor="{StaticResource Gray200}"  HeightRequest="50"  Margin="10" IsToggled="{Binding ReportSwtichToggled}"/>
+                <Switch x:Name="MonthReportSwitch" ThumbColor="{StaticResource Primary}" OnColor="{StaticResource Gray200}"  HeightRequest="60"  Margin="10,-20,0,0" IsToggled="{Binding ReportSwtichToggled}"/>
             </HorizontalStackLayout>
 
             <StackLayout Grid.Row="4"  Grid.ColumnSpan="2" x:Name="MonthlyReportPanel" IsVisible="{Binding MonthlyReprotPanelVisible,Mode=TwoWay}">
-                <Grid ColumnDefinitions="35*,40*,25*,25*,40*" >
+                <Grid ColumnDefinitions="45*,30*,25*,25*,40*" >
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Date], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_User], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Money], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
@@ -71,7 +71,7 @@
                         >
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="data:UserTransaction">
-                        <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="35*,40*,25*,25*,40*" VerticalOptions="FillAndExpand">
+                        <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="45*,30*,25*,25*,40*" VerticalOptions="FillAndExpand">
                             <!--<BoxView HeightRequest="0.1"  BackgroundColor="Black" Grid.ColumnSpan="5" VerticalOptions="Start"/>-->
                             <Label Text="{Binding Date}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
                             <Label Text="{Binding UserName}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1"/>
@@ -116,9 +116,9 @@
                 <HorizontalStackLayout Grid.Row="3"  Grid.ColumnSpan="2">
                     <Label  
                     Text="{Binding LocalizationResourceManager[PocketOperation_CategoryMonth_ShowReport], Mode=OneWay}" HeightRequest="60"
-                        Margin="5,10,0,0" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small">
+                        Margin="5,10,0,0" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small" VerticalTextAlignment="Center">
                     </Label>
-                    <Switch x:Name="MonthCategoryReportSwitch" ThumbColor="{StaticResource Primary}" OnColor="{StaticResource Gray200}"  HeightRequest="60"  Margin="10,0" IsToggled="{Binding CategoryReportSwtichToggled}"/>
+                    <Switch x:Name="MonthCategoryReportSwitch" ThumbColor="{StaticResource Primary}" OnColor="{StaticResource Gray200}"  HeightRequest="60"  Margin="10,10,0,0" IsToggled="{Binding CategoryReportSwtichToggled}"/>
                 </HorizontalStackLayout>
                 
                 <StackLayout x:Name="CategorySummaryPanel" IsVisible="{Binding MonthlyCategoryReprotPanelVisible,Mode=TwoWay}">

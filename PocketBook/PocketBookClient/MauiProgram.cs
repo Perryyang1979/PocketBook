@@ -6,6 +6,7 @@ using Microcharts;
 using Microcharts.Maui;
 using ZXing.Net.Maui;
 using ZXing.Net.Maui.Controls;
+using Grpc.Net.Client.Web;
 
 namespace PocketBookClient;
 
@@ -13,7 +14,8 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-        string baseAddress = "https://localhost:7050";
+           string baseAddress = "https://pocketbookserver20231216200003.azurewebsites.net/";
+        //string baseAddress = "https://localhost:7050";
         var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
@@ -37,8 +39,13 @@ public static class MauiProgram
 
         builder.Services.AddScoped(services =>
         {
+            //var baseUri = new Uri(baseAddress);
+            //var channel = GrpcChannel.ForAddress(baseUri);
             var baseUri = new Uri(baseAddress);
-            var channel = GrpcChannel.ForAddress(baseUri);
+            var channel = GrpcChannel.ForAddress(baseUri, new GrpcChannelOptions
+            {
+                HttpHandler = new GrpcWebHandler(new HttpClientHandler())
+            });
             return new AccountBook.AccountBookClient(channel);
         });
 
@@ -56,6 +63,7 @@ public static class MauiProgram
         builder.Services.AddTransient<CategoryListViewModel>();
         builder.Services.AddTransient<IdentifyListViewModel>();
         builder.Services.AddTransient<UserInfoPageViewModel>();
+        builder.Services.AddTransient<PasswordManageViewModel>();
 
 
         builder.Services.AddSingleton<LoginPage>();
@@ -67,6 +75,7 @@ public static class MauiProgram
         builder.Services.AddTransient<IdentifyListPage>();
         builder.Services.AddTransient<UserInfoPage>();
         builder.Services.AddTransient<ScannerPage>();
+        builder.Services.AddTransient<PasswordManagePage>();
 
         return builder.Build();
 	}
