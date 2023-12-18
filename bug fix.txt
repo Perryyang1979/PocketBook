@@ -3,34 +3,9 @@
 
 NB : must in the current project dir
 
-
-dotnet ef database update
-
-1.1 delete 
-dotnet ef database drop --context AppDbContext
-
-dotnet ef migrations remove
-
 2 install dotnet 
 dotnet tool install --global dotnet-ef --version 7.*
 
 3 if need to run database command .
 project should reference Microsoft.EntityFrameworkCore.Design
-
-PS C:\03_Perry\02_Software\repos\PocketBook\PocketBook\PocketBookServer>  dotnet ef migrations add InitialMigration
-Build started...
-Build succeeded.
-Done. To undo this action, use 'ef migrations remove'
-
-
-Command Line 
-Command Line	Description
-dotnet ef migrations add [name]	Create a new migration with the specific migration name.
-dotnet ef migrations remove	Remove the latest migration.
-dotnet ef database update	Update the database to the latest migration.
-dotnet ef database update [name]	Update the database to a specific migration name point.
-dotnet ef migrations list	Lists all available migrations.
-dotnet ef migrations script	Generates a SQL script for all migrations.
-dotnet ef migrations has-pending-model-changes	Check if there is any model changes since the last migration.
-p'p database drop	Drop the database.
 
