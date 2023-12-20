@@ -90,11 +90,11 @@
         Route="SettingPage" />
     </FlyoutItem>
 
-    <!--<FlyoutItem Title="Login">
+    <FlyoutItem Title="Login">
         <ShellContent
         ContentTemplate="{DataTemplate view:LoginPage}"
         Route="LoginPage" />
-    </FlyoutItem>-->
+    </FlyoutItem>
 
     <FlyoutItem Title="User">
         <ShellContent

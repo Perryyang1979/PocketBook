@@ -14,7 +14,7 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-           string baseAddress = "https://pocketbookserver20231216200003.azurewebsites.net/";
+           string baseAddress = "https://pocketbookserver20231218194147.azurewebsites.net";
         //string baseAddress = "https://localhost:7050";
         var builder = MauiApp.CreateBuilder();
 		builder

@@ -63,7 +63,7 @@
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Money], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Income], Mode=OneWay}" Grid.Row="1" Grid.Column="3" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Category], Mode=OneWay}" Grid.Row="1" Grid.Column="4" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
-            </Grid>
+               </Grid>
 
             <CollectionView 
                     ItemsSource="{Binding MonthTransactionList}"
@@ -106,11 +106,37 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+                
+                
+                <HorizontalStackLayout HorizontalOptions="CenterAndExpand">
+                    <Label  Text="{Binding LocalizationResourceManager[PocketOperation_Month_ShowChart_Label_Switch], Mode=OneWay}" Margin="5,10" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small">
+                    </Label>
+                    <Switch x:Name="MonthChartSwitch" ThumbColor="{StaticResource Primary}" OnColor="{StaticResource Gray200}"  
+                        IsVisible="{Binding MonthlyChartEnabled}"
+                        HeightRequest="60"  Margin="10,-20,0,0" IsToggled="{Binding MonthlyChartSwtichToggled}"/>
+                </HorizontalStackLayout>
+                
 
-                <microcharts:ChartView x:Name="chartView"   Margin="10,10,10,10"                                                                                                       
+                <StackLayout IsVisible="{Binding MonthlyChartPanelVisible}">
+             
+                <microcharts:ChartView x:Name="expensechartView"   Margin="10,10,10,10"                                                                                                       
                                                        BackgroundColor="White"
-                                                       Chart="{Binding Chart}"
-                                                       HeightRequest="250" />
+                                                       Chart="{Binding ExpenseChart}"
+                                                       HeightRequest="250" 
+                                       IsVisible="{Binding MonthSummaryExpenseChartVisible}"/>
+                    <Label  Text="{Binding LocalizationResourceManager[PocketOperation_Month_ShowReport_Label_Expense], Mode=OneWay}"
+                            Margin="0,-15"
+                            HorizontalOptions="CenterAndExpand" TextColor="{StaticResource Gray300}" FontSize="Small"/>
+
+                    <microcharts:ChartView x:Name="incomechartView"   Margin="10,15,10,10"                                                                                                       
+                                                       BackgroundColor="White"
+                                                       Chart="{Binding IncomeChart}"                                       
+                                                       HeightRequest="250" 
+                                       IsVisible="{Binding MonthSummaryIncomeChartVisible}"/>
+                    <Label  Text="{Binding LocalizationResourceManager[PocketOperation_Month_ShowReport_Label_Income], Mode=OneWay}"
+                            Margin="0,-15"
+                            HorizontalOptions="CenterAndExpand" TextColor="{StaticResource Gray300}" FontSize="Small"/>
+                </StackLayout>
 
 
                 <HorizontalStackLayout Grid.Row="3"  Grid.ColumnSpan="2">

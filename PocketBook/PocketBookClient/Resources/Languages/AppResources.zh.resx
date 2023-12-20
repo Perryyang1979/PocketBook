@@ -321,8 +321,17 @@
   <data name="PocketOperation_Month_Label" xml:space="preserve">
     <value>显示月度记录</value>
   </data>
+  <data name="PocketOperation_Month_ShowChart_Label_Switch" xml:space="preserve">
+    <value>查看曲线图对比</value>
+  </data>
   <data name="PocketOperation_Month_ShowReportTitle" xml:space="preserve">
-    <value>本年月度报告</value>
+    <value>本年月度收支报告</value>
+  </data>
+  <data name="PocketOperation_Month_ShowReport_Label_Expense" xml:space="preserve">
+    <value>月度支出曲线对比图</value>
+  </data>
+  <data name="PocketOperation_Month_ShowReport_Label_Income" xml:space="preserve">
+    <value>月度收入曲线对比图</value>
   </data>
   <data name="Register_Email" xml:space="preserve">
     <value>邮箱地址：</value>

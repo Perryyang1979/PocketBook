@@ -17,7 +17,7 @@ namespace PocketBookClient.ViewModel
             MinDate = DateTime.Today.AddDays(-100);
             MaxDate = DateTime.Today.AddDays(30);
             SelectedDate = DateTime.Today;
-            CurrentMoneyChangeType = IsIncome;
+            CurrentMoneyChangeType = "False";
         }
 
         public async void RefreshModel()

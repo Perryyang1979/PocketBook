@@ -33,6 +33,8 @@ namespace PocketBookClient.ViewModel
         [ObservableProperty]
         public bool categoryReportSwtichToggled = false;
         [ObservableProperty]
+        bool monthlyChartSwtichToggled = false;
+        [ObservableProperty]
         public ObservableCollection<SelectOption> currrentIdentifications;
         [ObservableProperty]
         public ObservableCollection<SelectOption> selectedIdentifications = new ObservableCollection<SelectOption>();
@@ -40,6 +42,15 @@ namespace PocketBookClient.ViewModel
         public ObservableCollection<SelectOption> currentCategorys = new ObservableCollection<SelectOption>();
         [ObservableProperty]
         bool categoryChartVisble = false;
+        [ObservableProperty]
+        bool monthSummaryIncomeChartVisible = false;
+        [ObservableProperty]
+        bool monthSummaryExpenseChartVisible = false;
+        [ObservableProperty]
+        bool monthlyChartEnabled = false;
+        [ObservableProperty]
+        bool monthlyChartPanelVisible = false;
+
 
         public PocketOperationViewModel() {
 
@@ -54,7 +65,12 @@ namespace PocketBookClient.ViewModel
             MonthlyCategoryReprotPanelVisible = false;
             ReportSwtichToggled = false;
             CategoryReportSwtichToggled = false;
+            MonthlyChartSwtichToggled = false;
             CategoryChartVisble = false;
+            MonthlyChartEnabled = false;
+            MonthSummaryIncomeChartVisible = false;
+            MonthSummaryExpenseChartVisible = false;
+            MonthlyChartPanelVisible =MonthSummaryIncomeChartVisible && MonthSummaryExpenseChartVisible;
             SelectedCurrentCategorys.CollectionChanged += SelectedCurrentCategorys_CollectionChanged;
         }
 
@@ -155,8 +171,16 @@ namespace PocketBookClient.ViewModel
                         });
                     }
                 }
-                LoadMonthChart();
-            }catch(Exception ex)
+                if (MonthSummaryList.Count >= 3)
+                {
+                    MonthlyChartEnabled = true;
+                }
+                else
+                {
+                    MonthlyChartEnabled = false;
+                }
+            }
+            catch(Exception ex)
             {
                 Console.WriteLine(ex);
             }
@@ -246,6 +270,23 @@ namespace PocketBookClient.ViewModel
             }
         }
 
+        partial void OnMonthlyChartSwtichToggledChanged(bool value)
+        {
+            if(MonthlyChartSwtichToggled)
+            {
+                LoadMonthChart();
+                MonthSummaryIncomeChartVisible = true;
+                MonthSummaryExpenseChartVisible = true;
+                MonthlyChartPanelVisible = MonthSummaryIncomeChartVisible && MonthSummaryExpenseChartVisible;
+            }
+            else
+            {
+                MonthSummaryIncomeChartVisible = false;
+                MonthSummaryExpenseChartVisible = false;
+                MonthlyChartPanelVisible = MonthSummaryIncomeChartVisible && MonthSummaryExpenseChartVisible;
+            }
+        }
+
         //partial void OnSelectedCurrentCategorysChanging(ObservableCollection<SelectOption> value)
         //{
         //    LoadMonthCategoryChart();
@@ -257,24 +298,64 @@ namespace PocketBookClient.ViewModel
         //}
 
         [ObservableProperty]
-        private Microcharts.Chart chart;
+        private Microcharts.Chart incomeChart;
+        [ObservableProperty]
+        private Microcharts.Chart expenseChart;
 
         [ObservableProperty]
         private Microcharts.Chart categoryChart;
 
         private void LoadMonthChart()
         {
-            if(MonthSummaryList.Count == 0) { return; }
-          //  if (Chart == null)
-            {
-                //  Chart = new LineChart { Entries = GetEntriesFromMonthlyReport(), IsAnimated = true,AnimationDuration =  TimeSpan.FromSeconds(1.5f) };
-
-                Chart = new LineSeriesChart { Series = DrawLineChart.GetChartSerialFromMonthlyReport(MonthSummaryList),
-                    ShowYAxisLines = true,
-                    ShowYAxisText = true,
-                    LegendOption =SeriesLegendOption.Top,
-                    IsAnimated = true, AnimationDuration = TimeSpan.FromSeconds(1.5f) };
+            if(MonthSummaryList.Count == 0) 
+            { 
+                return; 
             }
+
+            var series = DrawLineChart.GetChartSerialFromMonthlyReport(MonthSummaryList);
+            if(series.Count == 0)
+            {
+                return;
+            }
+
+            var incomeEntries = series[0].Entries;
+
+            if (incomeEntries.Count()>=3)
+            {
+                MonthSummaryIncomeChartVisible = true;
+                IncomeChart = new LineChart { Entries = incomeEntries, IsAnimated = true, AnimationDuration = TimeSpan.FromSeconds(1.5f) };
+            }
+            else
+            {
+                IncomeChart = null;
+                MonthSummaryIncomeChartVisible = false;
+
+            }
+
+            if (series.Count != 2)
+            {
+                return;
+            }
+                
+            var expenseEntries = series[1].Entries;
+            if (expenseEntries.Count() >= 3)
+            {
+                MonthSummaryExpenseChartVisible = true;
+                ExpenseChart = new LineChart { Entries = expenseEntries, IsAnimated = true, AnimationDuration = TimeSpan.FromSeconds(1.5f) };
+            }
+            else
+            {
+                ExpenseChart = null;
+                MonthSummaryExpenseChartVisible = false;
+            }
+            MonthlyChartPanelVisible = MonthSummaryIncomeChartVisible && MonthSummaryExpenseChartVisible;
+
+            //Chart = new LineSeriesChart { Series = DrawLineChart.GetChartSerialFromMonthlyReport(MonthSummaryList),
+            //    ShowYAxisLines = true,
+            //    ShowYAxisText = true,
+            //    LegendOption =SeriesLegendOption.Top,
+            //    IsAnimated = true, AnimationDuration = TimeSpan.FromSeconds(1.5f) };
+            // }
         }
 
         private void LoadMonthCategoryChart()

@@ -318,8 +318,17 @@
   <data name="PocketOperation_Month_Label" xml:space="preserve">
     <value>Show Record In Month</value>
   </data>
+  <data name="PocketOperation_Month_ShowChart_Label_Switch" xml:space="preserve">
+    <value>Show Chart for Expense/Income</value>
+  </data>
   <data name="PocketOperation_Month_ShowReportTitle" xml:space="preserve">
     <value>Monthly Report</value>
+  </data>
+  <data name="PocketOperation_Month_ShowReport_Label_Expense" xml:space="preserve">
+    <value>Monthly Expense Chart</value>
+  </data>
+  <data name="PocketOperation_Month_ShowReport_Label_Income" xml:space="preserve">
+    <value>Monthly Income Chart</value>
   </data>
   <data name="Register_Email" xml:space="preserve">
     <value>Email:</value>
