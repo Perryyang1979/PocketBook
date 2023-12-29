@@ -212,6 +212,35 @@ namespace PocketBookClient.Services
             return response;
         }
 
+        public async Task<MessageResponse> UpdateTransactionAsync(UserTransaction userTransaction)
+        {
+            var transactionRequest = new PocketTransactionInfo()
+            {
+                TransactionDate = userTransaction.Date,
+                Amount = (double)userTransaction.Amount,
+                Category = userTransaction.Category,
+                Comments = userTransaction.Comments,
+                IsIncome = userTransaction.IsIncome,
+                Username = Settings.Current.CurrentUserSetting.UserName,
+                UsergroupId = Settings.Current.CurrentUserSetting.UserGroupId,
+                Id = userTransaction.Id
+            };
+
+            MessageResponse response = null;
+
+            try
+            {
+
+                response = await _accountBookClient.UpdateTransactionAsync(transactionRequest);
+            }
+            catch (Exception ex)
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = ex.Message });
+            }
+
+            return response;
+        }
+
         public async Task<MessageResponse> AddCategoryAsync(TransactionCategory category)
         {
             var categoryRequest = new CategoryInfo()

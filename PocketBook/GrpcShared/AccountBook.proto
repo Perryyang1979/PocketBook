@@ -6,6 +6,7 @@ service AccountBook {
   rpc RegisterUser (PocketUserInfo) returns (MessageResponse);
   rpc LoginUser (UserRequest) returns (UserLoginResponse);
   rpc AddTransaction (PocketTransactionInfo) returns (MessageResponse);
+  rpc UpdateTransaction (PocketTransactionInfo) returns (MessageResponse);
   rpc GetDailyTransations(DailyDetailTransationRequest) returns (DailyTransactionResponse);
   rpc GetDailyTransationsStream (DailyDetailTransationRequest) returns (stream PocketTransactionInfo);
   rpc GetDailySummaryStream (UserRequest) returns (stream DailySummary);
@@ -60,6 +61,7 @@ message PocketTransactionInfo {
   string transactionDate = 6;
   string identification = 7;
   string usergroupId =8;
+  string id=9;
 }
 
 message DailyTransactionResponse {

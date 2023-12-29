@@ -4,82 +4,134 @@
              x:Class="PocketBookClient.View.AddTransactionPage"
              xmlns:data="clr-namespace:PocketBookClient.Data"
              xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
-             Title="{Binding  LocalizationResourceManager[AddTranscation_Title]}"
+             Title="Home"
              x:DataType="viewmodel:AddTransactionViewModel">
-    <VerticalStackLayout>
+    <ScrollView  >
+        <Grid
+        ColumnDefinitions="*"
+        ColumnSpacing="5"
+        RowDefinitions="Auto,60,Auto,60,Auto"
+        RowSpacing="0">
+            <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="5">
 
-        <StackLayout Orientation="Horizontal" Margin="10,30,0,0">
-            <Label Text="{Binding LocalizationResourceManager[AddTranscation_datePicker_label], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
-        <!--date-->
-        <DatePicker MinimumDate="{Binding MinDate}" MaximumDate="{Binding MaxDate}" Date="{Binding SelectedDate}" 
+                <StackLayout Orientation="Horizontal" Margin="10,30,0,0">
+                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_datePicker_label], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
+                    <!--date-->
+                    <DatePicker MinimumDate="{Binding MinDate}" MaximumDate="{Binding MaxDate}" Date="{Binding SelectedDate}" 
                      HorizontalOptions="Center" TextColor="Black" HeightRequest="40" WidthRequest="150"/>
-        </StackLayout>
-
-        <StackLayout Orientation="Horizontal" Margin="10">
-            <Label Text="{Binding LocalizationResourceManager[AddTranscation_Money_label], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
-            <!--money-->
-            <Entry WidthRequest="150" Text="{Binding Money}" Keyboard="Numeric" HeightRequest="40" Style="{StaticResource SmallEntry}"  />
-        </StackLayout>
-
-        <!--IsIncome-->
-        <StackLayout Orientation="Horizontal" Margin="10,0">
-            <Label Text="{Binding LocalizationResourceManager[AddTranscation_Money_Type], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}"  WidthRequest="120" VerticalTextAlignment="Center"/>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" RadioButtonGroup.GroupName="MoneyChangeTypes"
-             RadioButtonGroup.SelectedValue="{Binding  CurrentMoneyChangeType}">
-                <StackLayout Orientation="Horizontal">
-                    <RadioButton Content="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Income], Mode=TwoWay}"
-                 Value="True" />
-                    <RadioButton Content="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Expense], Mode=TwoWay}"
-                 Value="False" />
                 </StackLayout>
-            </StackLayout>
-        </StackLayout>
 
-        <!--category-->
-        <StackLayout Orientation="Horizontal" Margin="10,0">
-            <Label Text="{Binding LocalizationResourceManager[AddTranscation_Category_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" VerticalTextAlignment="Center"/>
-            <Picker  WidthRequest="150" TitleColor="Blue" 
+                <StackLayout Orientation="Horizontal" Margin="10">
+                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_Money_label], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
+                    <!--money-->
+                    <Entry WidthRequest="150" Text="{Binding Money}" Keyboard="Numeric" HeightRequest="40" Style="{StaticResource SmallEntry}"  />
+                </StackLayout>
+
+                <!--IsIncome-->
+                <StackLayout Orientation="Horizontal" Margin="10,0">
+                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_Money_Type], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}"  WidthRequest="120" VerticalTextAlignment="Center"/>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" RadioButtonGroup.GroupName="MoneyChangeTypes"
+             RadioButtonGroup.SelectedValue="{Binding  CurrentMoneyChangeType}">
+                        <StackLayout Orientation="Horizontal">
+                            <RadioButton Content="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Income], Mode=TwoWay}"
+                 Value="True" />
+                            <RadioButton Content="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Expense], Mode=TwoWay}"
+                 Value="False" />
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+
+                <!--category-->
+                <StackLayout Orientation="Horizontal" Margin="10,0">
+                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_Category_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" VerticalTextAlignment="Center"/>
+                    <Picker  WidthRequest="150" TitleColor="Blue" 
                     HorizontalOptions="StartAndExpand" 
         ItemsSource="{Binding Categories,Mode=TwoWay}"
         ItemDisplayBinding="{Binding CategoryDescription}"
         SelectedIndex="{Binding CategorySelectedIndex,Mode=TwoWay}">
-            </Picker>
-            <Label  Text="{Binding LocalizationResourceManager[AddCategory_Manage], Mode=OneWay}" Margin="25,0" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small" VerticalTextAlignment="Center">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding  Path= AddCategoryCommand}"/>
-                </Label.GestureRecognizers>
-            </Label>
-        </StackLayout>
+                    </Picker>
+                    <Label  Text="{Binding LocalizationResourceManager[AddCategory_Manage], Mode=OneWay}" Margin="25,0" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding  Path= AddCategoryCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
 
-        <!--Identify-->
-        <StackLayout Orientation="Horizontal" Margin="10,0">
-            <Label Text="{Binding LocalizationResourceManager[AddTranscation_Identify_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" VerticalTextAlignment="Center"/>
-            <Picker  WidthRequest="150" TitleColor="Blue" 
+                <!--Identify-->
+                <StackLayout Orientation="Horizontal" Margin="10,0">
+                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_Identify_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" VerticalTextAlignment="Center"/>
+                    <Picker  WidthRequest="150" TitleColor="Blue" 
                     HorizontalOptions="StartAndExpand" 
         ItemsSource="{Binding Identifications,Mode=TwoWay}"
         ItemDisplayBinding="{Binding IdentifyDescription}"
         SelectedIndex="{Binding IdentificationSelectedIndex,Mode=TwoWay}">
-            </Picker>
-            <Label  Text="{Binding LocalizationResourceManager[AddIdentify_Manage], Mode=OneWay}" Margin="25,0" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small" VerticalTextAlignment="Center">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding  Path= AddIdentifyCommand}"/>
-                </Label.GestureRecognizers>
-            </Label>
-        </StackLayout>
+                    </Picker>
+                    <Label  Text="{Binding LocalizationResourceManager[AddIdentify_Manage], Mode=OneWay}" Margin="25,0" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding  Path= AddIdentifyCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
 
-        <StackLayout Orientation="Horizontal" Margin="10,0">
-            <!--Comments-->
-            <Label Text="{Binding LocalizationResourceManager[AddTranscation_Comments_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" VerticalTextAlignment="Center"/>
-            <Entry WidthRequest="250" Text="{Binding Comments}" Keyboard="Numeric" HeightRequest="60" Style="{StaticResource SmallEntry}"  />
-        </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="10,0">
+                    <!--Comments-->
+                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_Comments_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" VerticalTextAlignment="Center"/>
+                    <Entry WidthRequest="250" Text="{Binding Comments}" Keyboard="Numeric" HeightRequest="60" Style="{StaticResource SmallEntry}"  />
+                </StackLayout>
 
-        <StackLayout Orientation="Horizontal" Margin="10" HorizontalOptions="Center">
-            <Button Text="{Binding LocalizationResourceManager[AddTranscation_Title], Mode=OneWay}" Style="{StaticResource ButtonOutline}" WidthRequest="150"
+                <StackLayout Orientation="Horizontal" Margin="10" HorizontalOptions="Center">
+                    <Button Text="{Binding LocalizationResourceManager[AddTranscation_Title], Mode=OneWay}" Style="{StaticResource ButtonOutline}" WidthRequest="180" IsVisible="{Binding AddButtonVisible}"
                 Command="{Binding AddTransactionCommand}"></Button>
+                    <Button Text="{Binding LocalizationResourceManager[UpdateTranscation_Title], Mode=OneWay}" Style="{StaticResource ButtonOutline}" WidthRequest="180" IsVisible="{Binding UpdateButtonVisible}"
+Command="{Binding UpdateTransactionCommand}"></Button>
 
-            <Button Text="{Binding LocalizationResourceManager[Button_Cancel], Mode=OneWay}" Margin="20,0" Style="{StaticResource ButtonOutline}"
+                    <Button Text="{Binding LocalizationResourceManager[Button_Reset], Mode=OneWay}" Margin="20,0" Style="{StaticResource ButtonOutline}"
                 Command="{Binding CancelTransactionCommand}"></Button>
-        </StackLayout>
+                </StackLayout>
+            </VerticalStackLayout>
 
-    </VerticalStackLayout>
+            <Grid ColumnDefinitions="45*,30*,25*,25*,40*" Grid.Row="1">
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Date], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_User], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Money], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Income], Mode=OneWay}" Grid.Row="1" Grid.Column="3" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Category], Mode=OneWay}" Grid.Row="1" Grid.Column="4" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+            </Grid>
+
+            <CollectionView Grid.Row="2"
+         ItemsSource="{Binding TransactionList}"
+         SelectionMode="Single"
+         SelectedItem="{Binding CurrentSelectedItem}"
+             >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="data:UserTransaction">
+                        <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="45*,30*,25*,25*,40*" VerticalOptions="FillAndExpand">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="White"></Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="LightSkyBlue"></Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <!--<BoxView HeightRequest="0.1"  BackgroundColor="Black" Grid.ColumnSpan="5" VerticalOptions="Start"/>-->
+                            <Label Text="{Binding Date}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
+                            <Label Text="{Binding UserName}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1"/>
+                            <Label Text="{Binding Amount}" FontAttributes="Bold" Grid.Row="1" Grid.Column="2"/>
+                            <Label Text="{Binding CurrentInOutLable}" FontAttributes="Bold" Grid.Row="1" Grid.Column="3"/>
+                            <Label Text="{Binding Category}" FontAttributes="Bold" Grid.Row="1" Grid.Column="4"/>
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </ScrollView>
 </ContentPage>

@@ -67,4 +67,15 @@
     <Color x:Key="Color9">#159770</Color>
     <Color x:Key="Color10">#659660</Color>
 
+
+    <!--  Theme Colors  -->
+    <Color x:Key="LightBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="DarkBackgroundColor">#222222</Color>
+    <Color x:Key="LightForegroundColor">#222222</Color>
+    <Color x:Key="DarkForegroundColor">#FFFFFF</Color>
+    <Color x:Key="LightFontColor">#222222</Color>
+    <Color x:Key="DarkFontColor">#E7E7E7</Color>
+    <Color x:Key="LightSeparatorColor">#222222</Color>
+    <Color x:Key="DarkSeparatorColor">#E7E7E7</Color>
+
 </ResourceDictionary>

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PocketBookClient.Services;
 
@@ -28,7 +29,26 @@ public partial class Settings : ObservableObject
         }
     }
 
-    public CurrentUserLoginSetting CurrentUserSetting { get; set; } 
+    public delegate void CurrentUserEventHandler(object sender, EventArgs e);
+
+    // Declare the event.
+    public  event CurrentUserEventHandler OnCurrentUserChangeEvent;
+
+    private CurrentUserLoginSetting _currentUserLoginSetting;
+    public CurrentUserLoginSetting CurrentUserSetting 
+    {
+        get
+        {
+            return _currentUserLoginSetting;
+        }
+
+        set
+        {
+            _currentUserLoginSetting = value;
+            OnPropertyChanged(nameof(CurrentUserSetting));
+            OnCurrentUserChangeEvent?.Invoke(this, new EventArgs());
+        }
+    } 
 
     public class CurrentUserLoginSetting
     {

@@ -9,7 +9,7 @@ namespace PocketBookClient.ViewModel;
 public partial class LoginPageViewModel : BaseViewModel
 {
     public LoginPageViewModel()
-    {
+    { 
     }
 
     [ObservableProperty]
@@ -69,14 +69,21 @@ public partial class LoginPageViewModel : BaseViewModel
 
             };
 
-       // await Shell.Current.DisplayAlert("Lgin in OK", result.Message, "OK");
-         await Shell.Current.GoToAsync($"{nameof(PocketOperationPage)}");
+        // await Shell.Current.DisplayAlert("Lgin in OK", result.Message, "OK");
+          await Shell.Current.GoToAsync($"{nameof(AddTransactionPage)}");
+
     }
 
     [RelayCommand]
     public async Task RegisterAsync()
     {
         await Shell.Current.GoToAsync($"{nameof(RegistrationPage)}");
+    }
+
+    [RelayCommand]
+    public async Task ScannerAsync()
+    {
+        await Shell.Current.GoToAsync($"{nameof(ScannerPage)}");
     }
 
     [RelayCommand]

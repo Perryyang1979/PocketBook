@@ -16,6 +16,7 @@ public partial class App : Application
         InitializeComponent();
         Communication.Instance.AccountBookClient = accountBookClient;
         Settings.Current.LoggedIn = false;
+      //  MainPage = new LoginPage(ServiceHelper.GetService<LoginPageViewModel>());
         MainPage = new AppShell();
       //  CheckLoginStatusAsync();
     }

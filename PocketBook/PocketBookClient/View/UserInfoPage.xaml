@@ -4,7 +4,7 @@
              x:Class="PocketBookClient.View.UserInfoPage"
              xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
-             Title="{Binding LocalizationResourceManager[SettingTitle], Mode=OneWay}"
+             
              x:DataType="viewmodel:UserInfoPageViewModel">
     <VerticalStackLayout IsVisible="{Binding PanelVisble}" Margin="20,10">
         <Label 
@@ -21,7 +21,7 @@
         <Label 
             Text="Scan me to Share "
             VerticalOptions="Center" 
-            HorizontalOptions="Center" FontSize="Header" Margin="20,10"/>
+            HorizontalOptions="Center" FontSize="Large" Margin="20,10"/>
         <zxing:BarcodeGeneratorView Format="QrCode" Value="{Binding UserGroupId}" ForegroundColor="{StaticResource Primary}" WidthRequest="100" HeightRequest="100"/>
     </VerticalStackLayout>
 </ContentPage>

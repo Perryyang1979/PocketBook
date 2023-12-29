@@ -4,11 +4,31 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:view="clr-namespace:PocketBookClient.View"
-    xmlns:local="clr-namespace:PocketBookClient">
+    xmlns:local="clr-namespace:PocketBookClient"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.TabBarIsVisible="false"
+>
 
     <Shell.BackButtonBehavior>
-        <BackButtonBehavior IsEnabled="False" IsVisible="False"/>
+        <BackButtonBehavior IsEnabled="false" IsVisible="false"/>
     </Shell.BackButtonBehavior>
+
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout>
+        <Image Source="me.png" WidthRequest="100"></Image>
+            <Label Text="{Binding LoginUserName}" HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}"></Label>
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
+
+
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Margin="20">
+            <Button x:Name="logoutButton" Style="{StaticResource ButtonOutline}" Text="{Binding LocalizationResourceManager[LogOut], Mode=OneWay}" WidthRequest="100" HeightRequest="30" Margin="10"
+                    Clicked="logoutButton_Clicked"
+                    ></Button>
+            <Label Text="@Copyright Mr.Yang-2024" HorizontalTextAlignment="Center"></Label>
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
 
     <Shell.Resources>
         <ResourceDictionary>
@@ -26,17 +46,14 @@
             <Style BasedOn="{StaticResource BaseStyle}" TargetType="TabBar" />
             <Style BasedOn="{StaticResource BaseStyle}" TargetType="FlyoutItem" />
 
-            <!--
-                Default Styles for all Flyout Items
-                https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/flyout#flyoutitem-and-menuitem-style-classes
-            -->
+           
             <Style Class="FlyoutItemLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="White" />
             </Style>
             <Style
-                ApplyToDerivedTypes="True"
-                Class="FlyoutItemLayoutStyle"
-                TargetType="Layout">
+               ApplyToDerivedTypes="True"
+               Class="FlyoutItemLayoutStyle"
+               TargetType="Layout">
                 <Setter Property="BackgroundColor" Value="LightBlue" />
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
@@ -58,12 +75,12 @@
             </Style>
 
             <!--
-                Custom Style you can apply to any Flyout Item
-            -->
+               Custom Style you can apply to any Flyout Item
+           -->
             <Style
-                ApplyToDerivedTypes="True"
-                Class="MenuItemLayoutStyle"
-                TargetType="Layout">
+               ApplyToDerivedTypes="True"
+               Class="MenuItemLayoutStyle"
+               TargetType="Layout">
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
@@ -84,29 +101,35 @@
         <ShellContent ContentTemplate="{DataTemplate view:LoginPage}"/>
     </ShellItem>
 
-    <FlyoutItem Title="Setting">
-        <ShellContent
-        ContentTemplate="{DataTemplate view:SettingPage}"
-        Route="SettingPage" />
-    </FlyoutItem>
 
-    <FlyoutItem Title="Login">
+
+    <!--<FlyoutItem Title="Login">
         <ShellContent
         ContentTemplate="{DataTemplate view:LoginPage}"
         Route="LoginPage" />
-    </FlyoutItem>
-
-    <FlyoutItem Title="User">
-        <ShellContent
-        ContentTemplate="{DataTemplate view:UserInfoPage}"
-        Route="UserInfoPage" />
-    </FlyoutItem>
-    <FlyoutItem Title="Scanner">
-        <ShellContent
-        ContentTemplate="{DataTemplate view:ScannerPage}"
-        Route="ScannerPage" />
-    </FlyoutItem>
+    </FlyoutItem>-->
 
 
+    <FlyoutItem  Title="Home" FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Icon="home.png" Title="Home"
+        ContentTemplate="{DataTemplate view:AddTransactionPage}"
+        Route="AddTransactionPage" />
+    <!--</FlyoutItem>
+    <FlyoutItem >-->
+
+    <!--</FlyoutItem>--><!--
+    <FlyoutItem >-->
+        <ShellContent Icon="report.png" Title="Report"
+        ContentTemplate="{DataTemplate view:AdvancedReportPage}"
+        Route="AdvancedReportPage" />
+    
+        <ShellContent Icon="me.png" Title="Me"
+               ContentTemplate="{DataTemplate view:UserInfoPage}"
+    Route="UserInfoPage"  />
+    
+        <ShellContent Icon="setting.png" Title="Setting"
+        ContentTemplate="{DataTemplate view:SettingPage}"
+        Route="SettingPage" />
+    </FlyoutItem>
 
 </Shell>

@@ -14,7 +14,7 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-           string baseAddress = "https://pocketbookserver20231218194147.azurewebsites.net";
+        string baseAddress = "https://pocketbookserver20231218194147.azurewebsites.net";
         //string baseAddress = "https://localhost:7050";
         var builder = MauiApp.CreateBuilder();
 		builder
@@ -55,7 +55,7 @@ public static class MauiProgram
 // builder.Services.AddLocalization();
         builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
 
-        builder.Services.AddSingleton<LoginPageViewModel>();
+        builder.Services.AddTransient<LoginPageViewModel>();
         builder.Services.AddSingleton<SettingPageViewModel>();
         builder.Services.AddTransient<RegistrationPageViewModel>();
         builder.Services.AddTransient<PocketOperationViewModel>();
@@ -64,9 +64,10 @@ public static class MauiProgram
         builder.Services.AddTransient<IdentifyListViewModel>();
         builder.Services.AddTransient<UserInfoPageViewModel>();
         builder.Services.AddTransient<PasswordManageViewModel>();
+        builder.Services.AddTransient<AdvancedReportViewModel>();
 
 
-        builder.Services.AddSingleton<LoginPage>();
+        builder.Services.AddTransient<LoginPage>();
         builder.Services.AddSingleton<SettingPage>();
         builder.Services.AddTransient<RegistrationPage>();
         builder.Services.AddTransient<PocketOperationPage>();
@@ -76,6 +77,7 @@ public static class MauiProgram
         builder.Services.AddTransient<UserInfoPage>();
         builder.Services.AddTransient<ScannerPage>();
         builder.Services.AddTransient<PasswordManagePage>();
+        builder.Services.AddTransient<AdvancedReportPage>();
 
         return builder.Build();
 	}

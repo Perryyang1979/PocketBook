@@ -186,6 +186,9 @@
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Button_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
   <data name="Forgot_Password" xml:space="preserve">
     <value>Forgot Password ?</value>
   </data>
@@ -236,6 +239,9 @@
   </data>
   <data name="LoginPageTitle" xml:space="preserve">
     <value>Record with heart,Happy In Family</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Logout</value>
   </data>
   <data name="Mistake_Correct" xml:space="preserve">
     <value>Correct</value>
@@ -371,6 +377,9 @@
   </data>
   <data name="Theme_System" xml:space="preserve">
     <value>System</value>
+  </data>
+  <data name="UpdateTranscation_Title" xml:space="preserve">
+    <value>Update Record</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>UserName：</value>

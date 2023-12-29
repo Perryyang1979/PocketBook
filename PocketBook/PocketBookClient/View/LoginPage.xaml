@@ -24,7 +24,6 @@
             x:Name="Password"
             IsPassword="True"
             Text="{Binding Password}"
-            Keyboard="Numeric"
             Placeholder="{Binding LocalizationResourceManager[Password_Hint], Mode=OneWay}"/>
         <VerticalStackLayout>
             <ActivityIndicator HeightRequest="50" IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>
@@ -35,19 +34,23 @@
                 HeightRequest="60"
                 CornerRadius="20"
                 Style="{StaticResource LoginButton}"/>
-            <HorizontalStackLayout HorizontalOptions="Center">
+            <StackLayout HorizontalOptions="Center">
                 <Label  Text="{Binding LocalizationResourceManager[Forgot_Password], Mode=OneWay}" HorizontalOptions="Center" TextColor="{StaticResource Gray300}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding  Path=ForgotPasswordCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
-                
-                <Label  Text="{Binding LocalizationResourceManager[SignIn], Mode=OneWay}" HorizontalOptions="Center" Margin="50,0,0,0" TextColor="{StaticResource Primary}">
+
+                <HorizontalStackLayout>
+                    <ImageButton Source="scanner.png" Command="{Binding ScannerCommand}" WidthRequest="40" HeightRequest="40"></ImageButton>
+                    <Label  Text="{Binding LocalizationResourceManager[SignIn], Mode=OneWay}" HorizontalOptions="Center" Margin="50,0,0,0" TextColor="{StaticResource Primary}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding  Path= RegisterCommand}"/>
                     </Label.GestureRecognizers>
-                </Label>
-            </HorizontalStackLayout>
+                    </Label>
+                </HorizontalStackLayout>
+            
+            </StackLayout>
         </VerticalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

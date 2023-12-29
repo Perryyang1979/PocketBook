@@ -185,6 +185,57 @@ namespace PocketBookServer.Services
             return await Task.FromResult(new MessageResponse { Success = true, Message = "Transaction added successfully." });
           }
 
+        public override async Task<MessageResponse> UpdateTransaction(PocketTransactionInfo request, ServerCallContext context)
+        {
+            // if not find user, return fail message
+            if (!IsUserExist(request.Username))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"User {request.Username} not found." });
+            }
+            //need to do 
+            if (request.Amount < 0)
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Money should not less than 0." });
+            }
+
+            if(string.IsNullOrEmpty(request.Id))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"update recored failed." });
+            }
+
+            var transaction =  _dbContext.PocketTransactions.SingleOrDefault(pt => pt.Id.Equals(request.Id));
+
+            if(transaction == null)
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"update recored failed." });
+            }
+            //need to do duble compare
+            if (request.Amount == 0 && !string.IsNullOrEmpty(request.Id))
+            {
+                //mean delete current 
+                _dbContext.PocketTransactions.Remove(transaction);
+                await _dbContext.SaveChangesAsync();
+
+                return await Task.FromResult(new MessageResponse { Success = true, Message = "Transaction Delete successfully." });
+                // return await Task.FromResult(new MessageResponse { Success = false, Message = $"No need to record since money is 0." });
+            }
+
+
+            transaction.UserId = UserId(request.Username);
+            transaction.Amount = request.Amount;
+            transaction.IsIncome = request.IsIncome;
+            transaction.Category = request.Category;
+            transaction.Date = request.TransactionDate;
+            transaction.Comments = request.Comments;
+            transaction.Identification = request.Identification;
+            
+
+             _dbContext.Update(transaction);
+            await _dbContext.SaveChangesAsync();
+
+            return await Task.FromResult(new MessageResponse { Success = true, Message = "Transaction update successfully." });
+        }
+
         public override async Task<DailyTransactionResponse> GetDailyTransations(DailyDetailTransationRequest request, ServerCallContext context)
         {
             var startDate = DateTime.Parse(request.StartDate, CultureInfo.InvariantCulture);
@@ -260,7 +311,8 @@ namespace PocketBookServer.Services
                     Category = transaction.Category,
                     Comments = transaction.Comments,
                     TransactionDate = transaction.Date,
-                    Identification = transaction.Identification
+                    Identification = transaction.Identification,
+                    Id = transaction.Id
                 })
                  .ToList();
 
