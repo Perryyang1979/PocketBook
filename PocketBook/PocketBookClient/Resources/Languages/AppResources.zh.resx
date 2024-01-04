@@ -186,6 +186,9 @@
   <data name="AddTranscation_Title1" xml:space="preserve">
     <value>记账</value>
   </data>
+  <data name="Advance_Report_Title" xml:space="preserve">
+    <value>个性化报表</value>
+  </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
@@ -369,6 +372,9 @@
   <data name="SignIn" xml:space="preserve">
     <value>注册</value>
   </data>
+  <data name="Table_Identify_Header" xml:space="preserve">
+    <value>标识</value>
+  </data>
   <data name="ThemeText" xml:space="preserve">
     <value>主题</value>
   </data>
@@ -389,5 +395,8 @@
   </data>
   <data name="UserName_Hint" xml:space="preserve">
     <value>请输入你的用户名</value>
+  </data>
+  <data name="UserValidWarning" xml:space="preserve">
+    <value>亲爱的用户，请先登录。</value>
   </data>
 </root>

@@ -18,19 +18,32 @@ namespace PocketBookClient.ViewModel
         private void Current_OnCurrentUserChangeEvent(object sender, EventArgs e)
         {
            LoginUserName = Settings.Current.CurrentUserSetting == null ? string.Empty : Settings.Current.CurrentUserSetting.UserName;
+           if(LoginUserName == string.Empty)
+            {
+                LogoutButtonVisible = false;
+                LoginButtonVisible = true;
+                HomeItemEnable = false;
+            }
+           else
+            {
+                LogoutButtonVisible = true;
+                LoginButtonVisible = false;
+                HomeItemEnable = true;
+            }
         }
 
         [ObservableProperty]
         public string loginUserName = string.Empty;
-
+        [ObservableProperty]
+        bool homeItemEnable = false;
+        [ObservableProperty]
+        bool logoutButtonVisible = false;
+        [ObservableProperty]
+        bool loginButtonVisible = true;
 
         [RelayCommand]
             async void SignOut()
             {
-                //if (Preferences.ContainsKey(nameof(App.UserDetails)))
-                //{
-                //    Preferences.Remove(nameof(App.UserDetails));
-                //}
                 await Task.Delay(1);
                 await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
             }

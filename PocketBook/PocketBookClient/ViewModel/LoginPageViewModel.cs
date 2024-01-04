@@ -21,43 +21,42 @@ public partial class LoginPageViewModel : BaseViewModel
     [ObservableProperty]
     public string password;
 
-    [RelayCommand]
-    public async Task LoginAsync()
+    public async Task<bool> LoginAsync()
     {
         if (IsRunning)
-            return;
+            return false;
         IsRunning = true;
 
 
         if (string.IsNullOrEmpty(UserName))
         {
-            await Shell.Current.DisplayAlert("Missing UserName", "Please provide valid UserName", "OK");
+             await Shell.Current.DisplayAlert("Missing UserName", "Please provide valid UserName", "OK");
             IsRunning = false;
-            return;
+            return false;
         }
 
         if (string.IsNullOrEmpty(Password))
         {
-            await Shell.Current.DisplayAlert("Missing Password", "Please provide valid Password", "OK");
+             await Shell.Current.DisplayAlert("Missing Password", "Please provide valid Password", "OK");
             IsRunning = false;
-            return;
+            return false;
         }
 
         UserLoginResponse result = await Communication.Instance.UserLoginAsync(UserName.Trim(), Password);
 
         if (result == null)
         {
-            await Shell.Current.DisplayAlert("Missing Password", "Please provide valid Password", "OK");
+             await Shell.Current.DisplayAlert("Missing Password", "Please provide valid Password", "OK");
             IsRunning = false;
             Settings.Current.LoggedIn = false;
-            return;
+            return false;
         }
 
         if (!result.Success)
         {
-            await Shell.Current.DisplayAlert("Lgin in failed", result.Message, "OK");
+             await Shell.Current.DisplayAlert("Lgin in failed", result.Message, "OK");
             IsRunning = false;
-            return;
+            return false;
         }
 
         Settings.Current.LoggedIn = true;
@@ -69,8 +68,9 @@ public partial class LoginPageViewModel : BaseViewModel
 
             };
 
+        return true;
         // await Shell.Current.DisplayAlert("Lgin in OK", result.Message, "OK");
-          await Shell.Current.GoToAsync($"{nameof(AddTransactionPage)}");
+        //  await Shell.Current.GoToAsync($"{nameof(AddTransactionPage)}");
 
     }
 
@@ -97,6 +97,6 @@ public partial class LoginPageViewModel : BaseViewModel
 
     public async Task GotoPocketOperation()
     {
-        await Shell.Current.GoToAsync($"{nameof(PocketOperationPage)}");
+        await Shell.Current.GoToAsync($"{nameof(AddTransactionPage)}");
     }
 }

@@ -530,14 +530,18 @@ namespace PocketBookServer.Services
                     .GroupBy(t => new
                     {
                         DateTime.Parse(t.Date, CultureInfo.InvariantCulture).Date.Year,
-                        DateTime.Parse(t.Date, CultureInfo.InvariantCulture).Date.Month
+                        DateTime.Parse(t.Date, CultureInfo.InvariantCulture).Date.Month,
+                        t.UserId,
+                        t.Identification
                     })
                     .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month) // optional
                     .Select(group => new DailySummary
                     {
                         Date = $"{ group.Key.Year} - {group.Key.Month}",
+                        UserName = UserName(group.Key.UserId),
+                        Identify = group.Key.Identification,
                         TotalIncome = group.Where(t => t.IsIncome).Sum(t => t.Amount),
-                        TotalExpense = group.Where(t => !t.IsIncome).Sum(t => t.Amount)
+                        TotalExpense = group.Where(t => !t.IsIncome).Sum(t => t.Amount),
                     })
                     .ToList();
 

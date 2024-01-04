@@ -183,6 +183,9 @@
   <data name="AddTranscation_Title" xml:space="preserve">
     <value>Add Record</value>
   </data>
+  <data name="Advance_Report_Title" xml:space="preserve">
+    <value>Report</value>
+  </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -366,6 +369,9 @@
   <data name="SignIn" xml:space="preserve">
     <value>Register</value>
   </data>
+  <data name="Table_Identify_Header" xml:space="preserve">
+    <value>Identify</value>
+  </data>
   <data name="ThemeText" xml:space="preserve">
     <value>Theme</value>
   </data>
@@ -386,5 +392,8 @@
   </data>
   <data name="UserName_Hint" xml:space="preserve">
     <value>Enter your UserName</value>
+  </data>
+  <data name="UserValidWarning" xml:space="preserve">
+    <value>Dear guest,you need login first.</value>
   </data>
 </root>

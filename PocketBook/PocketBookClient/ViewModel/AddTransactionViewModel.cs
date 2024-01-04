@@ -14,10 +14,35 @@ namespace PocketBookClient.ViewModel
         public ObservableCollection<UserTransaction> TransactionList { get; } = new ObservableCollection<UserTransaction>();
         private const int RecentlyDaysDefine = 7;
 
+        [ObservableProperty]
+        private bool contentVisible;
+        [ObservableProperty]
+        private bool warningVisible;
+
         public AddTransactionViewModel()
         {
+            if (!CheckValidUser()) return;
             Init();
             GetRecentlyRecord();
+            GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
+            GetCurrentIdentification();
+        }
+
+        private bool CheckValidUser()
+        {
+            if (Settings.Current.CurrentUserSetting == null || string.IsNullOrEmpty(Settings.Current.CurrentUserSetting.UserName))
+            {
+                ContentVisible = false;
+                WarningVisible = true;
+
+                return false;
+            }
+            else
+            {
+                ContentVisible = true;
+                WarningVisible = false;
+                return true;
+            }
         }
 
         private void Init()
@@ -81,6 +106,10 @@ namespace PocketBookClient.ViewModel
 
         public async void RefreshModel()
         {
+            if (Settings.Current.CurrentUserSetting == null || string.IsNullOrEmpty(Settings.Current.CurrentUserSetting.UserName))
+            {
+                return;
+            }
             GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
             GetCurrentIdentification();
         }
@@ -245,6 +274,7 @@ namespace PocketBookClient.ViewModel
             if(response!=null && response.Success)
             {
                 Init();
+                GetRecentlyRecord();
             }
             else
             {

@@ -4,8 +4,11 @@
              x:Class="PocketBookClient.View.AddTransactionPage"
              xmlns:data="clr-namespace:PocketBookClient.Data"
              xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
+             Shell.FlyoutBehavior="Flyout"
+             Shell.NavBarIsVisible="True"
              Title="Home"
-             x:DataType="viewmodel:AddTransactionViewModel">
+             x:DataType="viewmodel:AddTransactionViewModel"
+             >
     <ScrollView  >
         <Grid
         ColumnDefinitions="*"
@@ -134,4 +137,11 @@ Command="{Binding UpdateTransactionCommand}"></Button>
             </CollectionView>
         </Grid>
     </ScrollView>
+
+
+    <!--<Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="True"
+                            IsVisible="True"/>
+    </Shell.BackButtonBehavior>-->
+
 </ContentPage>

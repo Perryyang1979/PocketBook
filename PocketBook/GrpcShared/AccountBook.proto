@@ -76,6 +76,8 @@ message DailySummary {
   string date = 1;
   double totalIncome = 2;
   double totalExpense = 3;
+  string UserName  = 4;
+  string Identify = 5;
 }
 
 message CategorySummary {

@@ -12,8 +12,23 @@ namespace PocketBookClient.Services
             var listEntry = new List<ChartEntry>();
             var listEntry2 = new List<ChartEntry>();
 
+            Dictionary<string,MonthlySummary> monthlySummaryTotal = new Dictionary<string, MonthlySummary>();
 
-            foreach (var monthsummary in monthSummaryList)
+            foreach(var monthlySummary in monthSummaryList)
+            {
+                if(monthlySummaryTotal.ContainsKey(monthlySummary.Date))
+                {
+                    monthlySummaryTotal[monthlySummary.Date].TotalIncome += monthlySummary.TotalIncome;
+                    monthlySummaryTotal[monthlySummary.Date].TotalExpense += monthlySummary.TotalExpense;
+                }
+                else
+                {
+                    monthlySummaryTotal.Add(monthlySummary.Date, monthlySummary);
+                }
+            }
+
+
+            foreach (var monthsummary in monthlySummaryTotal.Values)
             {
                 listEntry.Add(new ChartEntry((float)monthsummary.TotalIncome)
                 {

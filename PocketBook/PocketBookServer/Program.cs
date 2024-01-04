@@ -1,7 +1,6 @@
 global using Grpc.Core;
 global using GrpcShared;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using PocketBookServer.Data;
 using PocketBookServer.Services;
 

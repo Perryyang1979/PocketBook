@@ -6,16 +6,15 @@
     xmlns:view="clr-namespace:PocketBookClient.View"
     xmlns:local="clr-namespace:PocketBookClient"
     Shell.FlyoutBehavior="Flyout"
-    Shell.TabBarIsVisible="false"
->
+    Shell.TabBarIsVisible="false">
 
     <Shell.BackButtonBehavior>
-        <BackButtonBehavior IsEnabled="false" IsVisible="false"/>
+        <BackButtonBehavior IsEnabled="True" IsVisible="false"/>
     </Shell.BackButtonBehavior>
 
     <Shell.FlyoutHeader>
         <VerticalStackLayout>
-        <Image Source="me.png" WidthRequest="100"></Image>
+        <Image Source="me.png" WidthRequest="100" HeightRequest="200"></Image>
             <Label Text="{Binding LoginUserName}" HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}"></Label>
         </VerticalStackLayout>
     </Shell.FlyoutHeader>
@@ -23,9 +22,14 @@
 
     <Shell.FlyoutFooter>
         <VerticalStackLayout Margin="20">
-            <Button x:Name="logoutButton" Style="{StaticResource ButtonOutline}" Text="{Binding LocalizationResourceManager[LogOut], Mode=OneWay}" WidthRequest="100" HeightRequest="30" Margin="10"
+            <Button x:Name="logoutButton" Style="{StaticResource ButtonOutline}" Text="{Binding LocalizationResourceManager[LogOut], Mode=OneWay}" WidthRequest="100" HeightRequest="40" Margin="10"
                     Clicked="logoutButton_Clicked"
+                    IsVisible="{Binding LogoutButtonVisible}"
                     ></Button>
+            <Button x:Name="loginButton" Style="{StaticResource ButtonOutline}" Text="{Binding LocalizationResourceManager[Login], Mode=OneWay}" WidthRequest="100" HeightRequest="40" Margin="10"
+         Clicked="logoutButton_Clicked"
+         IsVisible="{Binding LoginButtonVisible}"
+         ></Button>
             <Label Text="@Copyright Mr.Yang-2024" HorizontalTextAlignment="Center"></Label>
         </VerticalStackLayout>
     </Shell.FlyoutFooter>
@@ -97,33 +101,22 @@
     </Shell.Resources>
 
 
-    <ShellItem Route="LoginPage" FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate view:LoginPage}"/>
+    <ShellItem Route="LoginPage" FlyoutItemIsVisible="false">
+        <ShellContent ContentTemplate="{DataTemplate view:LoginPage}" 
+                     />
     </ShellItem>
 
 
-
-    <!--<FlyoutItem Title="Login">
-        <ShellContent
-        ContentTemplate="{DataTemplate view:LoginPage}"
-        Route="LoginPage" />
-    </FlyoutItem>-->
-
-
-    <FlyoutItem  Title="Home" FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent Icon="home.png" Title="Home"
+    <FlyoutItem Title="Home" FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Icon="home.png" Title="Home" IsVisible="{Binding HomeItemEnable}"
         ContentTemplate="{DataTemplate view:AddTransactionPage}"
         Route="AddTransactionPage" />
-    <!--</FlyoutItem>
-    <FlyoutItem >-->
 
-    <!--</FlyoutItem>--><!--
-    <FlyoutItem >-->
-        <ShellContent Icon="report.png" Title="Report"
+        <ShellContent Icon="report.png" Title="Report"  IsVisible="{Binding HomeItemEnable}"
         ContentTemplate="{DataTemplate view:AdvancedReportPage}"
         Route="AdvancedReportPage" />
-    
-        <ShellContent Icon="me.png" Title="Me"
+
+        <ShellContent Icon="me.png" Title="Me" IsVisible="{Binding HomeItemEnable}"
                ContentTemplate="{DataTemplate view:UserInfoPage}"
     Route="UserInfoPage"  />
     

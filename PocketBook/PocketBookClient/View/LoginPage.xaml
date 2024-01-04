@@ -7,7 +7,7 @@
 
     <VerticalStackLayout Margin="10" Spacing="10" >
         <VerticalStackLayout Padding="20" CompressedLayout.IsHeadless="True">
-            <Image x:Name="logo" HeightRequest="200" MinimumWidthRequest="300" WidthRequest="600" Source="family_head.jpg" />
+            <Image x:Name="logo" HeightRequest="100" MinimumWidthRequest="300" WidthRequest="600" Source="family_head.jpg" />
             <Label Text="{Binding LocalizationResourceManager[LoginPageTitle], Mode=OneWay}" TextColor="{StaticResource Primary}" FontSize="25"/>
         </VerticalStackLayout>
 
@@ -29,7 +29,7 @@
             <ActivityIndicator HeightRequest="50" IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>
             <Button 
                 x:Name="Signin"
-                Command="{Binding LoginCommand}"
+                Clicked="Signin_Clicked"
                 Text="{Binding LocalizationResourceManager[Login], Mode=OneWay}"
                 HeightRequest="60"
                 CornerRadius="20"

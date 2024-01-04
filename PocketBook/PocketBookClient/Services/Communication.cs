@@ -195,6 +195,7 @@ namespace PocketBookClient.Services
                 IsIncome = userTransaction.IsIncome,
                 Username = Settings.Current.CurrentUserSetting.UserName,
                 UsergroupId = Settings.Current.CurrentUserSetting.UserGroupId,
+                Identification = userTransaction.IdentifyDescription
             };
 
             MessageResponse response = null;
@@ -223,6 +224,7 @@ namespace PocketBookClient.Services
                 IsIncome = userTransaction.IsIncome,
                 Username = Settings.Current.CurrentUserSetting.UserName,
                 UsergroupId = Settings.Current.CurrentUserSetting.UserGroupId,
+                Identification = userTransaction.IdentifyDescription,
                 Id = userTransaction.Id
             };
 
