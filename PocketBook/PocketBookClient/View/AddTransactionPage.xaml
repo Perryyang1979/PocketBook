@@ -125,11 +125,11 @@ Command="{Binding UpdateTransactionCommand}"></Button>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
                             <!--<BoxView HeightRequest="0.1"  BackgroundColor="Black" Grid.ColumnSpan="5" VerticalOptions="Start"/>-->
-                            <Label Text="{Binding Date}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
-                            <Label Text="{Binding UserName}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1"/>
-                            <Label Text="{Binding Amount}" FontAttributes="Bold" Grid.Row="1" Grid.Column="2"/>
-                            <Label Text="{Binding CurrentInOutLable}" FontAttributes="Bold" Grid.Row="1" Grid.Column="3"/>
-                            <Label Text="{Binding Category}" FontAttributes="Bold" Grid.Row="1" Grid.Column="4"/>
+                            <Label Text="{Binding Date}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0" Style="{StaticResource  BaseLabel }"/>
+                            <Label Text="{Binding UserName}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1" Style="{StaticResource  BaseLabel }"/>
+                            <Label Text="{Binding Amount}" FontAttributes="Bold" Grid.Row="1" Grid.Column="2" Style="{StaticResource  BaseLabel }"/>
+                            <Label Text="{Binding CurrentInOutLable}" FontAttributes="Bold" Grid.Row="1" Grid.Column="3" Style="{StaticResource  BaseLabel }"/>
+                            <Label Text="{Binding Category}" FontAttributes="Bold" Grid.Row="1" Grid.Column="4" Style="{StaticResource  BaseLabel }"/>
 
                         </Grid>
                     </DataTemplate>

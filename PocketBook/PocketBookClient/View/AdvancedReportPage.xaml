@@ -118,10 +118,6 @@
 
                     <StackLayout Orientation="Vertical" Margin="10">
 
-                        <!--<local:MultiCheckBoxContentView Title ="{Binding LocalizationResourceManager[AddTranscation_Identify_lable], Mode=OneWay}"
-                      ItemsOptionSource="{Binding CurrrentIdentifications, Mode=TwoWay}" SelectedOptionItems="{Binding SelectedIdentifications,Mode=TwoWay}" MinimumWidthRequest="300"/>-->
-
-
                         <local:MultiCheckBoxContentView Title ="{Binding LocalizationResourceManager[PocketOperation_Header_Category], Mode=OneWay}"
                       ItemsOptionSource="{Binding CurrentCategorys, Mode=TwoWay}" SelectedOptionItems="{Binding SelectedCurrentCategorys,Mode=TwoWay}" MinimumWidthRequest="300" />
 

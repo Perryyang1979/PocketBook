@@ -49,6 +49,8 @@ namespace PocketBookClient.ViewModel
         [ObservableProperty]
         bool monthlyChartPanelVisible = false;
 
+        private const int ThreholdCount = 4;
+
         public AdvancedReportViewModel()
         {
             Init();
@@ -136,7 +138,7 @@ namespace PocketBookClient.ViewModel
                         });
                     }
                 }
-                if (MonthSummaryList.Count >= 2)
+                if (MonthSummaryList.Count >= ThreholdCount)
                 {
                     MonthlyChartEnabled = true;
                 }
@@ -190,8 +192,6 @@ namespace PocketBookClient.ViewModel
                     }
                 }
             }
-
-            // LoadMonthChart();
         }
 
         [RelayCommand]
@@ -261,15 +261,12 @@ namespace PocketBookClient.ViewModel
 
             var incomeEntries = series[0].Entries;
 
-            if (incomeEntries.Count() >= 3)
+            if (incomeEntries.Count() >= 2)
             {
                 MonthSummaryIncomeChartVisible = true;
-                IncomeChart = new LineChart
-                {
-                    Entries = incomeEntries,
-                };
-                    //  IncomeChart = new LineChart { Entries = incomeEntries, IsAnimated = true, AnimationDuration = TimeSpan.FromSeconds(1.5f) };
-                }
+
+                IncomeChart = new LineChart { Entries = incomeEntries, IsAnimated = true, AnimationDuration = TimeSpan.FromSeconds(1.5f) };
+            }
             else
             {
                 IncomeChart = null;
@@ -283,7 +280,7 @@ namespace PocketBookClient.ViewModel
             }
 
             var expenseEntries = series[1].Entries;
-            if (expenseEntries.Count() >= 3)
+            if (expenseEntries.Count() >= 2)
             {
                 MonthSummaryExpenseChartVisible = true;
                 ExpenseChart = new LineChart { Entries = expenseEntries, IsAnimated = true, AnimationDuration = TimeSpan.FromSeconds(1.5f) };

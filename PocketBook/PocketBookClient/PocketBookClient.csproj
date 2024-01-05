@@ -12,7 +12,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>PocketBookClient</ApplicationTitle>
+		<ApplicationTitle>Pocket Book</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.pocketbookclient</ApplicationId>
@@ -32,15 +32,16 @@
 
 	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios'">
 	  <CodesignKey>Apple Development: Created via API (3N5CNP3VS4)</CodesignKey>
-	  <CodesignProvision>VS: WildCard Development</CodesignProvision>
+	  <CodesignProvision>VS: com.companyname.pocketbookclient Development</CodesignProvision>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
-
+		<MauiIcon Include="Resources\AppIcon\myappicon.svg">
+		  <ForegroundFile>Resources\AppIcon\myappiconfg.svg</ForegroundFile>
+		</MauiIcon>
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="White" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -62,6 +63,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\AppIcon\myappicon.svg" />
 	  <None Remove="Resources\Images\mathematics.png" />
 	  <None Remove="Resources\Images\math_title.jpg" />
 	</ItemGroup>
