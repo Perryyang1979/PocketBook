@@ -20,7 +20,7 @@ public partial class LoginPageViewModel : BaseViewModel
 
     [ObservableProperty]
     public string password;
-
+    [RelayCommand]
     public async Task<bool> LoginAsync()
     {
         if (IsRunning)
@@ -67,11 +67,9 @@ public partial class LoginPageViewModel : BaseViewModel
                 UserGroupId = result.UsergroupId,
 
             };
-
+        await Shell.Current.GoToAsync($"//{nameof(AddTransactionPage)}");
         return true;
         // await Shell.Current.DisplayAlert("Lgin in OK", result.Message, "OK");
-        //  await Shell.Current.GoToAsync($"{nameof(AddTransactionPage)}");
-
     }
 
     [RelayCommand]

@@ -183,6 +183,9 @@
   <data name="AddTranscation_Title" xml:space="preserve">
     <value>Add Record</value>
   </data>
+  <data name="Advance_Report_MonthSummary" xml:space="preserve">
+    <value>Records in Current Month</value>
+  </data>
   <data name="Advance_Report_Title" xml:space="preserve">
     <value>Report</value>
   </data>

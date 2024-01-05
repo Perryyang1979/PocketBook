@@ -7,6 +7,7 @@ using Microcharts.Maui;
 using ZXing.Net.Maui;
 using ZXing.Net.Maui.Controls;
 using Grpc.Net.Client.Web;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace PocketBookClient;
 
@@ -20,6 +21,7 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
             .UseMicrocharts()
+            .UseSkiaSharp()
             .UseBarcodeReader()
             .ConfigureFonts(fonts =>
 			{

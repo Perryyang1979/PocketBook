@@ -29,7 +29,7 @@
             <ActivityIndicator HeightRequest="50" IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>
             <Button 
                 x:Name="Signin"
-                Clicked="Signin_Clicked"
+                Command="{Binding Path=LoginCommand}"
                 Text="{Binding LocalizationResourceManager[Login], Mode=OneWay}"
                 HeightRequest="60"
                 CornerRadius="20"

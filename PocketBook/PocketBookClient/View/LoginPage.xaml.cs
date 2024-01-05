@@ -26,20 +26,20 @@ public partial class LoginPage : ContentPage
 
     }
 
-    private async void Signin_Clicked(object sender, EventArgs e)
-    {
-        var vm = BindingContext as LoginPageViewModel;
-        var result =await  vm?.LoginAsync();
+    //private async void Signin_Clicked(object sender, EventArgs e)
+    //{
+    //    var vm = BindingContext as LoginPageViewModel;
+    //    var result =await  vm?.LoginAsync();
 
-        if( result) {
-            // await Shell.Current.GoToAsync($"{nameof(AddTransactionPage)}");
-            var navPage = new NavigationPage( (ServiceHelper.GetService<AddTransactionPage>()));
-            navPage.Title = "Home";
-            try
-            {
-                await Navigation.PushAsync(navPage);
-            }catch(Exception ex) { 
-                Console.Write(ex); }
-        }
-    }
+    //    if( result) {
+    //         await Shell.Current.GoToAsync($"//{nameof(AddTransactionPage)}");
+    //        //var navPage = new NavigationPage( (ServiceHelper.GetService<AddTransactionPage>()));
+    //        //navPage.Title = "Home";
+    //        //try
+    //        //{
+    //        //    await Navigation.PushAsync(navPage);
+    //        //}catch(Exception ex) { 
+    //        //    Console.Write(ex); }
+    //    }
+    //}
 }

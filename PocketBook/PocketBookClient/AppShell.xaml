@@ -101,9 +101,8 @@
     </Shell.Resources>
 
 
-    <ShellItem Route="LoginPage" FlyoutItemIsVisible="false">
-        <ShellContent ContentTemplate="{DataTemplate view:LoginPage}" 
-                     />
+    <ShellItem  FlyoutItemIsVisible="false">
+        <ShellContent ContentTemplate="{DataTemplate view:LoginPage}" Route="LoginPage"/>
     </ShellItem>
 
 
@@ -118,7 +117,7 @@
 
         <ShellContent Icon="me.png" Title="Me" IsVisible="{Binding HomeItemEnable}"
                ContentTemplate="{DataTemplate view:UserInfoPage}"
-    Route="UserInfoPage"  />
+           Route="UserInfoPage"  />
     
         <ShellContent Icon="setting.png" Title="Setting"
         ContentTemplate="{DataTemplate view:SettingPage}"

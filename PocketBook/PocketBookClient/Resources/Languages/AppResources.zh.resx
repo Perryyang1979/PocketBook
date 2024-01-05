@@ -186,6 +186,9 @@
   <data name="AddTranscation_Title1" xml:space="preserve">
     <value>记账</value>
   </data>
+  <data name="Advance_Report_MonthSummary" xml:space="preserve">
+    <value>当前月所有记录</value>
+  </data>
   <data name="Advance_Report_Title" xml:space="preserve">
     <value>个性化报表</value>
   </data>

@@ -28,7 +28,7 @@ public partial class AppShell : Shell
     private void logoutButton_Clicked(object sender, EventArgs e)
     {
           Settings.Current.LoggedIn = false;
-           Settings.Current.CurrentUserSetting = null;
+          Settings.Current.CurrentUserSetting = null;
           Task.Delay(1);
           Shell.Current.GoToAsync($"{nameof(LoginPage)}");
     }
