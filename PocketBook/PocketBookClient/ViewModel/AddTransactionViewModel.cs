@@ -12,7 +12,7 @@ namespace PocketBookClient.ViewModel
 
         private readonly string IsExpense = "False";
         public ObservableCollection<UserTransaction> TransactionList { get; } = new ObservableCollection<UserTransaction>();
-        private const int RecentlyDaysDefine = 7;
+        private const int RecentlyDaysDefine = 10;
 
         [ObservableProperty]
         private bool contentVisible;
@@ -23,9 +23,9 @@ namespace PocketBookClient.ViewModel
         {
             if (!CheckValidUser()) return;
             Init();
-            GetRecentlyRecord();
-            GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
-            GetCurrentIdentification();
+         //   GetRecentlyRecord();
+         //   GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
+        //    GetCurrentIdentification();
         }
 
         private bool CheckValidUser()
@@ -110,6 +110,7 @@ namespace PocketBookClient.ViewModel
             {
                 return;
             }
+            GetRecentlyRecord();
             GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
             GetCurrentIdentification();
         }
@@ -144,6 +145,7 @@ namespace PocketBookClient.ViewModel
                 requestIsSending = false;
                 if(Categories.Any())
                 {
+                    Categories =new  ObservableCollection<TransactionCategory>( Categories.OrderBy(c=>c.CategoryDescription));
                     CategorySelectedIndex = 0;
                 }
             }
@@ -173,10 +175,11 @@ namespace PocketBookClient.ViewModel
                     
                 }
                 identificationrequestIsSending = false;
-                //if (Identifications.Any())
-                //{
-                //    IdentificationSelectedIndex = 0;
-                //}
+                if (Identifications.Any())
+                {
+                    Identifications = new ObservableCollection<TransactionIdentification>(Identifications.OrderByDescending(c => c.IdentifyDescription));
+                    IdentificationSelectedIndex = 0;
+                }
             }
         }
         [ObservableProperty]
@@ -247,11 +250,11 @@ namespace PocketBookClient.ViewModel
         [RelayCommand]
         async Task AddTransactionAsync()
         {
-            //if(IdentificationSelectedIndex<0)
-            //{
-            //    await Shell.Current.DisplayAlert("Add Record Fail ", "Identification need be specified ", "OK");
-            //    return;
-            //}
+            if (IdentificationSelectedIndex < 0)
+            {
+                await Shell.Current.DisplayAlert("Add Record Fail ", "Identification need be specified ", "OK");
+                return;
+            }
 
             if (CategorySelectedIndex < 0)
             {

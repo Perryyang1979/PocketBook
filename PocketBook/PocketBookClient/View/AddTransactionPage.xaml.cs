@@ -11,9 +11,12 @@ public partial class AddTransactionPage : ContentPage
     }
 
 
-    //protected override void OnAppearing()
-    //{
-    //    base.OnAppearing();
-    //    Shell.SetNavBarIsVisible(this, true);
-    //}
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+       // Shell.SetNavBarIsVisible(this, true);
+
+        var viewModel = BindingContext as AddTransactionViewModel;
+        viewModel?.RefreshModel();
+    }
 }

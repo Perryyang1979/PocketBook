@@ -4,6 +4,7 @@ using PocketBookClient.Data;
 using PocketBookClient.Services;
 using PocketBookClient.UI;
 using SkiaSharp;
+using PocketBookClient.Helper;
 
 namespace PocketBookClient.ViewModel
 {
@@ -104,7 +105,7 @@ namespace PocketBookClient.ViewModel
                             Category = responseInfo.Category,
                             IsIncome = responseInfo.IsIncome,
                             Comments = responseInfo.Comments,
-                            Amount = responseInfo.Amount,
+                            Amount = DoubleHelper.Round(responseInfo.Amount),
                             UserName = responseInfo.Username,
                             IdentifyDescription = responseInfo.Identification
                         });
@@ -131,8 +132,8 @@ namespace PocketBookClient.ViewModel
                         MonthSummaryList.Add(new MonthlySummary()
                         {
                             Date = responseInfo.Date,
-                            TotalIncome = responseInfo.TotalIncome,
-                            TotalExpense = responseInfo.TotalExpense,
+                            TotalIncome = DoubleHelper.Round( responseInfo.TotalIncome),
+                            TotalExpense = DoubleHelper.Round(responseInfo.TotalExpense),
                             Identify = responseInfo.Identify,
                             UserName = responseInfo.UserName
                         });
@@ -168,8 +169,8 @@ namespace PocketBookClient.ViewModel
                     {
                         Date = responseInfo.Date,
                         Category = responseInfo.Category,
-                        TotalIncome = double.IsNaN(responseInfo.TotalIncome) ? 0 : responseInfo.TotalIncome,
-                        TotalExpense = double.IsNaN(responseInfo.TotalExpense) ? 0 : responseInfo.TotalExpense,
+                        TotalIncome = double.IsNaN(responseInfo.TotalIncome) ? 0 : DoubleHelper.Round( responseInfo.TotalIncome),
+                        TotalExpense = double.IsNaN(responseInfo.TotalExpense) ? 0 : DoubleHelper.Round(responseInfo.TotalExpense),
                         Identification = responseInfo.Identification
 
                     });
