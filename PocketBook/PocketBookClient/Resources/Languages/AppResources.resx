@@ -186,8 +186,14 @@
   <data name="Advance_Report_MonthSummary" xml:space="preserve">
     <value>Records in Current Month</value>
   </data>
+  <data name="Advance_Report_MonthSummaryByPerson" xml:space="preserve">
+    <value> User Finance Summary Current Year</value>
+  </data>
   <data name="Advance_Report_Title" xml:space="preserve">
     <value>Report</value>
+  </data>
+  <data name="Advance_Report_YealySummary_Balance" xml:space="preserve">
+    <value>Balance</value>
   </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>

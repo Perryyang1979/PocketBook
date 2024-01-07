@@ -43,6 +43,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
+                <!--Monthly summary-->
                 <Label  Text="{Binding LocalizationResourceManager[PocketOperation_Month_ShowReportTitle], Mode=OneWay}" Margin="0,10" HorizontalOptions="Center" TextColor="{StaticResource Primary}" FontSize="Micro"/>
                 <Grid ColumnDefinitions="30*,35*,35*,35*,35*" >
                     <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Date], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
@@ -70,7 +71,57 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
+                <!--Yearly summary-->
+                <Label  Text="{Binding LocalizationResourceManager[Advance_Report_MonthSummaryByPerson], Mode=OneWay}" Margin="0,10" HorizontalOptions="Center" TextColor="{StaticResource Primary}" FontSize="Micro"/>
+                <Grid ColumnDefinitions="30*,35*,35*,35*" >
+                    <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_User], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Income], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Expense], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                    <Label Text="{Binding LocalizationResourceManager[Advance_Report_YealySummary_Balance], Mode=OneWay}" Grid.Row="1" Grid.Column="3" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                </Grid>
 
+                <CollectionView 
+                ItemsSource="{Binding YearlySummaryList}"
+                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="data:YearlySummary">
+                            <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="30*,35*,35*,35*" VerticalOptions="FillAndExpand">
+                                <Label Text="{Binding UserName}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
+                                <Label Text="{Binding TotalIncome}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1"/>
+                                <Label Text="{Binding TotalExpense}" FontAttributes="Bold" Grid.Row="1" Grid.Column="2"/>
+                                <Label Text="{Binding Balance}" FontAttributes="Bold" Grid.Row="1" Grid.Column="3"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!--Optional summary Identify-->
+                <StackLayout IsVisible="{Binding YearlyIdentificationSummarylVisible}">
+
+                    <Grid ColumnDefinitions="30*,35*,35*,35*" >
+                        <Label Text="{Binding LocalizationResourceManager[Table_Identify_Header], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                        <Label Text="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Income], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                        <Label Text="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Expense], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                        <Label Text="{Binding LocalizationResourceManager[Advance_Report_YealySummary_Balance], Mode=OneWay}" Grid.Row="1" Grid.Column="3" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                    </Grid>
+
+                    <CollectionView 
+ ItemsSource="{Binding YearlySpecialIdentifySummaryList}"
+ SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="data:YearlySummary">
+                                <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="30*,35*,35*,35*" VerticalOptions="FillAndExpand">
+                                    <Label Text="{Binding UserName}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
+                                    <Label Text="{Binding TotalIncome}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1"/>
+                                    <Label Text="{Binding TotalExpense}" FontAttributes="Bold" Grid.Row="1" Grid.Column="2"/>
+                                    <Label Text="{Binding Balance}" FontAttributes="Bold" Grid.Row="1" Grid.Column="3"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </StackLayout>
+                <!--Optional report-->
                 <HorizontalStackLayout HorizontalOptions="CenterAndExpand">
                     <Label  Text="{Binding LocalizationResourceManager[PocketOperation_Month_ShowChart_Label_Switch], Mode=OneWay}" Margin="5,10" 
                               IsVisible="{Binding MonthlyChartEnabled}"

@@ -11,8 +11,10 @@ namespace PocketBookClient.ViewModel
     public partial class AdvancedReportViewModel:BaseViewModel
     {
         public ObservableCollection<UserTransaction> MonthTransactionList { get; } = new ObservableCollection<UserTransaction>();
-
         public ObservableCollection<MonthlySummary> MonthSummaryList { get; } = new ObservableCollection<MonthlySummary>();
+        public ObservableCollection<YearlySummary> YearlySummaryList { get; } = new ObservableCollection<YearlySummary>();
+
+        public ObservableCollection<YearlySummary> YearlySpecialIdentifySummaryList { get; } = new ObservableCollection<YearlySummary>();
 
         public ObservableCollection<MonthlyCategorySummary> MonthCategorySummaryList { get; } = new ObservableCollection<MonthlyCategorySummary>();
         public ObservableCollection<SelectOption> SelectedCurrentCategorys { get; set; } = new ObservableCollection<SelectOption>();
@@ -49,8 +51,11 @@ namespace PocketBookClient.ViewModel
         bool monthlyChartEnabled = false;
         [ObservableProperty]
         bool monthlyChartPanelVisible = false;
+        [ObservableProperty]
+        bool yearlyIdentificationSummarylVisible = false;
 
         private const int ThreholdCount = 4;
+        private const string FamilyName = "  ";
 
         public AdvancedReportViewModel()
         {
@@ -139,6 +144,8 @@ namespace PocketBookClient.ViewModel
                         });
                     }
                 }
+
+                GenerateYearlySummary();
                 if (MonthSummaryList.Count >= ThreholdCount)
                 {
                     MonthlyChartEnabled = true;
@@ -152,6 +159,68 @@ namespace PocketBookClient.ViewModel
             {
                 Console.WriteLine(ex);
             }
+        }
+
+        private void GenerateYearlySummary()
+        {
+            YearlySummaryList.Clear();
+            if(MonthSummaryList.Count==0)
+            {
+                return;
+            }
+
+
+            Dictionary<string, YearlySummary> yearlySummaryTotal = new Dictionary<string, YearlySummary>();
+            Dictionary<string, YearlySummary> yearlyIdentifySummaryTotal = new Dictionary<string, YearlySummary>();
+
+            yearlySummaryTotal.Add(FamilyName, new YearlySummary() { UserName = FamilyName });
+            foreach (var monthlySummary in MonthSummaryList)
+            {
+                if (yearlySummaryTotal.ContainsKey(monthlySummary.UserName))
+                {
+                    yearlySummaryTotal[monthlySummary.UserName].TotalIncome += monthlySummary.TotalIncome;
+                    yearlySummaryTotal[monthlySummary.UserName].TotalExpense += monthlySummary.TotalExpense;
+                }
+                else
+                {
+                    yearlySummaryTotal.Add(monthlySummary.UserName, new YearlySummary(monthlySummary));
+                }
+
+                if (yearlyIdentifySummaryTotal.ContainsKey(monthlySummary.Identify))
+                {
+                    yearlyIdentifySummaryTotal[monthlySummary.Identify].TotalIncome += monthlySummary.TotalIncome;
+                    yearlyIdentifySummaryTotal[monthlySummary.Identify].TotalExpense += monthlySummary.TotalExpense;
+                }
+                else
+                {
+                    yearlyIdentifySummaryTotal.Add(monthlySummary.Identify, new YearlySummary()
+                    { 
+                        UserName = monthlySummary.Identify,
+                        TotalExpense = monthlySummary.TotalExpense,
+                        TotalIncome = monthlySummary.TotalIncome,
+                    });
+                }
+
+
+                yearlySummaryTotal[FamilyName].TotalIncome += monthlySummary.TotalIncome;
+                yearlySummaryTotal[FamilyName].TotalExpense += monthlySummary.TotalExpense;
+            }
+
+                  foreach(var summary in yearlySummaryTotal.Values.OrderByDescending(y=>y.UserName))
+                {
+                    YearlySummaryList.Add(summary);
+                }
+
+                foreach (var summary in yearlyIdentifySummaryTotal.Values.OrderBy(y => y.UserName))
+                {
+                    YearlySpecialIdentifySummaryList.Add(summary);
+                }
+
+                if (YearlySpecialIdentifySummaryList.Count > 1)
+                {
+                    YearlyIdentificationSummarylVisible = true;
+                }
+                else YearlyIdentificationSummarylVisible = false;
         }
 
         private async void GetMonthCategorySummary()
