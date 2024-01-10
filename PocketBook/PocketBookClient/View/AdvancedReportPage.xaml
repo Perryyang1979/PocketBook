@@ -106,8 +106,8 @@
                     </Grid>
 
                     <CollectionView 
- ItemsSource="{Binding YearlySpecialIdentifySummaryList}"
- SelectionMode="None">
+                         ItemsSource="{Binding YearlySpecialIdentifySummaryList}"
+                         SelectionMode="None">      
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="data:YearlySummary">
                                 <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="30*,35*,35*,35*" VerticalOptions="FillAndExpand">
@@ -173,6 +173,37 @@
                       ItemsOptionSource="{Binding CurrentCategorys, Mode=TwoWay}" SelectedOptionItems="{Binding SelectedCurrentCategorys,Mode=TwoWay}" MinimumWidthRequest="300" />
 
                     </StackLayout>
+
+                    <!--Optional CATELOG SUMMARY-->
+                    <StackLayout IsVisible="{Binding GridCategorySummaryVisible}">
+
+                        <Grid ColumnDefinitions="30*,35*,35*,35*,35*" >
+                            <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Date], Mode=OneWay}" Grid.Row="0" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                            <Label Text="{Binding TitleOfFirstCategory, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Padding="10" Style="{StaticResource HeadSmallLabel }" />
+                            <Label Text="{Binding TitleOfSecondCategory, Mode=TwoWay}" Grid.Row="0" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                            <Label Text="{Binding TitleOfThirdCategory, Mode=TwoWay}" Grid.Row="0" Grid.Column="3" Padding="10" Style="{StaticResource HeadSmallLabel }" />
+                            <Label Text="{Binding TitleOfFourthCategory, Mode=TwoWay}" Grid.Row="0" Grid.Column="4" Padding="10" Style="{StaticResource HeadSmallLabel }" />
+                        </Grid>
+
+                        <CollectionView 
+                        ItemsSource="{Binding SelectedCategorySummaryList}"
+                        SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="data:GridCategoryData">
+                                    <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="30*,35*,35*,35*,35*" VerticalOptions="FillAndExpand">
+                                        <Label Text="{Binding Date}" FontAttributes="Bold" Grid.Row="0" Grid.Column="0"/>
+                                        <Label Text="{Binding CategoryMoney[0]}" FontAttributes="Bold" Grid.Row="0" Grid.Column="1" IsVisible="{Binding SelectedCategoryColumnVisible[0]}"/>
+                                        <Label Text="{Binding CategoryMoney[1]}" FontAttributes="Bold" Grid.Row="0" Grid.Column="2" IsVisible="{Binding SelectedCategoryColumnVisible[1]}"/>
+                                        <Label Text="{Binding CategoryMoney[2]}" FontAttributes="Bold" Grid.Row="0" Grid.Column="3" IsVisible="{Binding SelectedCategoryColumnVisible[2]}"/>
+                                        <Label Text="{Binding CategoryMoney[3]}" FontAttributes="Bold" Grid.Row="0" Grid.Column="4" IsVisible="{Binding SelectedCategoryColumnVisible[3]}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                    </StackLayout>
+
+
                     <microcharts:ChartView x:Name="categorychartView"   Margin="10,10,10,10"                                                                                                       
                                                      BackgroundColor="White"
                                                      Chart="{Binding CategoryChart}"

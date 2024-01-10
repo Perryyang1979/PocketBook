@@ -68,23 +68,21 @@ namespace PocketBookClient.Services
             };
         }
 
-        public static List<ChartSerie> GetChartSerialFromMonthlyCategoryReport(ObservableCollection<MonthlyCategorySummary> monthSummaryList,  ObservableCollection<SelectOption> selectedCategorys)
+        public static List<ChartSerie> GetChartSerialFromMonthlyCategoryReport(ObservableCollection<GridCategoryData> monthSummaryList,List<string> selectedCategoryDescriptions)
         {
             var listCategorys = new List<ChartSerie>();
 
-            var showLineCount = 0;
-
-            foreach (var selectedCategory in selectedCategorys)
+            var count = selectedCategoryDescriptions.Count(s => !string.IsNullOrEmpty(s));
+            for (var showLineCount =0; showLineCount<count; showLineCount++)
             {
                 var listEntry = new List<ChartEntry>();
 
-
-                foreach (var monthsummary in monthSummaryList.Where(m=>m.Category.Equals( selectedCategory.Name)))
+                foreach (var monthsummary in monthSummaryList)
                 {
-                    listEntry.Add(new ChartEntry((float)(monthsummary.TotalIncome+monthsummary.TotalExpense))
+                    listEntry.Add(new ChartEntry((float)monthsummary.CategoryMoney[showLineCount])
                     {
                         Label = monthsummary.Date,
-                        ValueLabel = (monthsummary.TotalIncome + monthsummary.TotalExpense).ToString(),
+                        ValueLabel = monthsummary.CategoryMoney[showLineCount].ToString(),
                         Color = StandColors[showLineCount%4]
                     });               
                 }
@@ -94,12 +92,11 @@ namespace PocketBookClient.Services
                     var charSerie1 = new ChartSerie()
                     {
                         Entries = listEntry,
-                        Name = selectedCategory.Name,
+                        Name = selectedCategoryDescriptions[showLineCount],
                         Color = StandColors[showLineCount % 4],
                         OtherColor = StandColors[(showLineCount+1) % 4 ]
                     };
 
-                    showLineCount++;
                     listCategorys.Add(charSerie1);
                 }
             }

@@ -45,7 +45,6 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -56,10 +55,13 @@
 
 	<ItemGroup>
 	  <Compile Remove="MainPage.xaml.cs" />
+	  <Compile Remove="ViewModel\PocketOperationViewModel.cs" />
+	  <Compile Remove="View\PocketOperationPage.xaml.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Remove="MainPage.xaml" />
+	  <MauiXaml Remove="View\PocketOperationPage.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -97,12 +99,14 @@
 	  <Compile Update="View\IdentifyListPage.xaml.cs">
 	    <DependentUpon>IdentifyListPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="View\PocketOperationPage.xaml.cs">
-	    <DependentUpon>PocketOperationPage.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="View\ScannerPage.xaml.cs">
 	    <DependentUpon>ScannerPage.xaml</DependentUpon>
 	  </Compile>
+	</ItemGroup>
+	
+
+	<ItemGroup>
+	  <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 	</ItemGroup>
 	
 
@@ -126,9 +130,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\PasswordManagePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="View\PocketOperationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\RegistrationPage.xaml">

@@ -16,8 +16,11 @@ namespace PocketBookClient.ViewModel
 
         public ObservableCollection<YearlySummary> YearlySpecialIdentifySummaryList { get; } = new ObservableCollection<YearlySummary>();
 
+        public List<string> SelectedCategoryDescriptions { get; } = new List<string>();
+
+        public List<bool> SelectedCategoryColumnVisible = new List<bool>();
         public ObservableCollection<MonthlyCategorySummary> MonthCategorySummaryList { get; } = new ObservableCollection<MonthlyCategorySummary>();
-        public ObservableCollection<SelectOption> SelectedCurrentCategorys { get; set; } = new ObservableCollection<SelectOption>();
+        public ObservableCollection<GridCategoryData> SelectedCategorySummaryList { get; } = new ObservableCollection<GridCategoryData>();
 
         [ObservableProperty]
         private Microcharts.Chart incomeChart;
@@ -53,9 +56,29 @@ namespace PocketBookClient.ViewModel
         bool monthlyChartPanelVisible = false;
         [ObservableProperty]
         bool yearlyIdentificationSummarylVisible = false;
+        [ObservableProperty]
+        bool gridCategorySummaryVisible = false;
+
+        //grid not support array
+        //[ObservableProperty]
+        // List<string> selectedCategoryDescriptions  = new List<string>();
+
+        [ObservableProperty]
+         ObservableCollection<SelectOption> selectedCurrentCategorys  = new ObservableCollection<SelectOption>();
+
+        [ObservableProperty]
+        string titleOfFirstCategory = string.Empty;
+        [ObservableProperty]
+        string titleOfSecondCategory = string.Empty;
+        [ObservableProperty]
+        string titleOfThirdCategory = string.Empty;
+        [ObservableProperty]
+        string titleOfFourthCategory = string.Empty;
+
 
         private const int ThreholdCount = 4;
         private const string FamilyName = "  ";
+        private const int SupportItemsCount = 4;
 
         public AdvancedReportViewModel()
         {
@@ -74,22 +97,101 @@ namespace PocketBookClient.ViewModel
             MonthlyChartEnabled = false;
             MonthSummaryIncomeChartVisible = false;
             MonthSummaryExpenseChartVisible = false;
+            YearlyIdentificationSummarylVisible = false;
+            GridCategorySummaryVisible = false;
+
             MonthlyChartPanelVisible = MonthSummaryIncomeChartVisible && MonthSummaryExpenseChartVisible;
             SelectedCurrentCategorys.CollectionChanged += SelectedCurrentCategorys_CollectionChanged;
+        }
+
+        private void  InitGridTitle()
+        {
+             TitleOfFirstCategory = string.Empty;
+             TitleOfSecondCategory = string.Empty;
+             TitleOfThirdCategory = string.Empty;
+             TitleOfFourthCategory = string.Empty;
+        }
+
+        private void SetGridTitle(List<string> titles)
+        {
+           //default make sure 
+           if(titles.Count<4)
+            {
+                for(int i = titles.Count;i<SupportItemsCount;i++)
+                titles.Add(string.Empty);
+            }
+
+            TitleOfFirstCategory = titles[0];
+            TitleOfSecondCategory = titles[1];
+            TitleOfThirdCategory = titles[2];
+            TitleOfFourthCategory = titles[3];
         }
 
 
         private void SelectedCurrentCategorys_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            PopulateGridCategoryDescriptions();
             if (SelectedCurrentCategorys.Count > 0)
             {
                 CategoryChartVisble = true;
-                LoadMonthCategoryChart();
+                GridCategorySummaryVisible = true;
+                PopulateCategoryGridDataSource();
+                if (SelectedCategorySummaryList.Count > 1)
+                {
+                    LoadMonthCategoryChart();
+                }
             }
             else
             {
+                GridCategorySummaryVisible = false;
                 CategoryChart = null;
                 CategoryChartVisble = false;
+            }
+        }
+
+        private void PopulateGridCategoryDescriptions()
+        {
+            InitGridTitle();
+            SelectedCategoryDescriptions.Clear();
+            SelectedCategoryColumnVisible.Clear();
+            for (int i = 0;i< SelectedCurrentCategorys.Count;i++)
+            {
+                SelectedCategoryDescriptions.Add(SelectedCurrentCategorys[i].Name);
+                SelectedCategoryColumnVisible.Add( true);
+            }
+
+            for(int i = SelectedCurrentCategorys.Count;i< SupportItemsCount; i++)
+            {
+                SelectedCategoryColumnVisible.Add(false);
+            }
+
+            SetGridTitle(SelectedCategoryDescriptions);
+        }
+
+        private void PopulateCategoryGridDataSource()
+        {
+            SelectedCategorySummaryList.Clear();
+            Dictionary<string, GridCategoryData> dictionaryCategoryData = new Dictionary<string, GridCategoryData>();
+            for (int i = 0; i< SelectedCategoryDescriptions.Count;i++)
+            {
+                var selectedCategory = SelectedCategoryDescriptions[i];
+                foreach (var monthsummary in MonthCategorySummaryList.Where(m => m.Category.Equals(selectedCategory)))
+                {
+                   if(dictionaryCategoryData.ContainsKey(monthsummary.Date))
+                   {
+                        dictionaryCategoryData[monthsummary.Date].AppendMoney(i, monthsummary.TotalMoney);
+                   }
+                   else
+                   {     var money = new double[4];
+                        money[0] = (double)monthsummary.TotalMoney;
+                        dictionaryCategoryData.Add(monthsummary.Date, new GridCategoryData(monthsummary.Date, money,SelectedCategoryColumnVisible));
+                   }
+                }
+            }
+
+            foreach(var categorydata in dictionaryCategoryData.Values)
+            {
+                SelectedCategorySummaryList.Add(categorydata);
             }
         }
 
@@ -234,15 +336,17 @@ namespace PocketBookClient.ViewModel
                 while (await call.ResponseStream.MoveNext(token))
                 {
                     var responseInfo = call.ResponseStream.Current;
+
+                    var income = double.IsNaN(responseInfo.TotalIncome) ? 0 : DoubleHelper.Round(responseInfo.TotalIncome);
+                    var expense = double.IsNaN(responseInfo.TotalExpense) ? 0 : DoubleHelper.Round(responseInfo.TotalExpense);
                     MonthCategorySummaryList.Add(new MonthlyCategorySummary()
                     {
                         Date = responseInfo.Date,
                         Category = responseInfo.Category,
-                        TotalIncome = double.IsNaN(responseInfo.TotalIncome) ? 0 : DoubleHelper.Round( responseInfo.TotalIncome),
-                        TotalExpense = double.IsNaN(responseInfo.TotalExpense) ? 0 : DoubleHelper.Round(responseInfo.TotalExpense),
+                        TotalMoney = income > 0 ? income : expense,
                         Identification = responseInfo.Identification
 
-                    });
+                    }); ;
 
                     if (!CurrentCategorys.Any(c => c.Name.Equals(responseInfo.Category)))
                     {
@@ -261,6 +365,8 @@ namespace PocketBookClient.ViewModel
                         });
                     }
                 }
+
+                MonthlyCategoryReprotPanelVisible = MonthCategorySummaryList.Count>1;
             }
         }
 
@@ -290,8 +396,8 @@ namespace PocketBookClient.ViewModel
         {
             if (CategoryReportSwtichToggled)
             {
-                MonthlyCategoryReprotPanelVisible = true;
                 GetMonthCategorySummary();
+                PopulateGridCategoryDescriptions();
             }
             else
             {
@@ -372,7 +478,7 @@ namespace PocketBookClient.ViewModel
 
         private void LoadMonthCategoryChart()
         {
-            var seria = DrawLineChart.GetChartSerialFromMonthlyCategoryReport(MonthCategorySummaryList, SelectedCurrentCategorys);
+            var seria = DrawLineChart.GetChartSerialFromMonthlyCategoryReport(SelectedCategorySummaryList,SelectedCategoryDescriptions);
 
             if (seria.Count > 0)
             {

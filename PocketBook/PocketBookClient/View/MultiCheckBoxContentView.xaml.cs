@@ -12,6 +12,8 @@ public partial class MultiCheckBoxContentView : ContentView
 
     public static readonly BindableProperty SelectedOptionItemsProperty =
             BindableProperty.Create(nameof(SelectedOptionItems), typeof(ObservableCollection<SelectOption>), typeof(MultiCheckBoxContentView), default(ObservableCollection<SelectOption>));
+
+    private const int SupportItemsCount = 4;
     public MultiCheckBoxContentView()
 	{
 		InitializeComponent();
@@ -43,15 +45,22 @@ public partial class MultiCheckBoxContentView : ContentView
         //    // TODO: Update UI or perform any other necessary logic
     }
 
-    private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    private async void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         if(sender is CheckBox cb) { 
 
             var bindingItem = (SelectedOptionItems.SingleOrDefault(s => cb.BindingContext.Equals(s)));
-            
-            if(bindingItem ==null){
 
-                var selectOption = ItemsOptionSource.FirstOrDefault(s => cb.BindingContext.Equals(s));
+            if (bindingItem == null) {
+
+                if (SelectedOptionItems.Count >= SupportItemsCount)
+                {
+                    cb.IsChecked = false;
+                    await Shell.Current.DisplayAlert(Shell.Current.Title, "Only Support Select 4 items at the same time.","OK");
+                    return;
+                }
+
+                SelectOption selectOption = ItemsOptionSource.FirstOrDefault(s => cb.BindingContext.Equals(s));
                 selectOption.IsSelected = true;
                 SelectedOptionItems.Add(selectOption);
             }
