@@ -27,7 +27,7 @@
                 <StackLayout Orientation="Horizontal" Margin="10">
                     <Label Text="{Binding LocalizationResourceManager[AddTranscation_Money_label], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
                     <!--money-->
-                    <Entry WidthRequest="150" Text="{Binding Money}" Keyboard="Numeric" HeightRequest="40" Style="{StaticResource SmallEntry}"  />
+                    <Entry WidthRequest="150" Text="{Binding Money}" Keyboard='Default' HeightRequest="40" Style="{StaticResource SmallEntry}"  />
                 </StackLayout>
 
                 <!--IsIncome-->
@@ -79,7 +79,7 @@
                 <StackLayout Orientation="Horizontal" Margin="10,0">
                     <!--Comments-->
                     <Label Text="{Binding LocalizationResourceManager[AddTranscation_Comments_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" VerticalTextAlignment="Center"/>
-                    <Entry WidthRequest="250" Text="{Binding Comments}" Keyboard="Numeric" HeightRequest="60" Style="{StaticResource SmallEntry}"  />
+                    <Entry WidthRequest="250" Text="{Binding Comments}" Keyboard="Default" HeightRequest="60" Style="{StaticResource SmallEntry}"  />
                 </StackLayout>
 
                 <StackLayout Orientation="Horizontal" Margin="10" HorizontalOptions="Center">

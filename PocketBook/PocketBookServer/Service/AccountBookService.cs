@@ -332,17 +332,18 @@ namespace PocketBookServer.Services
                 return await Task.FromResult(new MessageResponse { Success = false, Message = $"Category need description." });
             }
 
-            //check current description is exist 
-            if (_dbContext.Categories.Any(u => u.Description.Equals(request.Description) && u.IsIncome== request.IsIncome))
-            {
-                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Category {request.Description} have been added!" });
-            }
-
             var userGroupId = request.UsergroupId;
             if (string.IsNullOrEmpty(userGroupId))
             {
                 return await Task.FromResult(new MessageResponse { Success = false, Message = $"Invalid User." });
             }
+
+            //check current description is exist 
+            if (_dbContext.Categories.Any(u => u.Description.Equals(request.Description) && u.IsIncome== request.IsIncome && u.UserGroupId == userGroupId))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Category {request.Description} have been added!" });
+            }
+
 
             var category = new Category
             {
@@ -421,16 +422,16 @@ namespace PocketBookServer.Services
                 return await Task.FromResult(new MessageResponse { Success = false, Message = $"Identification need description." });
             }
 
-            //check current description is exist 
-            if (_dbContext.Identifications.Any(u => u.Name.Equals(request.Description)))
-            {
-                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Identification {request.Description} have been added!" });
-            }
-
             var userGroupId = request.UsergroupId;
             if (string.IsNullOrEmpty(userGroupId))
             {
                 return await Task.FromResult(new MessageResponse { Success = false, Message = $"Invalid User." });
+            }
+
+            //check current description is exist 
+            if (_dbContext.Identifications.Any(u => u.Name.Equals(request.Description) && u.UserGroupId == userGroupId))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"Identification {request.Description} have been added!" });
             }
 
             var identify = new Identification

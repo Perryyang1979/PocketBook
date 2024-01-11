@@ -1,5 +1,7 @@
-﻿using PocketBookClient.Data;
+﻿using GameController;
+using PocketBookClient.Data;
 using PocketBookClient.Services;
+using System.Text.RegularExpressions;
 
 namespace PocketBookClient.ViewModel
 {
@@ -53,10 +55,24 @@ namespace PocketBookClient.ViewModel
             CurrentMoneyChangeType = IsExpense;
 
             //clear filed
-            Money = 0;
+            Money = "0";
             Comments = string.Empty;
-            CategorySelectedIndex = -1;
-            IdentificationSelectedIndex = -1;
+            if (Categories.Any())
+            {
+                CategorySelectedIndex = 0;
+            }
+            else
+            {
+                CategorySelectedIndex = -1;
+            }
+            if (Identifications.Any())
+            {
+                IdentificationSelectedIndex = 0;
+            }
+            else
+            {
+                IdentificationSelectedIndex = -1;
+            }
 
             AddButtonVisible = true;
             UpdateButtonVisible = !AddButtonVisible;
@@ -189,7 +205,7 @@ namespace PocketBookClient.ViewModel
         [ObservableProperty]
         private string currentMoneyChangeType = string.Empty;
         [ObservableProperty]
-        private double money = 0;
+        private string money = "0";
         [ObservableProperty]
         private int categorySelectedIndex = -1;
         [ObservableProperty]
@@ -215,6 +231,20 @@ namespace PocketBookClient.ViewModel
             }
         }
 
+        partial void OnMoneyChanged(string oldValue, string newValue)
+        {
+            bool isValid = Regex.IsMatch(newValue, @"^[-+]?\d+\.?\d*$"); 
+
+            if (isValid)
+            {
+                Money = newValue;
+            }
+            else
+            {
+                Money = string.Empty;
+            }
+        }
+
         partial void OnCurrentSelectedItemChanged(UserTransaction value)
         {
 
@@ -230,7 +260,7 @@ namespace PocketBookClient.ViewModel
 
 
             //set value
-            Money = value.Amount;
+            Money = value.Amount.ToString();
             SelectedDate = Convert.ToDateTime(value.Date);
             Comments = value.Comments;
             CurrentMoneyChangeType = value.IsIncome? IsIncome : IsExpense;
@@ -262,10 +292,19 @@ namespace PocketBookClient.ViewModel
                 return;
             }
 
+            var convertMoney = -1.0;
+            double.TryParse(Money,out convertMoney);
+
+            if (convertMoney < 0.0)
+            {
+                await Shell.Current.DisplayAlert("Update Record Fail ", "Money Input is wrong", "OK");
+                return;
+            }
+
             var transaction = new UserTransaction()
             {
                 Date = SelectedDate.ToShortDateString(),
-                Amount = Money,
+                Amount = convertMoney,
                 IsIncome = CurrentMoneyChangeType.Equals(IsIncome),
                 Category = Categories[CategorySelectedIndex].CategoryDescription,
                 IdentifyDescription =IdentificationSelectedIndex>-1? Identifications[IdentificationSelectedIndex].IdentifyDescription:string.Empty,
@@ -296,10 +335,18 @@ namespace PocketBookClient.ViewModel
                 return;
             }
 
+            var convertMoney = -1.0;
+            double.TryParse(Money, out convertMoney);
+
+            if(convertMoney < 0.0) {
+                await Shell.Current.DisplayAlert("Update Record Fail ", "Money Input is wrong", "OK");
+                return;
+            }
+
             var transaction = new UserTransaction()
             {
                 Date = SelectedDate.ToShortDateString(),
-                Amount = Money,
+                Amount = convertMoney,
                 IsIncome = CurrentMoneyChangeType.Equals(IsIncome),
                 Category = Categories[CategorySelectedIndex].CategoryDescription,
                 IdentifyDescription = IdentificationSelectedIndex > -1 ? Identifications[IdentificationSelectedIndex].IdentifyDescription : string.Empty,
@@ -325,6 +372,7 @@ namespace PocketBookClient.ViewModel
         async Task CancelTransactionAsync()
         {
             CurrentSelectedItem = null;
+            Init();
            // await Shell.Current.GoToAsync(nameof(PocketOperationPage));
         }
 
