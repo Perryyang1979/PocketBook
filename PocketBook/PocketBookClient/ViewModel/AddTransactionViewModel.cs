@@ -320,7 +320,7 @@ namespace PocketBookClient.ViewModel
             }
             else
             {
-                await Shell.Current.DisplayAlert("Add record failed", response.Message, "OK");
+                await Shell.Current.DisplayAlert("Add record failed", response?.Message, "OK");
                 return;
             }
         }
@@ -363,7 +363,7 @@ namespace PocketBookClient.ViewModel
             }
             else
             {
-                await Shell.Current.DisplayAlert("update record failed", response.Message, "OK");
+                await Shell.Current.DisplayAlert("update record failed", response?.Message, "OK");
                 return;
             }
         }

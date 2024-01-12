@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PocketBookClient.Helper;
 
 namespace PocketBookClient.Data
 {
@@ -12,13 +8,35 @@ namespace PocketBookClient.Data
         public YearlySummary(MonthlySummary monthlySummary)
         {
             this.UserName = monthlySummary.UserName;
-            this.TotalIncome = monthlySummary.TotalIncome;
-            this.TotalExpense = monthlySummary.TotalExpense;
+            this.TotalIncome = DoubleHelper.Round(monthlySummary.TotalIncome);
+            this.TotalExpense = DoubleHelper.Round(monthlySummary.TotalExpense);
         }
 
         public string UserName { get; set; }
-        public double TotalIncome { get; set; }
-        public double TotalExpense { get; set; }
-        public double Balance => TotalIncome - TotalExpense;
+
+        private double _totalIncome;
+        public double TotalIncome {
+            get
+            {
+                return _totalIncome;
+            }
+            set
+            {
+                _totalIncome = DoubleHelper.Round(value);
+            }
+         }
+
+        private double _totalExpense;
+        public double TotalExpense {
+            get
+            {
+                return _totalExpense;
+            }
+            set
+            {
+                _totalExpense = DoubleHelper.Round(value);
+            } 
+        }
+        public double Balance => DoubleHelper.Round(TotalIncome - TotalExpense);
     }
 }

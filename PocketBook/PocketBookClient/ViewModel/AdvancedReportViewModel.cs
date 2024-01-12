@@ -280,8 +280,8 @@ namespace PocketBookClient.ViewModel
             {
                 if (yearlySummaryTotal.ContainsKey(monthlySummary.UserName))
                 {
-                    yearlySummaryTotal[monthlySummary.UserName].TotalIncome += monthlySummary.TotalIncome;
-                    yearlySummaryTotal[monthlySummary.UserName].TotalExpense += monthlySummary.TotalExpense;
+                    yearlySummaryTotal[monthlySummary.UserName].TotalIncome += DoubleHelper.Round( monthlySummary.TotalIncome);
+                    yearlySummaryTotal[monthlySummary.UserName].TotalExpense += DoubleHelper.Round(monthlySummary.TotalExpense);
                 }
                 else
                 {
@@ -290,16 +290,16 @@ namespace PocketBookClient.ViewModel
 
                 if (yearlyIdentifySummaryTotal.ContainsKey(monthlySummary.Identify))
                 {
-                    yearlyIdentifySummaryTotal[monthlySummary.Identify].TotalIncome += monthlySummary.TotalIncome;
-                    yearlyIdentifySummaryTotal[monthlySummary.Identify].TotalExpense += monthlySummary.TotalExpense;
+                    yearlyIdentifySummaryTotal[monthlySummary.Identify].TotalIncome += DoubleHelper.Round(monthlySummary.TotalIncome);
+                    yearlyIdentifySummaryTotal[monthlySummary.Identify].TotalExpense +=  monthlySummary.TotalExpense;
                 }
                 else
                 {
                     yearlyIdentifySummaryTotal.Add(monthlySummary.Identify, new YearlySummary()
                     { 
                         UserName = monthlySummary.Identify,
-                        TotalExpense = monthlySummary.TotalExpense,
-                        TotalIncome = monthlySummary.TotalIncome,
+                        TotalExpense = DoubleHelper.Round( monthlySummary.TotalExpense),
+                        TotalIncome = DoubleHelper.Round(monthlySummary.TotalIncome),
                     });
                 }
 

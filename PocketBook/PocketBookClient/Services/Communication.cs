@@ -10,10 +10,23 @@ namespace PocketBookClient.Services
 
         private static Communication _instance;
         private AccountBook.AccountBookClient _accountBookClient;
+        private IConnectivity _connectivity;
+
 
         private Communication()
         {
+            _connectivity = ServiceHelper.GetService<IConnectivity>();
+        }
 
+        private async Task<bool> CheckInternetConnection()
+        {
+            if(_connectivity.NetworkAccess!=NetworkAccess.Internet)
+            {
+                await Shell.Current.DisplayAlert("Internet Disconnected", "No Internet,Check you internet connection!", "OK");
+                return false;
+            }
+
+            return true;
         }
 
         public static Communication Instance
@@ -36,6 +49,9 @@ namespace PocketBookClient.Services
 
         public async Task<MessageResponse> RegisterUserAsync(PocketBookClient.Data.User user)
         {
+            var checkResult = await CheckInternetConnection();
+            if(!checkResult) { return null; }
+
             var userRegisterRequest = new PocketUserInfo()
             {
                 Username = user.Name,
@@ -60,6 +76,8 @@ namespace PocketBookClient.Services
 
         public async Task<UserLoginResponse> UserLoginAsync(string userName,string password)
         {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult) { return null; }
             var userLoginRequest = new UserRequest()
             {
                 Username = userName,
@@ -80,7 +98,8 @@ namespace PocketBookClient.Services
 
         public async Task<MessageResponse> ResetPasswordAsync(string email)
         {
-
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult) { return null; }
             try
             {
 
@@ -98,7 +117,8 @@ namespace PocketBookClient.Services
         }
         public async Task<MessageResponse> ChangePasswordAsync(string userName,string oldPassword,string newPassword)
         {
-
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult) { return null; }
             try
             {
 
@@ -119,6 +139,8 @@ namespace PocketBookClient.Services
 
         public  async Task<DailyTransactionResponse> GetDailyTransations(DateTime startDate,DateTime endDate)
         {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult) { return null; }
             var dailyDetailTransationRequest = new DailyDetailTransationRequest()
             {
                 StartDate = startDate.ToShortDateString(),
@@ -186,6 +208,8 @@ namespace PocketBookClient.Services
 
         public async Task<MessageResponse> AddTransactionAsync(UserTransaction userTransaction)
         {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult) { return null; }
             var transactionRequest = new PocketTransactionInfo()
             {
                 TransactionDate = userTransaction.Date,
@@ -215,6 +239,8 @@ namespace PocketBookClient.Services
 
         public async Task<MessageResponse> UpdateTransactionAsync(UserTransaction userTransaction)
         {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult) { return null; }
             var transactionRequest = new PocketTransactionInfo()
             {
                 TransactionDate = userTransaction.Date,
@@ -245,6 +271,9 @@ namespace PocketBookClient.Services
 
         public async Task<MessageResponse> AddCategoryAsync(TransactionCategory category)
         {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult) { return null; }
+
             var categoryRequest = new CategoryInfo()
             {
 
@@ -272,6 +301,9 @@ namespace PocketBookClient.Services
 
         public async Task<MessageResponse> DeleteCategoryAsync(TransactionCategory category)
         {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult) { return null; }
+
             var categoryRequest = new CategoryInfo()
             {
 
@@ -313,6 +345,9 @@ namespace PocketBookClient.Services
 
         public async Task<MessageResponse> AddIdentificationAsync(TransactionIdentification identification)
         {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult) { return null; }
+
             var request = new IdentificationInfo()
             {
                 Description = identification.IdentifyDescription,
@@ -337,6 +372,8 @@ namespace PocketBookClient.Services
 
         public async Task<MessageResponse> DeleteIdentificationAsync(TransactionIdentification identification)
         {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult) { return null; }
             var request = new IdentificationInfo()
             {
                 Description = identification.IdentifyDescription,
