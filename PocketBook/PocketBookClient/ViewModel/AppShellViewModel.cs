@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using PocketBookClient.Services;
-
 
 namespace PocketBookClient.ViewModel
 {
@@ -12,19 +7,19 @@ namespace PocketBookClient.ViewModel
     {
         public AppShellViewModel()
         {
-            Settings.Current.OnCurrentUserChangeEvent += Current_OnCurrentUserChangeEvent;       
+            Settings.Current.OnCurrentUserChangeEvent += Current_OnCurrentUserChangeEvent;
         }
 
         private void Current_OnCurrentUserChangeEvent(object sender, EventArgs e)
         {
-           LoginUserName = Settings.Current.CurrentUserSetting == null ? string.Empty : Settings.Current.CurrentUserSetting.UserName;
-           if(LoginUserName == string.Empty)
+            LoginUserName = Settings.Current.CurrentUserSetting == null ? string.Empty : Settings.Current.CurrentUserSetting.UserName;
+            if (LoginUserName == string.Empty)
             {
                 LogoutButtonVisible = false;
                 LoginButtonVisible = true;
                 HomeItemEnable = false;
             }
-           else
+            else
             {
                 LogoutButtonVisible = true;
                 LoginButtonVisible = false;
@@ -42,10 +37,14 @@ namespace PocketBookClient.ViewModel
         bool loginButtonVisible = true;
 
         [RelayCommand]
-            async void SignOut()
-            {
-                await Task.Delay(1);
-                await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
-            }
+        async void SignOut()
+        {
+
+            Settings.Current.LoggedIn = false;
+            await Task.Delay(1);
+
+            await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
         }
+    }
 }
+

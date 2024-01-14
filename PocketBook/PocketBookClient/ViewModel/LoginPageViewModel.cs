@@ -9,7 +9,15 @@ namespace PocketBookClient.ViewModel;
 public partial class LoginPageViewModel : BaseViewModel
 {
     public LoginPageViewModel()
-    { 
+    {
+        
+    }
+
+    public void Init()
+    {
+        IsRunning = false;
+        UserName = string.Empty;
+        Password = string.Empty;
     }
 
     [ObservableProperty]

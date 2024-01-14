@@ -106,22 +106,39 @@
     </ShellItem>
 
 
-    <FlyoutItem Title="Home" FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent Icon="home.png" Title="Home" IsVisible="{Binding HomeItemEnable}"
+    <FlyoutItem Title="Home" FlyoutDisplayOptions="AsMultipleItems" IsVisible="{Binding HomeItemEnable}">
+        <ShellContent Icon="home.png" Title="Home" 
         ContentTemplate="{DataTemplate view:AddTransactionPage}"
         Route="AddTransactionPage" />
 
-        <ShellContent Icon="report.png" Title="Report"  IsVisible="{Binding HomeItemEnable}"
+        <ShellContent Icon="report.png" Title="Report" 
         ContentTemplate="{DataTemplate view:AdvancedReportPage}"
         Route="AdvancedReportPage" />
 
-        <ShellContent Icon="me.png" Title="Me" IsVisible="{Binding HomeItemEnable}"
+        <ShellContent Icon="me.png" Title="Me" 
                ContentTemplate="{DataTemplate view:UserInfoPage}"
            Route="UserInfoPage"  />
-    
-        <ShellContent Icon="setting.png" Title="Setting"
-        ContentTemplate="{DataTemplate view:SettingPage}"
-        Route="SettingPage" />
+
+        <ShellContent 
+ContentTemplate="{DataTemplate view:SettingPage}" Icon="setting.png" Title="Setting"
+Route="SettingPage"></ShellContent>
+
     </FlyoutItem>
+    
+    
+    
+    <!--<FlyoutItem Icon="setting.png" Title="Setting" FlyoutDisplayOptions="AsSingleItem" >-->
+        <!--<ShellContent 
+ContentTemplate="{DataTemplate view:SettingPage}" Icon="setting.png" Title="Setting"
+Route="SettingPage" /-->
+
+    <!--</FlyoutItem>-->
+
+
+    <!--<MenuItem Text="Setting"
+              IconImageSource="setting.png"
+              Command="{Binding SettingRouteCommand}" />-->
+
+
 
 </Shell>
