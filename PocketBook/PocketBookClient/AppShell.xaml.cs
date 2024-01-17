@@ -24,6 +24,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(IdentifyListPage), typeof(IdentifyListPage));
         Routing.RegisterRoute(nameof(PasswordManagePage), typeof(PasswordManagePage));
         Routing.RegisterRoute(nameof(AdvancedReportPage), typeof(AdvancedReportPage));
+        Routing.RegisterRoute(nameof(UserListPage), typeof(UserListPage));
     }
 
     private void logoutButton_Clicked(object sender, EventArgs e)
@@ -32,5 +33,11 @@ public partial class AppShell : Shell
           Settings.Current.CurrentUserSetting = null;
           Task.Delay(1);
           Shell.Current.GoToAsync($"{nameof(LoginPage)}");
+    }
+
+    private void UserButton_Clicked(object sender, EventArgs e)
+    {
+        Task.Delay(1);
+        Shell.Current.GoToAsync($"{nameof(UserListPage)}");
     }
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PocketBookClient.View.UserListPage"
+              xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
+ xmlns:data="clr-namespace:PocketBookClient.Data"
+Title="UserList"
+x:DataType="viewmodel:UserListViewModel" MinimumWidthRequest="300">
+    <ScrollView  >
+        <StackLayout>
+
+            <Grid ColumnDefinitions="50*,100*,50*">
+                <Label Text="UserName" Grid.Row="0" Grid.Column="0" Padding="10" Style="{StaticResource HeadLabel }"/>
+                <Label Text="Email" Grid.Row="0" Grid.Column="1" Padding="10" Style="{StaticResource HeadLabel }"/>
+                <Label Text="Phone" Grid.Row="0" Grid.Column="2" Padding="10" Style="{StaticResource HeadLabel }"/>
+            </Grid>
+
+
+            <CollectionView Grid.Row="2"
+                    ItemsSource="{Binding UserList}"
+                    SelectionMode="Single"
+                            SelectedItem="{Binding CurrentSelectedItem }"
+                        >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="data:User">
+                        <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="50*,100*,50*" VerticalOptions="FillAndExpand">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="lightGray"></Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="LightSkyBlue"></Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <Label Text="{Binding Name}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0" TextColor="Blue"/>
+                            <Label Text="{Binding Email}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1" TextColor="Blue"/>
+                            <Label Text="{Binding PhoneNumber}" FontAttributes="Bold" Grid.Row="1" Grid.Column="2" TextColor="Blue"/>
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <HorizontalStackLayout HorizontalOptions="Center">
+
+                <Button
+                Margin="20"
+                Command="{Binding DeleteUserCommand}"
+                     HorizontalOptions="Center"
+                Style="{StaticResource ButtonOutline}"
+                Text="{Binding LocalizationResourceManager[AddCategory_Page_Delete], Mode=OneWay}" 
+                     IsEnabled="{Binding DeleteButtonEnable}"
+                    HeightRequest="45"/>
+
+            </HorizontalStackLayout>
+        </StackLayout>
+        </ScrollView>
+</ContentPage>

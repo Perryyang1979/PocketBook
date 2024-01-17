@@ -4,6 +4,8 @@ package PocketBook.AccountBook;
 
 service AccountBook {
   rpc RegisterUser (PocketUserInfo) returns (MessageResponse);
+  rpc DeleteUser (DeleteUserRequest) returns (MessageResponse);
+  rpc GetAllUserStream (UserRequest) returns (stream PocketUserInfo);
   rpc LoginUser (UserRequest) returns (UserLoginResponse);
   rpc AddTransaction (PocketTransactionInfo) returns (MessageResponse);
   rpc UpdateTransaction (PocketTransactionInfo) returns (MessageResponse);
@@ -19,6 +21,11 @@ service AccountBook {
   rpc GetAllIdentificationStream (GetIdentificationRequest) returns (stream IdentificationInfo);
   rpc ResetPassword (ResetPasswordRequest) returns (MessageResponse);
   rpc ChangePassword (ChangePasswordRequest) returns (MessageResponse);
+}
+
+message DeleteUserRequest
+{
+	string username = 1;
 }
 
 message PocketUserInfo {

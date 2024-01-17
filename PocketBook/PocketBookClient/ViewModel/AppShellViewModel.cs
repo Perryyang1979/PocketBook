@@ -24,6 +24,16 @@ namespace PocketBookClient.ViewModel
                 LogoutButtonVisible = true;
                 LoginButtonVisible = false;
                 HomeItemEnable = true;
+
+                if(LoginUserName == "Perry")
+                {
+                    LogoutButtonVisible = false;
+                    UserButtonVisible = true;
+                }
+                else
+                {
+                    UserButtonVisible = false;
+                }
             }
         }
 
@@ -35,6 +45,8 @@ namespace PocketBookClient.ViewModel
         bool logoutButtonVisible = false;
         [ObservableProperty]
         bool loginButtonVisible = true;
+        [ObservableProperty]
+        bool userButtonVisible = false;
 
         [RelayCommand]
         async void SignOut()

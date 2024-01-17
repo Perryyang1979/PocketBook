@@ -343,6 +343,46 @@ namespace PocketBookClient.Services
             return null;
         }
 
+        public async Task<MessageResponse> DeleteUserAsync(string userName)
+        {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult) { return null; }
+
+            var request = new DeleteUserRequest()
+            {
+                Username = userName
+            };
+
+            MessageResponse response = null;
+
+            try
+            {
+
+                response = await _accountBookClient.DeleteUserAsync(request);
+            }
+            catch (Exception ex)
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = ex.Message });
+            }
+
+            return response;
+        }
+
+        public AsyncServerStreamingCall<PocketUserInfo> GetAllUserStream()
+        {
+            try
+            {
+
+                return _accountBookClient.GetAllUserStream(new UserRequest() { });
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return null;
+        }
+
         public async Task<MessageResponse> AddIdentificationAsync(TransactionIdentification identification)
         {
             var checkResult = await CheckInternetConnection();

@@ -93,6 +93,54 @@ namespace PocketBookServer.Services
             return await Task.FromResult(new UserLoginResponse { Success = true, Message = "User logged in successfully.", UsergroupId = user.GroupId });
         }
 
+        public override async Task<MessageResponse> DeleteUser(DeleteUserRequest request, ServerCallContext context)
+        {
+            // check required filed
+            if (string.IsNullOrEmpty(request.Username))
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"delete need userName." });
+            }
+
+            var user = _dbContext.Users.SingleOrDefault(u => u.Name.Equals(request.Username) );
+            //check current description is exist 
+            if (user == null)
+            {
+                return await Task.FromResult(new MessageResponse { Success = false, Message = $"no User {request.Username} exist in the system!" });
+            }
+
+            _dbContext.Users.Remove(user);
+            await _dbContext.SaveChangesAsync();
+
+            //keep user record in the database since userId will be never same.
+
+            return await Task.FromResult(new MessageResponse { Success = true, Message = "User delete successfully." });
+        }
+
+        public override async Task GetAllUserStream(UserRequest request, IServerStreamWriter<PocketUserInfo> responseStream, ServerCallContext context)
+        {
+            DbSet<PocketUser>? pocketUsers = _dbContext.Users;
+
+            if (pocketUsers.Any())
+            {
+                List<PocketUserInfo> allUsers = pocketUsers
+                .OrderBy(c => c.Name)
+                .Select(pu => new PocketUserInfo
+                {
+                    Username = pu.Name,
+                    Email = pu.Email,
+                    PhoneNumber = pu.PhoneNumber,                 
+                })
+                 .ToList();
+
+                foreach (PocketUserInfo user in allUsers)
+                {
+
+                    await responseStream.WriteAsync(user);
+
+                }
+            }
+        }
+
         public override async Task<MessageResponse> ResetPassword(ResetPasswordRequest request, ServerCallContext context)
         {
 

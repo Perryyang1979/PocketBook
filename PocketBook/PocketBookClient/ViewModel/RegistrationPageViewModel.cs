@@ -109,6 +109,6 @@ public partial class RegistrationPageViewModel : BaseViewModel
             return;
         }
 
-        await Shell.Current.GoToAsync(nameof(LoginPage));
+        await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
     }
 }
