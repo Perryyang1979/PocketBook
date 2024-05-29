@@ -83,6 +83,11 @@ public partial class RegistrationPageViewModel : BaseViewModel
             return;
         }
 
+        if(UserGroupId == string.Empty)
+        {
+            UserGroupId = Guid.NewGuid().ToString();
+        }
+
         var user = new User()
         {
             Name = UserName.Trim(),

@@ -1,6 +1,10 @@
 1 create database command   
  dotnet ef migrations add InitialMigration
 
+dotnet ef migrations add Initialize
+dotnet ef database update
+dotnet ef database drop
+
 NB : must in the current project dir
 
 2 install dotnet 
@@ -8,4 +12,10 @@ dotnet tool install --global dotnet-ef --version 7.*
 
 3 if need to run database command .
 project should reference Microsoft.EntityFrameworkCore.Design
+
+
+
+========================
+delete row in google sheet with no blank row 
+-- do not use update method
 

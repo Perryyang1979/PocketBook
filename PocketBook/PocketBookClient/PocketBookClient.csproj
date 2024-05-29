@@ -52,7 +52,13 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
-
+	<ItemGroup>
+		<MauiAsset Update="Resources\Raw\googlesheetcredentials.json">
+			<LogicalName>googlesheetcredentials.json</LogicalName>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiAsset>
+	</ItemGroup>
+	
 	<ItemGroup>
 	  <Compile Remove="MainPage.xaml.cs" />
 	  <Compile Remove="ViewModel\PocketOperationViewModel.cs" />
@@ -68,10 +74,13 @@
 	  <None Remove="Resources\AppIcon\myappicon.svg" />
 	  <None Remove="Resources\Images\mathematics.png" />
 	  <None Remove="Resources\Images\math_title.jpg" />
+	  <None Remove="Resources\Json\googlesheetcredentials.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Google.Apis.Sheets.v4" Version="1.67.0.3365" />
 		<PackageReference Include="Grpc.Net.Client.Web" Version="2.60.0-pre1" />
+		<PackageReference Include="MailKit" Version="4.6.0" />
 		<PackageReference Include="MaterialDesign.Icons" Version="1.1.0" />
 		<PackageReference Include="Microcharts.Maui" Version="1.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
@@ -85,13 +94,9 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="MimeKit" Version="4.6.0" />
 		<PackageReference Include="ZXing.Net.Maui" Version="0.4.0" />
 		<PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
-	</ItemGroup>
-	
-
-	<ItemGroup>
-	  <ProjectReference Include="..\GrpcShared\GrpcShared.csproj" />
 	</ItemGroup>
 	
 
@@ -102,6 +107,13 @@
 	  <Compile Update="View\ScannerPage.xaml.cs">
 	    <DependentUpon>ScannerPage.xaml</DependentUpon>
 	  </Compile>
+	</ItemGroup>
+	
+
+	<ItemGroup>
+	  <MauiAsset Update="Resources\Raw\googlesheetcredentials.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
 	</ItemGroup>
 	
 
@@ -147,6 +159,11 @@
 	  <MauiXaml Update="View\UserListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+	
+
+	<ItemGroup>
+	  <Folder Include="Resources\Json\" />
 	</ItemGroup>
 
 </Project>

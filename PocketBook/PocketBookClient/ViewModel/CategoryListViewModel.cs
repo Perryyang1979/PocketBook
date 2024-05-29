@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GrpcShared;
 using PocketBookClient.Data;
 using PocketBookClient.Services;
 
@@ -83,26 +82,14 @@ namespace PocketBookClient.ViewModel
         private async void GetCurrentCategories(bool isIncome)
         {
             CategoryList.Clear();
- 
-            using (var call = Communication.Instance.GetAllCategoryStream())
-            {
-                var token = new CancellationToken();
-                while (await call.ResponseStream.MoveNext(token))
-                {
-                    var responseInfo = call.ResponseStream.Current;
 
-                    if (responseInfo.IsIncome == isIncome)
-                    {
-                        CategoryList.Add(new TransactionCategory()
-                        {
-                            IsIncome = responseInfo.IsIncome,
-                            CategoryDescription = responseInfo.Description,
-                            CategoryDetailedDescription = responseInfo.Detail
-                        });
-                    }
-                }
+            foreach (var category in Communication.Instance.GetCategories().Where(c=>c.IsIncome == isIncome))
+            {
+              
+                CategoryList.Add(category);
             }
-            if(CategoryList.Any())
+
+            if (CategoryList.Any())
             {
                 CurrentSelectedItem=CategoryList.FirstOrDefault();
             }
@@ -161,6 +148,7 @@ namespace PocketBookClient.ViewModel
 
             var categoryInfo = new TransactionCategory()
             {
+                GuidCategory = Guid.NewGuid().ToString(),
                 IsIncome = CurrentCategoryType.Equals(IsIncome),
                 CategoryDescription = CategoryDescriptionAdd,
                 CategoryDetailedDescription = CategoryDetailAdd
@@ -168,7 +156,8 @@ namespace PocketBookClient.ViewModel
 
             var result =await Communication.Instance.AddCategoryAsync(categoryInfo);
 
-            if(result == null) {
+            if (result == null)
+            {
                 await Shell.Current.DisplayAlert("Add category failed", "unexpected error.", "OK");
             }
             if (!result.Success)

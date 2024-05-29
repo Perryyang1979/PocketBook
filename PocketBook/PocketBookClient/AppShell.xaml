@@ -31,10 +31,10 @@
          IsVisible="{Binding LoginButtonVisible}"
          ></Button>
 
-            <Button x:Name="UserButton" Style="{StaticResource ButtonOutline}" Text="User" WidthRequest="100" HeightRequest="40" Margin="10"
+            <!--<Button x:Name="UserButton" Style="{StaticResource ButtonOutline}" Text="User" WidthRequest="100" HeightRequest="40" Margin="10"
             Clicked="UserButton_Clicked"
             IsVisible="{Binding UserButtonVisible}"
-            ></Button>
+            ></Button>-->
             <Label Text="@Copyright Mr.Yang-2024" HorizontalTextAlignment="Center" ></Label>
         </VerticalStackLayout>
     </Shell.FlyoutFooter>

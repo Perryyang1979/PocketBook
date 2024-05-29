@@ -25,15 +25,15 @@ namespace PocketBookClient.ViewModel
                 LoginButtonVisible = false;
                 HomeItemEnable = true;
 
-                if(LoginUserName == "Perry")
-                {
-                    LogoutButtonVisible = false;
-                    UserButtonVisible = true;
-                }
-                else
-                {
-                    UserButtonVisible = false;
-                }
+                //if(LoginUserName == "Perry")
+                //{
+                //    LogoutButtonVisible = false;
+                //    UserButtonVisible = true;
+                //}
+                //else
+                //{
+                //    UserButtonVisible = false;
+                //}
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿
+using Google.Apis.Sheets.v4.Data;
 using PocketBookClient.Data;
 using PocketBookClient.Services;
 using System.Text.RegularExpressions;
@@ -13,7 +14,6 @@ namespace PocketBookClient.ViewModel
         private readonly string IsIncome = "True";
 
         private readonly string IsExpense = "False";
-        public ObservableCollection<UserTransaction> TransactionList { get; } = new ObservableCollection<UserTransaction>();
         private const int RecentlyDaysDefine = 10;
 
         [ObservableProperty]
@@ -25,9 +25,9 @@ namespace PocketBookClient.ViewModel
         {
             if (!CheckValidUser()) return;
             Init();
-         //   GetRecentlyRecord();
-         //   GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
-        //    GetCurrentIdentification();
+            GetRecentlyRecord();
+            GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
+            //    GetCurrentIdentification();
         }
 
         private bool CheckValidUser()
@@ -65,14 +65,6 @@ namespace PocketBookClient.ViewModel
             {
                 CategorySelectedIndex = -1;
             }
-            if (Identifications.Any())
-            {
-                IdentificationSelectedIndex = 0;
-            }
-            else
-            {
-                IdentificationSelectedIndex = -1;
-            }
 
             AddButtonVisible = true;
             UpdateButtonVisible = !AddButtonVisible;
@@ -81,34 +73,19 @@ namespace PocketBookClient.ViewModel
         private async void GetRecentlyRecord()
         {
             TransactionList.Clear();
-
             var endDate = DateTime.Today.Date;
-
             var startDate = endDate.AddDays(0 - RecentlyDaysDefine);
-
             try
+
             {
-                using (var call = Communication.Instance.GetDailyTransationsStreamAsync(startDate, endDate))
+                foreach (var tran in Communication.Instance.GetDailyTransations(startDate, endDate))
                 {
-                    var token = new CancellationToken();
-                    while (await call.ResponseStream.MoveNext(token))
-                    {
-                        var responseInfo = call.ResponseStream.Current;
-                        TransactionList.Add(new UserTransaction()
-                        {
-                            Date = responseInfo.TransactionDate,
-                            Category = responseInfo.Category,
-                            IsIncome = responseInfo.IsIncome,
-                            Comments = responseInfo.Comments,
-                            Amount = responseInfo.Amount,
-                            UserName = responseInfo.Username,
-                            IdentifyDescription = responseInfo.Identification,
-                            Id = responseInfo.Id,
-                        });
-                    }
+
+                    TransactionList.Add(tran);
                 }
 
-                if(TransactionList.Count>0)
+
+                if (TransactionList.Count>0)
                 {
                     TransactionList.OrderByDescending(t => t.Date).ToList();
                     CurrentSelectedItem = null;
@@ -128,7 +105,6 @@ namespace PocketBookClient.ViewModel
             }
             GetRecentlyRecord();
             GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
-            GetCurrentIdentification();
         }
 
 
@@ -139,65 +115,28 @@ namespace PocketBookClient.ViewModel
             {
                 return;
             }
-            using (var call = Communication.Instance.GetAllCategoryStream())
-            {
-                    requestIsSending = true;
-                    CancellationToken token = new CancellationToken();
-                    Categories.Clear();
-                    while (await call.ResponseStream.MoveNext(token))
-                    {
-                            var responseInfo = call.ResponseStream.Current;
 
-                            if (responseInfo.IsIncome == isIncome)
-                            {
-                                Categories.Add(new TransactionCategory()
-                                {
-                                    IsIncome = responseInfo.IsIncome,
-                                    CategoryDescription = responseInfo.Description,
-                                    CategoryDetailedDescription = responseInfo.Detail
-                                });
-                            }
-                     }
-                requestIsSending = false;
-                if(Categories.Any())
+                requestIsSending = true;
+
+                Categories.Clear();
+
+                foreach (var category in Communication.Instance.GetCategories().Where(c => c.IsIncome == isIncome))
                 {
-                    Categories =new  ObservableCollection<TransactionCategory>( Categories.OrderBy(c=>c.CategoryDescription));
+
+                Categories.Add(category);
+                }
+
+                requestIsSending = false;
+                if (Categories.Any())
+                {
+                    Categories = new ObservableCollection<TransactionCategory>(Categories.OrderBy(c => c.CategoryDescription));
                     CategorySelectedIndex = 0;
                 }
-            }
         }
 
-        private bool identificationrequestIsSending = false;
-        private async void GetCurrentIdentification()
-        {
-            if (identificationrequestIsSending)
-            {
-                return;
-            }
-            using (var call = Communication.Instance.GetAllIdentificationStream())
-            {
-                requestIsSending = true;
-                CancellationToken token = new CancellationToken();
-                Identifications.Clear();
-                while (await call.ResponseStream.MoveNext(token))
-                {
-                    var responseInfo = call.ResponseStream.Current;
+        [ObservableProperty]
+        public ObservableCollection<UserTransaction> transactionList  = new ObservableCollection<UserTransaction>();
 
-
-                    Identifications.Add(new TransactionIdentification()
-                    {
-                            IdentifyDescription = responseInfo.Description,
-                    });
-                    
-                }
-                identificationrequestIsSending = false;
-                if (Identifications.Any())
-                {
-                    Identifications = new ObservableCollection<TransactionIdentification>(Identifications.OrderByDescending(c => c.IdentifyDescription));
-                    IdentificationSelectedIndex = 0;
-                }
-            }
-        }
         [ObservableProperty]
         public DateTime selectedDate;
         [ObservableProperty]
@@ -210,9 +149,6 @@ namespace PocketBookClient.ViewModel
         private int categorySelectedIndex = -1;
         [ObservableProperty]
         private string comments = string.Empty;
-
-        [ObservableProperty]
-        private ObservableCollection<TransactionIdentification> identifications = new ObservableCollection<TransactionIdentification>();
 
         [ObservableProperty]
         public int identificationSelectedIndex = -1;
@@ -256,22 +192,16 @@ namespace PocketBookClient.ViewModel
                 Init();
                 return;
             }
-
-
-
             //set value
             Money = value.Amount.ToString();
             SelectedDate = Convert.ToDateTime(value.Date);
             Comments = value.Comments;
             CurrentMoneyChangeType = value.IsIncome? IsIncome : IsExpense;
+            GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
+
             if (Categories.Count > 0) {
                 CategorySelectedIndex = Categories.IndexOf(Categories.SingleOrDefault(c => c.CategoryDescription.Equals(value.Category)));
             }
-            if (Identifications.Count > 0)
-            {
-                IdentificationSelectedIndex = Identifications.IndexOf(Identifications.SingleOrDefault(i => i.IdentifyDescription.Equals(value.IdentifyDescription)));
-            }
-
 
             AddButtonVisible = false;
             UpdateButtonVisible = !AddButtonVisible;
@@ -280,12 +210,6 @@ namespace PocketBookClient.ViewModel
         [RelayCommand]
         async Task AddTransactionAsync()
         {
-            if (IdentificationSelectedIndex < 0)
-            {
-                await Shell.Current.DisplayAlert("Add Record Fail ", "Identification need be specified ", "OK");
-                return;
-            }
-
             if (CategorySelectedIndex < 0)
             {
                 await Shell.Current.DisplayAlert("Add Record Fail ", "Category need be specified ", "OK");
@@ -303,17 +227,18 @@ namespace PocketBookClient.ViewModel
 
             var transaction = new UserTransaction()
             {
+                Id = Guid.NewGuid().ToString(),
+                UserName = Settings.Current.CurrentUserSetting.UserName,
                 Date = SelectedDate.ToShortDateString(),
                 Amount = convertMoney,
                 IsIncome = CurrentMoneyChangeType.Equals(IsIncome),
                 Category = Categories[CategorySelectedIndex].CategoryDescription,
-                IdentifyDescription =IdentificationSelectedIndex>-1? Identifications[IdentificationSelectedIndex].IdentifyDescription:string.Empty,
                 Comments = Comments,
             };
 
-           var response =  await Communication.Instance.AddTransactionAsync(transaction);
+            var response = await Communication.Instance.AddTransactionAsync(transaction);
 
-            if(response!=null && response.Success)
+            if (response != null && response.Success)
             {
                 Init();
                 GetRecentlyRecord();
@@ -345,16 +270,23 @@ namespace PocketBookClient.ViewModel
 
             var transaction = new UserTransaction()
             {
+                UserName = Settings.Current.CurrentUserSetting.UserName,
                 Date = SelectedDate.ToShortDateString(),
                 Amount = convertMoney,
                 IsIncome = CurrentMoneyChangeType.Equals(IsIncome),
                 Category = Categories[CategorySelectedIndex].CategoryDescription,
-                IdentifyDescription = IdentificationSelectedIndex > -1 ? Identifications[IdentificationSelectedIndex].IdentifyDescription : string.Empty,
                 Comments = Comments,
                 Id = CurrentSelectedItem.Id
             };
 
-            var response = await Communication.Instance.UpdateTransactionAsync(transaction);
+            Communication.MessageResponse response = null;
+
+            if(convertMoney == 0)
+            {
+                response = await Communication.Instance.DeleteUserTransactionAsync(transaction);
+            }
+
+            else response = await Communication.Instance.UpdateTransactionAsync(transaction);
 
             if (response != null && response.Success)
             {
@@ -373,7 +305,7 @@ namespace PocketBookClient.ViewModel
         {
             CurrentSelectedItem = null;
             Init();
-           // await Shell.Current.GoToAsync(nameof(PocketOperationPage));
+            //await Shell.Current.GoToAsync(nameof(PocketOperationPage));
         }
 
         [RelayCommand]
@@ -384,13 +316,5 @@ namespace PocketBookClient.ViewModel
             {"CurrentCategoryType", CurrentMoneyChangeType}
         });
         }
-
-        [RelayCommand]
-        async Task AddIdentifyAsync()
-        {
-            await Shell.Current.GoToAsync(nameof(IdentifyListPage));
-        }
-
-
     }
 }

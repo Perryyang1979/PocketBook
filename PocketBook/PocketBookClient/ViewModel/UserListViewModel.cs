@@ -34,43 +34,43 @@ namespace PocketBookClient.ViewModel
 
             var confirm = await Shell.Current.DisplayAlert("delete User ", "Are you sure to delete?", accept: "OK", "Cancel");
 
-            if (confirm)
-            {
-                var result = await Communication.Instance.DeleteUserAsync(CurrentSelectedItem.Name);
+            //if (confirm)
+            //{
+            //    var result = await Communication.Instance.DeleteUserAsync(CurrentSelectedItem.Name);
 
-                if (result == null)
-                {
-                    await Shell.Current.DisplayAlert("delete user failed", "unexpected error.", "OK");
-                }
-                if (!result.Success)
-                {
-                    await Shell.Current.DisplayAlert("delete user failed", result.Message, "OK");
-                }
+            //    if (result == null)
+            //    {
+            //        await Shell.Current.DisplayAlert("delete user failed", "unexpected error.", "OK");
+            //    }
+            //    if (!result.Success)
+            //    {
+            //        await Shell.Current.DisplayAlert("delete user failed", result.Message, "OK");
+            //    }
 
-                GetCurrentUsers();
-            }
+            //    GetCurrentUsers();
+            //}
         }
 
         private async void GetCurrentUsers()
         {
             UserList.Clear();
 
-            using (var call = Communication.Instance.GetAllUserStream())
-            {
-                var token = new CancellationToken();
-                while (await call.ResponseStream.MoveNext(token))
-                {
-                    var responseInfo = call.ResponseStream.Current;
+            //using (var call = Communication.Instance.GetAllUserStream())
+            //{
+            //    var token = new CancellationToken();
+            //    while (await call.ResponseStream.MoveNext(token))
+            //    {
+            //        var responseInfo = call.ResponseStream.Current;
 
-                    UserList.Add(new User()
-                        {
-                            Name = responseInfo.Username,
-                            Email = responseInfo.Email,
-                            PhoneNumber = responseInfo.PhoneNumber
-                        });
+            //        UserList.Add(new User()
+            //            {
+            //                Name = responseInfo.Username,
+            //                Email = responseInfo.Email,
+            //                PhoneNumber = responseInfo.PhoneNumber
+            //            });
                     
-                }
-            }
+            //    }
+            //}
             if (UserList.Any())
             {
                 CurrentSelectedItem = UserList.FirstOrDefault();

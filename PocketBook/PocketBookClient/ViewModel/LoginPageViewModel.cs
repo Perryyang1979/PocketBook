@@ -2,7 +2,6 @@
 using PocketBookClient.View;
 using PocketBookClient.Helper;
 using PocketBookClient.Services;
-using GrpcShared;
 
 namespace PocketBookClient.ViewModel;
 
@@ -50,29 +49,25 @@ public partial class LoginPageViewModel : BaseViewModel
             return false;
         }
 
-        UserLoginResponse result = await Communication.Instance.UserLoginAsync(UserName.Trim(), Password);
+         var result =  Communication.Instance.LoginUser(UserName.Trim(), Password);
+
+        //UserLoginResponse result = await Communication.Instance.UserLoginAsync(UserName.Trim(), Password);
 
         if (result == null)
         {
-             await Shell.Current.DisplayAlert("Missing Password", "Please provide valid Password", "OK");
+            await Shell.Current.DisplayAlert("Missing Password", "Please provide valid User Name or Password", "OK");
             IsRunning = false;
             Settings.Current.LoggedIn = false;
             return false;
         }
 
-        if (!result.Success)
-        {
-             await Shell.Current.DisplayAlert("Lgin in failed", result.Message, "OK");
-            IsRunning = false;
-            return false;
-        }
 
         Settings.Current.LoggedIn = true;
         Settings.Current.CurrentUserSetting =
             new Settings.CurrentUserLoginSetting()
             {
                 UserName = UserName.Trim(),
-                UserGroupId = result.UsergroupId,
+                UserGroupId = result.GroupId,
 
             };
         await Shell.Current.GoToAsync($"//{nameof(AddTransactionPage)}");

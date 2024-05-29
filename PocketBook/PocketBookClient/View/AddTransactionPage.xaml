@@ -60,7 +60,7 @@
                     </Label>
                 </StackLayout>
 
-                <!--Identify-->
+                <!--Identify--><!--
                 <StackLayout Orientation="Horizontal" Margin="10,0">
                     <Label Text="{Binding LocalizationResourceManager[AddTranscation_Identify_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" VerticalTextAlignment="Center"/>
                     <Picker  WidthRequest="150" TitleColor="Blue" 
@@ -74,7 +74,7 @@
                             <TapGestureRecognizer Command="{Binding  Path= AddIdentifyCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
-                </StackLayout>
+                </StackLayout>-->
 
                 <StackLayout Orientation="Horizontal" Margin="10,0">
                     <!--Comments-->
@@ -101,9 +101,9 @@ Command="{Binding UpdateTransactionCommand}"></Button>
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Category], Mode=OneWay}" Grid.Row="1" Grid.Column="4" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
             </Grid>
 
-            <CollectionView Grid.Row="2"
-         ItemsSource="{Binding TransactionList}"
-         SelectionMode="Single"
+            <CollectionView Grid.Row="2" 
+         ItemsSource="{Binding TransactionList}"                
+         SelectionMode="Single"              
          SelectedItem="{Binding CurrentSelectedItem}"
              >
                 <CollectionView.ItemTemplate>
