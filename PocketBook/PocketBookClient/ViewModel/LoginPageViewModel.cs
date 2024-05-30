@@ -84,7 +84,7 @@ public partial class LoginPageViewModel : BaseViewModel
     [RelayCommand]
     public async Task ScannerAsync()
     {
-        await Shell.Current.GoToAsync($"{nameof(ScannerPage)}");
+        await Shell.Current.GoToAsync("ScannerPage");
     }
 
     [RelayCommand]
@@ -98,6 +98,6 @@ public partial class LoginPageViewModel : BaseViewModel
 
     public async Task GotoPocketOperation()
     {
-        await Shell.Current.GoToAsync($"{nameof(AddTransactionPage)}");
+        await Shell.Current.GoToAsync($"// {nameof(AddTransactionPage)}");
     }
 }

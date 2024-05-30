@@ -238,7 +238,7 @@ namespace PocketBookClient.Services
 
             var resetPassword = Helper.Utils.GetRandomPassword(8);
 
-            if (Helper.Utils.SendNewPasswordEmail(currentUser.Email, resetPassword).Result == false)
+            if (Helper.Utils.SendNewPasswordEmail(currentUser.Email, resetPassword) == false)
             {
                 return await Task.FromResult(new MessageResponse { Success = false, Message = "Password Reset failure." });
             }

@@ -21,13 +21,13 @@ namespace PocketBookClient.Helper
             return new string(password);
         }
 
-        private static async Task<bool> SendEmail(string to, string subject, string body)
+        private static  bool SendEmail(string to, string subject, string body)
         {
             try
             {
                 var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("PocketAdmin", "eguyang@gmail.com"));
-                message.To.Add(new MailboxAddress("", to));
+                message.From.Add( new MailboxAddress("PocketBook Admin", "eguyang@gmail.com"));
+                message.To.Add( MailboxAddress.Parse(to));
                 message.Subject = subject;
                 message.Body = new TextPart("plain")
                 {
@@ -36,12 +36,17 @@ namespace PocketBookClient.Helper
 
                 using (var client = new SmtpClient())
                 {
-                 //   client.SslProtocols = SslProtocols.Ssl3 | SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13;
-                    client.CheckCertificateRevocation = false;
-                    await client.ConnectAsync("smtp.gmail.com", 465, true);
-                    await client.AuthenticateAsync("eguyang@gmail.com", "jzkb ktet zsyk igzl");
-                    await client.SendAsync(message);
-                    await client.DisconnectAsync(true);
+                    //   client.SslProtocols = SslProtocols.Ssl3 | SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13;
+                      client.CheckCertificateRevocation = false;
+                    //    await client.ConnectAsync("smtp.gmail.com", 465, true);
+                    //await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+                    //await client.AuthenticateAsync("eguyang@gmail.com", "jzkb ktet zsyk igzl");
+                    //await client.SendAsync(message);
+                    //await client.DisconnectAsync(true);
+                     client.Connect("smtp.gmail.com", 465, true);
+                     client.Authenticate("eguyang@gmail.com", "jzkb ktet zsyk igzl");
+                     client.Send(message);
+                     client.Disconnect(true);
                 }
                 return true; // Redirect to a success page
             }
@@ -51,12 +56,33 @@ namespace PocketBookClient.Helper
             }
         }
 
-        public static async Task<bool> SendNewPasswordEmail(string to, string password)
+        public static bool SendNewPasswordEmail(string to, string password)
         {
             var subject = "Reset Password";
-            var stringBody = $"new password is {password}";
+            var stringBody = $"Hi:\n your password is reset, and new password is {password}.\n Best regards \n PocketBook team";
 
-            return await SendEmail(to, subject, stringBody);
+            return  SendEmail(to, subject, stringBody);
+        }
+
+
+        public static async Task<bool> SendNewPasswordByEmail(string to, string password)
+        {
+            var message = new EmailMessage()
+            {
+                To = new List<string>() { to },
+                Subject = "Reset Password",
+                Body = $"your password is reset , and new password is {password}\n Best Regards\n Pocket Team"
+            };
+
+            try
+            {
+                await Microsoft.Maui.ApplicationModel.Communication.Email.Default.ComposeAsync(message);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
         }
     }
 
