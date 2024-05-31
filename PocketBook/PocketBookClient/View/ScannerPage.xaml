@@ -5,8 +5,7 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
              Title="SannerPage">
     <VerticalStackLayout>
-        <zxing:CameraBarcodeReaderView x:Name="barcodereader" IsDetecting="True" IsTorchOn="False"  BarcodesDetected="CameraBarcodeReaderView_BarcodesDetected"></zxing:CameraBarcodeReaderView>
-
-        <Label Text="{Binding BarcodeResult}"></Label>
+        <zxing:CameraBarcodeReaderView x:Name="barcodereader" IsDetecting="True" IsTorchOn="False"  
+                                        WidthRequest="300" HeightRequest="300" BarcodesDetected="CameraBarcodeReaderView_BarcodesDetected"></zxing:CameraBarcodeReaderView>
     </VerticalStackLayout>
 </ContentPage>

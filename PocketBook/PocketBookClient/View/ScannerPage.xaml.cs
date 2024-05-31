@@ -7,10 +7,10 @@ public partial class ScannerPage : ContentPage
 		InitializeComponent();
         barcodereader.Options = new ZXing.Net.Maui.BarcodeReaderOptions
         {
-            Formats = ZXing.Net.Maui.BarcodeFormat.QrCode
+            Formats = ZXing.Net.Maui.BarcodeFormat.QrCode,
+            AutoRotate = true
         };
 
-        barcodereader.IsDetecting = true;
     }
 
     private void CameraBarcodeReaderView_BarcodesDetected(object sender, ZXing.Net.Maui.BarcodeDetectionEventArgs e)
@@ -32,9 +32,9 @@ public partial class ScannerPage : ContentPage
 
     protected override async void OnAppearing()
     {
-        //base.OnAppearing();
+        base.OnAppearing();
 
-       // barcodereader.IsDetecting = true;
+        barcodereader.IsDetecting = true;
 
     }
 }
