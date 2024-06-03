@@ -131,7 +131,7 @@
                 </HorizontalStackLayout>
 
 
-                <StackLayout IsVisible="{Binding MonthlyChartPanelVisible}">
+                <StackLayout IsVisible="{Binding MonthlyChartPanelVisible ,Mode=TwoWay}">
 
                     <microcharts:ChartView x:Name="expensechartView"   Margin="10,10,10,10"                                                                                                       
                                                      BackgroundColor="White"

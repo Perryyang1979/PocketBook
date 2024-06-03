@@ -716,8 +716,8 @@ namespace PocketBookClient.Services
         {
             var currentDate = DateTime.Now.Date;
 
-            var startDate = currentDate.AddDays(0 - currentDate.Day);
-            var endDate = currentDate.AddDays(31 - currentDate.Day);
+            var startDate = currentDate.AddDays(1 - currentDate.Day);
+            var endDate = currentDate.AddDays(30 - currentDate.Day);
 
             return GetDailyTransations(startDate, endDate);
         }

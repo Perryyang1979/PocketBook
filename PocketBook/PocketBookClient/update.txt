@@ -2,3 +2,5 @@
 #await Shell.Current.GoToAsync("ScannerPage");  can not use nameof(ScannerPage) why 
 
 #20240530  finish email send function
+
+#20240531 apple should set width and height for zxing

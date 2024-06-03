@@ -5,6 +5,7 @@ using PocketBookClient.Services;
 using PocketBookClient.UI;
 using SkiaSharp;
 using PocketBookClient.Helper;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 
 namespace PocketBookClient.ViewModel
 {
@@ -146,10 +147,18 @@ namespace PocketBookClient.ViewModel
                 CategoryChartVisble = true;
                 GridCategorySummaryVisible = true;
                 PopulateCategoryGridDataSource();
+
+
+
+#if ANDROID
                 if (SelectedCategorySummaryList.Count > 1)
                 {
                     LoadMonthCategoryChart();
                 }
+#elif IOS
+                CategoryChart = null;
+                CategoryChartVisble = false;
+#endif
             }
             else
             {
@@ -233,6 +242,7 @@ namespace PocketBookClient.ViewModel
         
 
                 GenerateYearlySummary();
+#if ANDROID
                 if (MonthSummaryList.Count >= ThreholdCount)
                 {
                     MonthlyChartEnabled = true;
@@ -241,6 +251,9 @@ namespace PocketBookClient.ViewModel
                 {
                     MonthlyChartEnabled = false;
                 }
+#elif IOS
+                MonthlyChartEnabled = false;
+#endif
             }
             catch (Exception ex)
             {
@@ -376,6 +389,7 @@ namespace PocketBookClient.ViewModel
             }
 
             var incomeEntries = series[0].Entries;
+#if ANDROID
 
             if (incomeEntries.Count() >= 2)
             {
@@ -389,6 +403,10 @@ namespace PocketBookClient.ViewModel
                 MonthSummaryIncomeChartVisible = false;
 
             }
+#elif IOS
+            IncomeChart = null;
+            MonthSummaryIncomeChartVisible = false;
+#endif
 
             if (series.Count != 2)
             {
@@ -396,7 +414,8 @@ namespace PocketBookClient.ViewModel
             }
 
             var expenseEntries = series[1].Entries;
-            if (expenseEntries.Count() >= 2)
+#if ANDROID
+            if (expenseEntries.Count() >= 2 )
             {
                 MonthSummaryExpenseChartVisible = true;
                 ExpenseChart = new LineChart { Entries = expenseEntries, IsAnimated = true, AnimationDuration = TimeSpan.FromSeconds(1.5f) };
@@ -406,6 +425,10 @@ namespace PocketBookClient.ViewModel
                 ExpenseChart = null;
                 MonthSummaryExpenseChartVisible = false;
             }
+#elif IOS
+            ExpenseChart = null;
+            MonthSummaryExpenseChartVisible = false;
+#endif
             MonthlyChartPanelVisible = MonthSummaryIncomeChartVisible && MonthSummaryExpenseChartVisible;
 
             //Chart = new LineSeriesChart { Series = DrawLineChart.GetChartSerialFromMonthlyReport(MonthSummaryList),

@@ -1,6 +1,7 @@
 ﻿
 using Google.Apis.Sheets.v4.Data;
 using PocketBookClient.Data;
+using PocketBookClient.Helper;
 using PocketBookClient.Services;
 using System.Text.RegularExpressions;
 
@@ -68,6 +69,8 @@ namespace PocketBookClient.ViewModel
 
             AddButtonVisible = true;
             UpdateButtonVisible = !AddButtonVisible;
+
+            PhotoCameraVisible = false;
         }
 
         private async void GetRecentlyRecord()
@@ -158,6 +161,10 @@ namespace PocketBookClient.ViewModel
         private bool addButtonVisible = true;
         [ObservableProperty]
         private bool updateButtonVisible = false;
+        [ObservableProperty]
+        private ImageSource imageReceive = null;
+        [ObservableProperty]
+        private bool photoCameraVisible = false;
 
         partial void OnCurrentMoneyChangeTypeChanged(string value)
         {
@@ -315,6 +322,41 @@ namespace PocketBookClient.ViewModel
         {
             {"CurrentCategoryType", CurrentMoneyChangeType}
         });
+        }
+
+
+        void LoadImageFromStreamAsync(Stream stream)
+         {
+               ImageReceive = ImageSource.FromStream(() => stream);
+         }
+
+            [RelayCommand]
+        async Task CameraPhotoTransactionAsync()
+        {
+            var photo = await MediaPicker.CapturePhotoAsync();
+            if (photo != null)
+            {
+                PhotoCameraVisible = true;
+                var stream = await photo.OpenReadAsync();
+                LoadImageFromStreamAsync(stream);
+                    // 保存照片以供后续处理
+                var filePath = Path.Combine(FileSystem.AppDataDirectory, photo.FileName);
+                using (var newStream = File.OpenWrite(filePath))
+                {
+                    await stream.CopyToAsync(newStream);
+                }
+
+
+
+                var photoProcessHelper = new PhotoProcessHelper();
+
+                var transaction = await photoProcessHelper.ProcessReceipt(filePath);
+
+                CurrentMoneyChangeType = IsExpense;
+
+                //clear filed
+                Money = transaction.Amount.ToString();
+            }
         }
     }
 }
