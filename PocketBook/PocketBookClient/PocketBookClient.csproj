@@ -110,6 +110,15 @@
 	
 
 	<ItemGroup>
+	  <Compile Update="Platforms\MacCatalyst\Camera.cs">
+	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+	  </Compile>
+	  <Compile Update="Platforms\Tizen\Camera.cs">
+	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+	  </Compile>
+	  <Compile Update="Platforms\Windows\Camera.cs">
+	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+	  </Compile>
 	  <Compile Update="View\IdentifyListPage.xaml.cs">
 	    <DependentUpon>IdentifyListPage.xaml</DependentUpon>
 	  </Compile>
@@ -173,6 +182,20 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\Json\" />
+	</ItemGroup>
+	
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-ios'">
+	  <PackageReference Include="Xamarin.MediaGallery.Permision.Maui">
+	    <Version>2.2.1</Version>
+	  </PackageReference>
+	</ItemGroup>
+	
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-maccatalyst'">
+	  <PackageReference Include="Xamarin.MediaGallery.Permision.Maui">
+	    <Version>2.2.1</Version>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>

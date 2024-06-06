@@ -1,6 +1,4 @@
-﻿
-using Google.Apis.Sheets.v4.Data;
-using PocketBookClient.Data;
+﻿using PocketBookClient.Data;
 using PocketBookClient.Helper;
 using PocketBookClient.Services;
 using System.Text.RegularExpressions;
@@ -17,6 +15,8 @@ namespace PocketBookClient.ViewModel
         private readonly string IsExpense = "False";
         private const int RecentlyDaysDefine = 10;
 
+        private readonly ICamera _iOSCamera;
+
         [ObservableProperty]
         private bool contentVisible;
         [ObservableProperty]
@@ -25,6 +25,8 @@ namespace PocketBookClient.ViewModel
         public AddTransactionViewModel()
         {
             if (!CheckValidUser()) return;
+
+            _iOSCamera = ServiceHelper.GetService<ICamera>();
             Init();
             GetRecentlyRecord();
             GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
@@ -71,6 +73,7 @@ namespace PocketBookClient.ViewModel
             UpdateButtonVisible = !AddButtonVisible;
 
             PhotoCameraVisible = false;
+            ImageReceive = null;
         }
 
         private async void GetRecentlyRecord()
@@ -81,7 +84,7 @@ namespace PocketBookClient.ViewModel
             try
 
             {
-                foreach (var tran in Communication.Instance.GetDailyTransations(startDate, endDate))
+                foreach (var tran in Communication.Instance.GetDailyTransations(startDate, endDate).OrderByDescending(t => t.Date))
                 {
 
                     TransactionList.Add(tran);
@@ -90,7 +93,7 @@ namespace PocketBookClient.ViewModel
 
                 if (TransactionList.Count>0)
                 {
-                    TransactionList.OrderByDescending(t => t.Date).ToList();
+                  //  TransactionList.OrderByDescending(t => t.Date);
                     CurrentSelectedItem = null;
                 }
             }
@@ -108,6 +111,8 @@ namespace PocketBookClient.ViewModel
             }
             GetRecentlyRecord();
             GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
+            PhotoCameraVisible = false;
+            ImageReceive = null;
         }
 
 
@@ -232,6 +237,9 @@ namespace PocketBookClient.ViewModel
                 return;
             }
 
+            PhotoCameraVisible = false;
+            ImageReceive = null;
+
             var transaction = new UserTransaction()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -333,29 +341,39 @@ namespace PocketBookClient.ViewModel
             [RelayCommand]
         async Task CameraPhotoTransactionAsync()
         {
-            var photo = await MediaPicker.CapturePhotoAsync();
+            FileResult photo = null;
+
+#if ANDROID
+            photo =  await MediaPicker.CapturePhotoAsync();
+#elif IOS
+           if(_iOSCamera != null)
+                    photo =  await _iOSCamera.CapturePhotoAsync();
+#endif
+
+
             if (photo != null)
-            {
-                PhotoCameraVisible = true;
-                var stream = await photo.OpenReadAsync();
-                LoadImageFromStreamAsync(stream);
-                    // 保存照片以供后续处理
-                var filePath = Path.Combine(FileSystem.AppDataDirectory, photo.FileName);
+                {
+                    PhotoCameraVisible = true;
+                    var stream = await photo.OpenReadAsync();
+                    var filePath = Path.Combine(FileSystem.AppDataDirectory, photo.FileName);                 
+                
                 using (var newStream = File.OpenWrite(filePath))
                 {
                     await stream.CopyToAsync(newStream);
                 }
 
-
+                ImageReceive = ImageSource.FromFile(filePath);
 
                 var photoProcessHelper = new PhotoProcessHelper();
+
 
                 var transaction = await photoProcessHelper.ProcessReceipt(filePath);
 
                 CurrentMoneyChangeType = IsExpense;
-
                 //clear filed
                 Money = transaction.Amount.ToString();
+
+                CategorySelectedIndex = -1;
             }
         }
     }

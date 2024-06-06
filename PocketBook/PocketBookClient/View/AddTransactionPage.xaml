@@ -19,7 +19,7 @@
                 <StackLayout>
                     <Button Text="Quick Photo" Margin="20,0" Style="{StaticResource ButtonOutline}"
                 Command="{Binding CameraPhotoTransactionCommand}"></Button>
-                    <Image x:Name="ReceiptImage"  HeightRequest="100" MinimumWidthRequest="300" WidthRequest="600" Source="{Binding ImageReceive}" IsVisible="{Binding PhotoCameraVisible}"/>
+                    <Image x:Name="ReceiptImage"  HeightRequest="200" MinimumWidthRequest="300" WidthRequest="600" Source="{Binding ImageReceive}" IsVisible="{Binding PhotoCameraVisible}"/>
                 </StackLayout>
 
                 <StackLayout Orientation="Horizontal" Margin="10,30,0,0">

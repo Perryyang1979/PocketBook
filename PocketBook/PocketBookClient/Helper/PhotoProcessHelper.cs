@@ -1,7 +1,9 @@
 ﻿
+using System.Globalization;
 using System.Text.RegularExpressions;
 #if ANDROID
 using Tesseract;
+using static Android.Service.Autofill.FieldClassification;
 #elif IOS
 using CoreImage;
 using UIKit;
@@ -12,7 +14,9 @@ namespace PocketBookClient.Helper
 {
     public class PhotoProcessHelper
     {
-        private readonly string MoneyIdentify = "Totalbeløp";
+        private readonly string[] MoneyIdentifyList = new string[] { "TOTALBELØP", "VAREKJØP","TOTAL" };
+
+        private const string Language = "no";
 
         public class PhotoTransaction
         {
@@ -24,7 +28,7 @@ namespace PocketBookClient.Helper
         public async Task<PhotoTransaction> ProcessReceipt(string filePath)
         {
 #if ANDROID
-            return   ProcessReceiptWithTesseract(filePath);
+            return   await ProcessReceiptWithTesseract(filePath);
 #elif IOS
             return  await ProcessReceiptWithVision(filePath);
 #else
@@ -44,13 +48,14 @@ namespace PocketBookClient.Helper
             return null;
 #endif
         }
-
         private async Task<PhotoTransaction> ProcessReceiptWithVision(string filePath)
         {
 #if IOS
             TaskCompletionSource<PhotoTransaction> tcs = new TaskCompletionSource<PhotoTransaction>();
 
             var image = UIImage.FromFile(filePath);
+
+
             var ciImage = new CIImage(image);
             var vnImageRequestHandler = new VNImageRequestHandler(ciImage, new VNImageOptions());
 
@@ -64,13 +69,22 @@ namespace PocketBookClient.Helper
                 }
 
                 var observations = request.GetResults<VNRecognizedTextObservation>();
-                var text = string.Join("\n", observations.SelectMany(o => o.TopCandidates(1).Select(c => c.String)));
+
+              
+                  var lines = observations
+            .GroupBy(o => Math.Round(o.BoundingBox.Top, 2))  // 按照BoundingBox的顶部分组，并使用Math.Round进行分组
+            .OrderBy(g => g.Key)  // 按照顶部位置排序
+            .Select(g => string.Join(" ", g.SelectMany(o => o.TopCandidates(1).Select(c => c.String))))
+            .ToList();
+            var text = string.Join("\n", lines);
+              // var text = string.Join("\n", observations.SelectMany(o => o.TopCandidates(1).Select(c => c.String)));
                 // 解析文本
                 var transaction = ParseReceipt(text);
-                tcs.SetResult(transaction);
+                 tcs.SetResult(transaction);
             });
 
             textRecognitionRequest.RecognitionLevel = VNRequestTextRecognitionLevel.Accurate;
+            textRecognitionRequest.RecognitionLanguages = new string[] { "no" }; // 设置为你需要的语言/"en", "zh-Hans", 
 
             try
             {
@@ -92,8 +106,8 @@ namespace PocketBookClient.Helper
         private PhotoTransaction ParseReceipt(string text)
         {
             decimal amount = 0;
-            // 假设小票包含金额信息
-            var amountLine = text.Split('\n').FirstOrDefault(line => line.Contains(MoneyIdentify));
+            var lines = text?.Split('\n') ?? Array.Empty<string>();
+            var amountLine = lines.FirstOrDefault(line => MoneyIdentifyList.Any(token => line.Contains(token, StringComparison.OrdinalIgnoreCase)));
             if (!string.IsNullOrEmpty(amountLine))
             {
                 amount = ExtractAmount(amountLine);
@@ -107,9 +121,8 @@ namespace PocketBookClient.Helper
 
         private decimal ExtractAmount(string line)
         {
-            // 提取金额
-            var match = Regex.Match(line, @"\d+(\.\d{1,2})?");
-            return match.Success ? decimal.Parse(match.Value) : 0;
+            var   match = Regex.Match(line, @"\d+([,.]\d{1,2})?");
+            return match.Success ? decimal.Parse(match.Value, new CultureInfo("no-NO")) : 0;
         }
     }
 }

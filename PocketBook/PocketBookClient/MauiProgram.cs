@@ -6,6 +6,8 @@ using Microcharts.Maui;
 using ZXing.Net.Maui;
 using ZXing.Net.Maui.Controls;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using PocketBookClient.Services;
+using PocketBookClient.Platforms;
 
 namespace PocketBookClient;
 
@@ -40,6 +42,9 @@ public static class MauiProgram
         //  builder.Logging.AddDebug();
 #endif
         builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
+
+
+        builder.Services.AddSingleton<ICamera,Camera>();
 
         builder.Services.AddTransient<LoginPageViewModel>();
         builder.Services.AddSingleton<SettingPageViewModel>();
