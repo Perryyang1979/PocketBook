@@ -52,9 +52,22 @@ namespace PocketBookClient.ViewModel
         async void SignOut()
         {
 
-            Settings.Current.LoggedIn = false;
-            await Task.Delay(1);
+            try
+            {
+                SecureStorage.Remove("perry_token");
+                var exist = SecureStorage.GetAsync("perry_token").Result;
 
+                if (!string.IsNullOrEmpty(exist))
+                {
+                    SecureStorage.SetAsync("perry_token", null);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            await Task.Delay(10);
             await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
         }
     }

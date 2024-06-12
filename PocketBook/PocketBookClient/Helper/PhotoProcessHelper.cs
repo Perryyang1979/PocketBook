@@ -14,7 +14,12 @@ namespace PocketBookClient.Helper
 {
     public class PhotoProcessHelper
     {
-        private readonly string[] MoneyIdentifyList = new string[] { "TOTALBELØP", "VAREKJØP","TOTAL" };
+        private readonly string[] MoneyIdentifyList = new string[] { "TOTALBELØP", "VAREKJØP","BANK","TOTAL elop", "VAREKJoP", "TOTALBELoP" };
+
+        private readonly Dictionary<string, List<string>> BrandDictornary = new Dictionary<string, List<string>>()
+        {
+            {"SuperMarket",new List<string> {"MENY","REMA1000","KIWI" } }
+         };
 
         private const string Language = "no";
 
@@ -84,7 +89,8 @@ namespace PocketBookClient.Helper
             });
 
             textRecognitionRequest.RecognitionLevel = VNRequestTextRecognitionLevel.Accurate;
-            textRecognitionRequest.RecognitionLanguages = new string[] { "no" }; // 设置为你需要的语言/"en", "zh-Hans", 
+            textRecognitionRequest.RecognitionLanguages = new string[] { "no-NO" }; // 设置为你需要的语言/"en", "zh-Hans", 
+            textRecognitionRequest.UsesLanguageCorrection = true;
 
             try
             {
@@ -113,16 +119,57 @@ namespace PocketBookClient.Helper
                 amount = ExtractAmount(amountLine);
                 //  SaveTransaction(amount);
             }
+
+            var brand = string.Empty;
+
+            foreach(var branddic in BrandDictornary)
+            {
+                if(lines.Any(line=> branddic.Value.Any(token=>line.Equals(token,StringComparison.OrdinalIgnoreCase))))
+                    {
+                    brand = branddic.Key;
+                    break;
+                }
+            }
             return new PhotoTransaction()
             {
-                Amount = amount
+                Amount = amount,
+                IdentifiedBrand = brand
             };
         }
 
         private decimal ExtractAmount(string line)
         {
-            var   match = Regex.Match(line, @"\d+([,.]\d{1,2})?");
-            return match.Success ? decimal.Parse(match.Value, new CultureInfo("no-NO")) : 0;
+            try
+            {
+                var match = Regex.Match(line, @"\d+([,.]\d{1,2})?");
+                if (match.Success)
+                {
+                    try
+                    {
+                        return  decimal.Parse(FormatDecimal(match.Value), new CultureInfo("no-NO"));
+                    }
+                    catch (Exception ex)
+                    {
+                        return 0;
+                    }
+                }
+                else
+                    return 0;
+            }
+            catch(Exception ex)
+            {
+                return 0;
+            }
+        }
+
+        private string FormatDecimal(string strValue)
+        {
+            if(strValue.Contains("."))
+            {
+               return  strValue.Replace(".", ",");
+            }
+
+            return strValue;
         }
     }
 }

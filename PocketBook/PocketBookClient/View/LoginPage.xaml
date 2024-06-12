@@ -27,6 +27,7 @@
             Placeholder="{Binding LocalizationResourceManager[Password_Hint], Mode=OneWay}"/>
         <VerticalStackLayout>
             <ActivityIndicator HeightRequest="50" IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>
+            <HorizontalStackLayout  HorizontalOptions="Center">
             <Button 
                 x:Name="Signin"
                 Command="{Binding Path=LoginCommand}"
@@ -34,6 +35,16 @@
                 HeightRequest="60"
                 CornerRadius="20"
                 Style="{StaticResource LoginButton}"/>
+            <Button 
+     x:Name="AutoSignin"
+     Command="{Binding Path=AutoLoginCommand}"
+     Text="Auto"
+                Margin="10,0,0,0"
+     HeightRequest="40"
+     CornerRadius="20"
+                TextColor="DarkGreen"
+     Style="{StaticResource ButtonOutline}" IsVisible="{Binding AutoLoginEnable}"/>
+            </HorizontalStackLayout>
             <StackLayout HorizontalOptions="Center">
                 <Label  Text="{Binding LocalizationResourceManager[Forgot_Password], Mode=OneWay}" HorizontalOptions="Center" TextColor="{StaticResource Gray300}">
                     <Label.GestureRecognizers>

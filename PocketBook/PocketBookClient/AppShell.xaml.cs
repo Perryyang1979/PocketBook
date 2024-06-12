@@ -31,6 +31,20 @@ public partial class AppShell : Shell
     {
           Settings.Current.LoggedIn = false;
           Settings.Current.CurrentUserSetting = null;
+        try
+        {
+            SecureStorage.Remove("perry_token");
+            var exist = SecureStorage.GetAsync("perry_token").Result;
+
+            if(!string.IsNullOrEmpty(exist))
+            {
+                SecureStorage.SetAsync("perry_token",null);
+            }
+        }
+        catch(Exception ex)
+        {
+
+        }
           Task.Delay(1);
           Shell.Current.GoToAsync($"{nameof(LoginPage)}");
     }

@@ -709,7 +709,7 @@ namespace PocketBookClient.Services
 
         public List<UserTransaction> GetDailyTransations(DateTime startDate, DateTime endDate)
         {
-            return Transactions.Where(t => Convert.ToDateTime(t.Date) >= startDate && Convert.ToDateTime(t.Date) <= endDate).OrderBy(t => t.Date).ToList();
+            return Transactions.Where(t => Convert.ToDateTime(t.Date) >= startDate && Convert.ToDateTime(t.Date) <= endDate).OrderByDescending(t => Convert.ToDateTime( t.Date)).ToList();
         }
 
         public List<UserTransaction>  GetDailyTransationsInCurrentMonth()

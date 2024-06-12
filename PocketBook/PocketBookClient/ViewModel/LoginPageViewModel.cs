@@ -2,6 +2,8 @@
 using PocketBookClient.View;
 using PocketBookClient.Helper;
 using PocketBookClient.Services;
+using Microsoft.Maui.Storage;
+
 
 namespace PocketBookClient.ViewModel;
 
@@ -17,6 +19,17 @@ public partial class LoginPageViewModel : BaseViewModel
         IsRunning = false;
         UserName = string.Empty;
         Password = string.Empty;
+
+        var token =  GetCredentialAsync().Result;
+        if (!string.IsNullOrEmpty(token))
+        {
+            AutoLoginEnable = true;
+        }
+        else
+        {
+            AutoLoginEnable = false;
+        }
+
     }
 
     [ObservableProperty]
@@ -27,6 +40,8 @@ public partial class LoginPageViewModel : BaseViewModel
 
     [ObservableProperty]
     public string password;
+    [ObservableProperty]
+    public bool  autoLoginEnable;
     [RelayCommand]
     public async Task<bool> LoginAsync()
     {
@@ -61,7 +76,12 @@ public partial class LoginPageViewModel : BaseViewModel
             return false;
         }
 
-
+        var token = $"{UserName}-@{Password}";
+        if (!string.IsNullOrEmpty(token))
+        {
+            await SaveCredentialAsync(token);
+            // Continue to main application
+        }
         Settings.Current.LoggedIn = true;
         Settings.Current.CurrentUserSetting =
             new Settings.CurrentUserLoginSetting()
@@ -95,9 +115,40 @@ public partial class LoginPageViewModel : BaseViewModel
             {"PasswordOperation", 0}
         });
     }
+    [RelayCommand]
+    public async Task AutoLoginAsync()
+    {
+        var token = await GetCredentialAsync();
+        if (!string.IsNullOrEmpty(token))
+        {
+            var userPass = token.Split("-@");
+
+            UserName = userPass[0];
+            Password = userPass[1];
+
+            await LoginAsync();
+        }
+        else
+        {
+            AutoLoginEnable = false;
+            await Shell.Current.DisplayAlert("No token exist", "Please input  valid User Name or Password", "OK");
+        }
+    }
+
 
     public async Task GotoPocketOperation()
     {
         await Shell.Current.GoToAsync($"// {nameof(AddTransactionPage)}");
     }
+
+    public async Task SaveCredentialAsync(string token)
+    {
+    await SecureStorage.SetAsync("perry_token", token);
+    }   
+
+    public async Task<string> GetCredentialAsync()
+    {
+        return await SecureStorage.GetAsync("perry_token");
+    }
+
 }

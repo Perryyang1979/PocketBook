@@ -84,7 +84,7 @@ namespace PocketBookClient.ViewModel
             try
 
             {
-                foreach (var tran in Communication.Instance.GetDailyTransations(startDate, endDate).OrderByDescending(t => t.Date))
+                foreach (var tran in Communication.Instance.GetDailyTransations(startDate, endDate))
                 {
 
                     TransactionList.Add(tran);
@@ -113,6 +113,9 @@ namespace PocketBookClient.ViewModel
             GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
             PhotoCameraVisible = false;
             ImageReceive = null;
+            //clear filed
+            Money = "0";
+            Comments = string.Empty;
         }
 
 
@@ -231,9 +234,9 @@ namespace PocketBookClient.ViewModel
             var convertMoney = -1.0;
             double.TryParse(Money,out convertMoney);
 
-            if (convertMoney < 0.0)
+            if (convertMoney <= 0.0)
             {
-                await Shell.Current.DisplayAlert("Update Record Fail ", "Money Input is wrong", "OK");
+                await Shell.Current.DisplayAlert("Add Record Fail ", "Money Input should be above 0", "OK");
                 return;
             }
 

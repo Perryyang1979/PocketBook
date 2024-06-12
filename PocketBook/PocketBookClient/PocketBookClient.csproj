@@ -87,7 +87,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Google.Apis.Sheets.v4" Version="1.67.0.3365" />
-		<PackageReference Include="Grpc.Net.Client.Web" Version="2.60.0-pre1" />
 		<PackageReference Include="MailKit" Version="4.6.0" />
 		<PackageReference Include="MaterialDesign.Icons" Version="1.1.0" />
 		<PackageReference Include="Microcharts.Maui" Version="1.0.0" />
@@ -97,7 +96,6 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
 		<PackageReference Include="Google.Protobuf" Version="3.25.1" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.59.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.59.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
