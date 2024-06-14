@@ -35,7 +35,7 @@
             Clicked="UserButton_Clicked"
             IsVisible="{Binding UserButtonVisible}"
             ></Button>-->
-            <Label Text="@Ver.2025.0.1" HorizontalTextAlignment="Center" ></Label>
+            <Label Text="@Ver.2025.0.3" HorizontalTextAlignment="Center" ></Label>
             <Label Text="@Copyright Mr.Yang-2024" HorizontalTextAlignment="Center" ></Label>
         </VerticalStackLayout>
     </Shell.FlyoutFooter>

@@ -355,6 +355,24 @@ namespace PocketBookClient.ViewModel
             else
             {
                 MonthlyCategoryReprotPanelVisible = false;
+
+                if (SelectedCurrentCategorys.Count > 0)
+                {
+                    for (int i = 0; i < SelectedCurrentCategorys.Count; i++)
+                    {
+                        SelectedCurrentCategorys[i].IsSelected = false;
+                    }
+
+                    for(int i = 0;i<CurrentCategorys.Count;i++ )
+                    {
+                        var current = CurrentCategorys[i];
+                        if(current.IsSelected)
+                        {
+                            current.IsSelected = false;
+                        }
+                    }
+                    SelectedCurrentCategorys.Clear();
+                }
             }
         }
 
