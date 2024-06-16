@@ -45,6 +45,7 @@ public static class MauiProgram
 
 
         builder.Services.AddSingleton<ICamera,Camera>();
+        builder.Services.AddSingleton<IPhotoProcess, PhotoProcess>();
 
         builder.Services.AddTransient<LoginPageViewModel>();
         builder.Services.AddSingleton<SettingPageViewModel>();

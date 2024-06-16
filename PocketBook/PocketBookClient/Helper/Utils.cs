@@ -7,6 +7,13 @@ namespace PocketBookClient.Helper
 {
     public class Utils
     {
+        public static string SuperMarket = "Supermarket";
+        public static string ShoppingMall = "ShoppingMall";
+        public static string Insurance = "Insurance";
+        public static string Salary = "Salary";
+        public static string Lunch = "Lunch";
+        public static string Parking = "Parking";
+
         public static string GetRandomPassword(int length)
         {
             string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{}|;:'\",.<>?/"; // add your special characters here

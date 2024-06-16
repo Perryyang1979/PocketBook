@@ -16,6 +16,7 @@ namespace PocketBookClient.ViewModel
         private const int RecentlyDaysDefine = 10;
 
         private readonly ICamera _iOSCamera;
+        private readonly IPhotoProcess _photoProcess;
 
         [ObservableProperty]
         private bool contentVisible;
@@ -27,6 +28,7 @@ namespace PocketBookClient.ViewModel
             if (!CheckValidUser()) return;
 
             _iOSCamera = ServiceHelper.GetService<ICamera>();
+            _photoProcess = ServiceHelper.GetService<IPhotoProcess>();
             Init();
             GetRecentlyRecord();
             GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
@@ -367,16 +369,23 @@ namespace PocketBookClient.ViewModel
 
                 ImageReceive = ImageSource.FromFile(filePath);
 
-                var photoProcessHelper = new PhotoProcessHelper();
+                //var photoProcessHelper = new PhotoProcessHelper();
+                //var transaction = await photoProcessHelper.ProcessReceipt(filePath);
 
-
-                var transaction = await photoProcessHelper.ProcessReceipt(filePath);
+                var photoTransactionService = new PhotoProcessService(_photoProcess);
+                var transaction = await photoTransactionService.HandleProcess(filePath);
 
                 CurrentMoneyChangeType = IsExpense;
                 //clear filed
                 Money = transaction.Amount.ToString();
 
-                CategorySelectedIndex = -1;
+                if (Categories.Count > 0 && transaction.IdentifiedBrand != string.Empty) {
+
+                    var category = Categories.FirstOrDefault(c=>c.CategoryDescription.Equals(transaction.IdentifiedBrand));
+                    CategorySelectedIndex = Categories.IndexOf(category);
+                }      
+                else 
+                    CategorySelectedIndex = -1;
             }
         }
     }

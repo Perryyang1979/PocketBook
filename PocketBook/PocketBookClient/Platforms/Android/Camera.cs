@@ -11,9 +11,11 @@ namespace PocketBookClient.Platforms
 {
     public class Camera : ICamera
     {
-        public Task<FileResult> CapturePhotoAsync()
+        public async Task<FileResult> CapturePhotoAsync()
         {
-            throw new NotImplementedException();
+            TaskCompletionSource<FileResult> taskCompletionSource = new TaskCompletionSource<FileResult>();
+            taskCompletionSource.TrySetException(new PermissionException("Camera permission not granted"));
+            return await taskCompletionSource.Task;
         }
     }
 }

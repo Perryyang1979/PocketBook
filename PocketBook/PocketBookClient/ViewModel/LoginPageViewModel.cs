@@ -20,7 +20,7 @@ public partial class LoginPageViewModel : BaseViewModel
         UserName = string.Empty;
         Password = string.Empty;
 
-        var token =  GetCredentialAsync().Result;
+        var token =  GetCredential();
         if (!string.IsNullOrEmpty(token))
         {
             AutoLoginEnable = true;
@@ -90,6 +90,7 @@ public partial class LoginPageViewModel : BaseViewModel
                 UserGroupId = result.GroupId,
 
             };
+        await Communication.Instance.CreateDefaultCategoryAsync();
         await Shell.Current.GoToAsync($"//{nameof(AddTransactionPage)}");
         return true;
         // await Shell.Current.DisplayAlert("Lgin in OK", result.Message, "OK");
@@ -118,7 +119,7 @@ public partial class LoginPageViewModel : BaseViewModel
     [RelayCommand]
     public async Task AutoLoginAsync()
     {
-        var token = await GetCredentialAsync();
+        var token =  GetCredential();
         if (!string.IsNullOrEmpty(token))
         {
             var userPass = token.Split("-@");
@@ -146,9 +147,9 @@ public partial class LoginPageViewModel : BaseViewModel
     await SecureStorage.SetAsync("perry_token", token);
     }   
 
-    public async Task<string> GetCredentialAsync()
+    public string GetCredential()
     {
-        return await SecureStorage.GetAsync("perry_token");
+        return  SecureStorage.GetAsync("perry_token").Result;
     }
 
 }

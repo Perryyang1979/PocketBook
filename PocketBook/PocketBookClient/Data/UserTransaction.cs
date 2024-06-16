@@ -8,8 +8,8 @@ namespace PocketBookClient.Data
 {
     public partial class UserTransaction:ObservableObject
     {
-        private const string Income = "收入";
-        private const string Expense = "支出";
+        private const string Income = "Inc";
+        private const string Expense = "Exp";
 
         [ObservableProperty]
         public double amount;

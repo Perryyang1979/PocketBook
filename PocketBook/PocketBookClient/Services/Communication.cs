@@ -27,6 +27,16 @@ namespace PocketBookClient.Services
             { 1834737748, DailySheet }
         };
 
+        private List<TransactionCategory> defaultTransactionCategories = new List<TransactionCategory>()
+        {
+            new TransactionCategory() { GuidCategory = Guid.NewGuid().ToString(),CategoryDescription = Helper.Utils.SuperMarket, IsIncome =false},
+            new TransactionCategory() { GuidCategory = Guid.NewGuid().ToString(),CategoryDescription = Helper.Utils.ShoppingMall, IsIncome =false},
+            new TransactionCategory() { GuidCategory = Guid.NewGuid().ToString(),CategoryDescription = Helper.Utils.Insurance, IsIncome =false},
+            new TransactionCategory() { GuidCategory = Guid.NewGuid().ToString(),CategoryDescription = Helper.Utils.Salary, IsIncome =true},
+            new TransactionCategory() { GuidCategory = Guid.NewGuid().ToString(),CategoryDescription = Helper.Utils.Lunch, IsIncome =false},
+            new TransactionCategory() { GuidCategory = Guid.NewGuid().ToString(),CategoryDescription =Helper.Utils.Parking, IsIncome =false},
+        };
+
 
         private static Communication _instance;
         private GoogleSheetsManager _sheetsManager;
@@ -369,6 +379,33 @@ namespace PocketBookClient.Services
             }
         }
 
+        public async Task<MessageResponse> CreateDefaultCategoryAsync()
+        {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult)
+            {
+                return new MessageResponse { Success = false };
+            }
+
+            //check category exist
+            if (Categories.Count == 0)
+            {
+                GetAllCategory();
+            }
+
+            if(Categories.Count>0 && Categories.Any(c=>c.IsIncome == false && c.CategoryDescription.Equals(Helper.Utils.ShoppingMall)))
+            {
+                return new MessageResponse { Success = false ,Message="No need to created."}; ;
+            }
+
+            foreach(var defaultCategory in defaultTransactionCategories)
+            {
+                await AddCategoryAsync(defaultCategory);
+            }
+
+            return new MessageResponse { Success = true };
+        }
+
         public async Task<MessageResponse> UpdateCategoryAsync(PocketBookClient.Data.TransactionCategory category)
         {
             var checkResult = await CheckInternetConnection();
@@ -527,7 +564,11 @@ namespace PocketBookClient.Services
                 Console.WriteLine("no data found.");
             }
 
-            _transactionCategories.Clear();
+            if (_transactionCategories != null)
+            {
+                _transactionCategories.Clear();
+            }
+
             _transactionCategories = categorys;
         }
 
