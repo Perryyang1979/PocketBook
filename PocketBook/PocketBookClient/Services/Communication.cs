@@ -1,6 +1,4 @@
 ﻿
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using PocketBookClient.Data;
 using PocketBookClient.GoogleSheeet;
@@ -19,12 +17,15 @@ namespace PocketBookClient.Services
         private const string CategorySheet = "Category";
         private const string UserGroupSheet = "UserGroup";
         private const string DailySheet = "DailyRecord";
+        private const string SheduledSheet = "Sheduled";
 
         Dictionary<int, string> sheetIDAndNameDictionary = new Dictionary<int, string>()
         {
             { 52291343, UserSheet },
             { 721815880, CategorySheet },
-            { 1834737748, DailySheet }
+            { 1834737748, DailySheet },
+            {22594778,SheduledSheet }
+
         };
 
         private List<TransactionCategory> defaultTransactionCategories = new List<TransactionCategory>()
@@ -868,5 +869,166 @@ namespace PocketBookClient.Services
             _userTransactions.Clear();
             _userTransactions = transactions;
         }
+        public List<ScheduledTransaction> GetAllSheduledTransactions()
+        {
+            var checkResult = CheckInternetConnection();
+            if (!checkResult.Result)
+            {
+                return null;
+            }
+
+            List<ScheduledTransaction> transactions = new List<ScheduledTransaction>();
+            if (CurrentSpreadSheet == null)
+            {
+                return null;
+            }
+
+            var range = $"{SheduledSheet}!A1:J10000";
+            string[] valueRange = new[] { range };
+
+            var response = CurrentSheetsManager.GetMultipleValues(CurrentSpreadSheet.SpreadsheetId, valueRange);
+
+            var transactionList = response.ValueRanges;
+
+            if (transactionList != null && transactionList.Count > 0 && transactionList.ElementAt(0).Values != null)
+            {
+                foreach (var row in transactionList.ElementAt(0).Values)
+                {
+                    if (row.Count >= 9 && row[1].ToString() == Settings.Current.CurrentUserSetting.UserGroupId)  //make sure there is enough data
+                                                                                                                 //ID, UserGroup,category,Money,frequncy,startdate,enddate,dayofmonth,dayofweek
+                                                                                                                 //
+                    {
+                        transactions.Add(new ScheduledTransaction()
+                        {
+                            Id = row[0].ToString(),
+                            Category = row[2].ToString(),
+                            Frequency = Utils.ParseEnum<FrequencyEnum>(row[3].ToString()),
+                            Amount = Double.Parse(row[4].ToString()),
+                            StartDate = DateTime.Parse(row[5].ToString()),
+                            EndDate = DateTime.Parse(row[6].ToString()),
+                            DayOfMonth = Int32.Parse(row[7].ToString() ),
+                            DayOfWeek = Utils.ParseEnum<DayOfWeek>(row[8].ToString())
+                        });
+                    }
+
+                };
+
+            }
+            else
+            {
+                Console.WriteLine($"no data found for currrent userId {Settings.Current.CurrentUserSetting.UserGroupId}");
+            }
+
+            return transactions;
+        }
+
+
+        public async Task<MessageResponse> AddSheduledTransactionAsync(PocketBookClient.Data.ScheduledTransaction transaction)
+        {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult)
+            {
+                return new MessageResponse { Success = false };
+            }
+
+
+            if (CurrentSpreadSheet == null)
+            {
+                return new MessageResponse { Success = false, Message = "There exist this category Description" };
+            }
+
+
+            var newRecordRange = $"{SheduledSheet}!A:J";
+            var newRecord = new List<object>() { transaction.Id,
+                Settings.Current.CurrentUserSetting.UserGroupId, transaction.Category,
+                transaction.Frequency, transaction.Amount, transaction.StartDate,
+                 transaction.EndDate, transaction.DayOfMonth,transaction.DayOfWeek };
+            try
+            {
+
+                var response = await _sheetsManager.CreateSingleValueAsync(CurrentSpreadSheet.SpreadsheetId, newRecordRange, newRecord);
+
+                return new MessageResponse { Success = true };
+
+            }
+            catch (Exception ex)
+            {
+                return new MessageResponse { Success = false };
+            }
+        }
+
+        //  //ID, UserGroup,UserName,Date,InCome,Money,CategaryDescription,Comments
+        public async Task<MessageResponse> UpdateSheduledTransactionAsync(PocketBookClient.Data.ScheduledTransaction transaction)
+        {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult)
+            {
+                return new MessageResponse { Success = false };
+            }
+
+            if (CurrentSpreadSheet == null)
+            {
+                return new MessageResponse { Success = false, Message = "There exist this transaction Description" };
+            }
+
+            var keyRange = $"{SheduledSheet}!A:A";
+
+            var indexToUpdate = _sheetsManager.FindRowByKey(CurrentSpreadSheet.SpreadsheetId, keyRange, transaction.Id);
+
+
+            var updateRange = $"{SheduledSheet}!A{indexToUpdate}:J{indexToUpdate}";
+
+            var newRecord = new List<object>() { transaction.Id,
+                Settings.Current.CurrentUserSetting.UserGroupId, transaction.Category,
+                transaction.Frequency, transaction.Amount, transaction.StartDate,
+                 transaction.EndDate, transaction.DayOfMonth,transaction.DayOfWeek };
+
+            try
+            {
+
+                UpdateValuesResponse response = await _sheetsManager.UpdateSingleValueAsync(CurrentSpreadSheet.SpreadsheetId, updateRange, newRecord);
+
+                return new MessageResponse { Success = true };
+
+            }
+            catch (Exception ex)
+            {
+                return new MessageResponse { Success = false };
+            }
+        }
+
+        public async Task<MessageResponse> DeleteScheduledTransactionAsync(PocketBookClient.Data.ScheduledTransaction transaction)
+        {
+            var checkResult = await CheckInternetConnection();
+            if (!checkResult)
+            {
+                return new MessageResponse { Success = false };
+            }
+
+            if (CurrentSpreadSheet == null)
+            {
+                return new MessageResponse { Success = false, Message = "There exist this category Description" };
+            }
+
+            var keyRange = $"{SheduledSheet}!A:A";
+
+            var indexToDelete = _sheetsManager.FindRowByKey(CurrentSpreadSheet.SpreadsheetId, keyRange, transaction.Id);
+
+            var sheetId = GetSheetIdFromSheetName(SheduledSheet);
+
+            try
+            {
+
+                _sheetsManager.DeleteRow(CurrentSpreadSheet.SpreadsheetId, sheetId, indexToDelete != null ? (int)indexToDelete - 1 : 0);
+
+                return new MessageResponse { Success = true };
+
+            }
+            catch (Exception ex)
+            {
+                return new MessageResponse { Success = false };
+            }
+        }
+
     }
 }

@@ -112,6 +112,9 @@
 	  <Compile Update="Platforms\Windows\Camera.cs">
 	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
 	  </Compile>
+	  <Compile Update="View\ScheduleTransactionPage.xaml.cs">
+	    <DependentUpon>ScheduleTransactionPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\IdentifyListPage.xaml.cs">
 	    <DependentUpon>IdentifyListPage.xaml</DependentUpon>
 	  </Compile>
@@ -134,6 +137,9 @@
 	
 
 	<ItemGroup>
+	  <MauiXaml Update="View\ScheduleTransactionPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\AddTransactionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

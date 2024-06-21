@@ -32,7 +32,6 @@ namespace PocketBookClient.ViewModel
             Init();
             GetRecentlyRecord();
             GetCurrentCategories(CurrentMoneyChangeType.Equals(IsIncome));
-            //    GetCurrentIdentification();
         }
 
         private bool CheckValidUser()
@@ -335,6 +334,12 @@ namespace PocketBookClient.ViewModel
         {
             {"CurrentCategoryType", CurrentMoneyChangeType}
         });
+        }
+
+        [RelayCommand]
+        async Task ScheduleTransactionAsync()
+        {
+            await Shell.Current.GoToAsync($"{nameof(ScheduleTransactionPage)}");
         }
 
 

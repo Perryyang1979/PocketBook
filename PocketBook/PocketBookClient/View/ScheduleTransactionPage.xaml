@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PocketBookClient.View.ScheduleTransactionPage"
+             xmlns:data="clr-namespace:PocketBookClient.Data"
+             xmlns:converter="clr-namespace:PocketBookClient.Converters"
+             xmlns:viewmodel="clr-namespace:PocketBookClient.ViewModel"
+             Shell.FlyoutBehavior="Flyout"
+             Shell.NavBarIsVisible="True"
+             Title="Schedule"
+             x:DataType="viewmodel:ScheduledTransactionsViewModel"
+             >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:DayOfMonthConverter x:Key="DayOfMonthConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ScrollView>
+        <Grid
+        ColumnDefinitions="*"
+        ColumnSpacing="5"
+        RowDefinitions="Auto,60,Auto,60"
+        RowSpacing="0">
+            <!--<StackLayout Padding="20">
+            <ListView ItemsSource="{Binding Transactions}"
+                  SelectedItem="{Binding SelectedTransaction}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:ScheduledTransaction">
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical">
+                                <Label Text="{Binding Category }"  FontAttributes="Bold"  Style="{StaticResource  BaseLabel }"/>
+                                <Label Text="{Binding Amount, StringFormat='Amount: {0:C}'}" FontAttributes="Bold"  Style="{StaticResource  BaseLabel }"/>
+                                <Label Text="{Binding Frequency}" FontAttributes="Bold"  Style="{StaticResource  BaseLabel }"/>
+                                <Label Text="{Binding StartDate, StringFormat='Start: {0:MM/dd/yyyy}'}" FontAttributes="Bold"  Style="{StaticResource  BaseLabel }"/>
+                                <Label Text="{Binding EndDate, StringFormat='End: {0:MM/dd/yyyy}'}" FontAttributes="Bold"  Style="{StaticResource  BaseLabel }" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>-->
+
+            <CollectionView 
+         ItemsSource="{Binding Transactions}"                
+         SelectionMode="Single"              
+         SelectedItem="{Binding SelectedTransaction}" Grid.Row="0"
+             >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="data:ScheduledTransaction">
+                        <Grid Margin="0,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="30*,35*,30*,45*,45*" VerticalOptions="FillAndExpand">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="White"></Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="LightSkyBlue"></Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <BoxView HeightRequest="0.1"  BackgroundColor="Black" Grid.ColumnSpan="5" VerticalOptions="Start"/>
+                            <Label Text="{Binding Category }"  FontAttributes="Bold"  Style="{StaticResource  BaseLabel }" Grid.Column="0"/>
+                            <Label Text="{Binding Amount, StringFormat='NOK{0}'}" FontAttributes="Bold"  Style="{StaticResource  BaseLabel }" Grid.Column="1"/>
+                            <Label Text="{Binding Frequency}" FontAttributes="Bold"  Style="{StaticResource  BaseLabel }" Grid.Column="2"/>
+                            <Label Text="{Binding StartDate, StringFormat='{0:MM/dd/yyyy}'}" FontAttributes="Bold"  Style="{StaticResource  BaseLabel }" Grid.Column="3"/>
+                            <Label Text="{Binding EndDate, StringFormat='{0:MM/dd/yyyy}'}" FontAttributes="Bold"  Style="{StaticResource  BaseLabel }" Grid.Column="4"/>
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <StackLayout Orientation="Horizontal" Margin="10" HorizontalOptions="Center" Grid.Row="1" >
+                <Button Text="{Binding LocalizationResourceManager[ScheduleTransaction_Add], Mode=OneWay}" Style="{StaticResource ButtonOutline}" WidthRequest="80" 
+                Command="{Binding AddTransactionCommand}" IsEnabled="{Binding AddButtonEnable,Mode=TwoWay}"></Button>
+                <Button Text="{Binding LocalizationResourceManager[ScheduleTransaction_Edit], Mode=OneWay}" Margin="20,0" Style="{StaticResource ButtonOutline}" WidthRequest="80" 
+Command="{Binding EditTransactionCommand}" IsEnabled="{Binding EditButtonEnable,Mode=TwoWay}"></Button>
+
+                <Button Text="{Binding LocalizationResourceManager[ScheduleTransaction_Delete], Mode=OneWay}" Margin="0,0" Style="{StaticResource ButtonOutline}" WidthRequest="80" 
+                Command="{Binding DeleteTransactionCommand}" IsEnabled="{Binding DeleteButtonEnable,Mode=TwoWay}"></Button>
+            </StackLayout>
+
+
+            <StackLayout IsVisible="{Binding IsTransactionSelected}" Grid.Row="2" Grid.Column="0">
+                <HorizontalStackLayout>
+                    <Label Text="Category" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End" />
+                    <Picker ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedTransaction.Category}" HorizontalOptions="StartAndExpand"/>
+                    <!--<Entry Text="{Binding SelectedTransaction.Category}" HeightRequest="40" Style="{StaticResource SmallEntry}"/>-->
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout>
+                    <Label Text="Amount" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End" />
+                    <Entry Text="{Binding SelectedTransaction.Amount}" Keyboard="Numeric" HeightRequest="40" Style="{StaticResource SmallEntry}"/>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout>
+                    <Label Text="Frequency" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End" />
+                <Picker SelectedItem="{Binding SelectedTransaction.Frequency}"       HorizontalOptions="StartAndExpand" >
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type data:FrequencyEnum}">
+                            <data:FrequencyEnum>Daily</data:FrequencyEnum>
+                            <data:FrequencyEnum>Weekly</data:FrequencyEnum>
+                            <data:FrequencyEnum>Monthly</data:FrequencyEnum>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout>
+                        <Label Text="Start Date" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
+                        <DatePicker Date="{Binding SelectedTransaction.StartDate}" />
+                  </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="End Date" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End" />
+                <DatePicker Date="{Binding SelectedTransaction.EndDate}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout IsVisible="{Binding SelectedTransaction.RequireDayOfMonth,Mode=TwoWay}">
+                    <Label Text="Day of Month" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
+                    <Entry Text="{Binding SelectedTransaction.DayOfMonth,Converter={StaticResource DayOfMonthConverter}}" Keyboard="Numeric" 
+                           WidthRequest="40" HeightRequest="40" Style="{StaticResource SmallEntry}" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout IsVisible="{Binding SelectedTransaction.RequireDayOfWeek,Mode=TwoWay}">
+                    <Label Text="Day of Week " TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
+                    <Picker ItemsSource="{Binding DaysOfWeek}" SelectedItem="{Binding SelectedTransaction.DayOfWeek}" HorizontalOptions="StartAndExpand"/>
+                    <!--<Picker.ItemsSource ="{Binding DaysOfWeek}">
+                        -->
+                    <!--<x:Array Type="{x:Type x:DayOfWeek}">
+                            <x:DayOfWeek>Sunday</x:DayOfWeek>
+                            <x:DayOfWeek>Monday</x:DayOfWeek>
+                            <x:DayOfWeek>Tuesday</x:DayOfWeek>
+                            <x:DayOfWeek>Wednesday</x:DayOfWeek>
+                            <x:DayOfWeek>Thursday</x:DayOfWeek>
+                            <x:DayOfWeek>Friday</x:DayOfWeek>
+                            <x:DayOfWeek>Saturday</x:DayOfWeek>
+                        </x:Array>-->
+                    <!--
+                    </Picker.ItemsSource>-->
+
+                </HorizontalStackLayout>
+            </StackLayout>
+            </Grid>
+    </ScrollView>
+
+</ContentPage>

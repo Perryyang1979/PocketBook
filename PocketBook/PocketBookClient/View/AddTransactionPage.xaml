@@ -96,6 +96,11 @@ Command="{Binding UpdateTransactionCommand}"></Button>
                     <Button Text="{Binding LocalizationResourceManager[Button_Reset], Mode=OneWay}" Margin="20,0" Style="{StaticResource ButtonOutline}"
                 Command="{Binding CancelTransactionCommand}"></Button>
                 </StackLayout>
+                <Label  Text="{Binding LocalizationResourceManager[ScheduleTransaction], Mode=OneWay}" Margin="25,0" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small" VerticalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding  Path= ScheduleTransactionCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
             </VerticalStackLayout>
 
             <Grid ColumnDefinitions="45*,30*,25*,25*,40*" Grid.Row="1">

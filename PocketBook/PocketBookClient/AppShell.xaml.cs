@@ -25,6 +25,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(PasswordManagePage), typeof(PasswordManagePage));
         Routing.RegisterRoute(nameof(AdvancedReportPage), typeof(AdvancedReportPage));
         Routing.RegisterRoute(nameof(UserListPage), typeof(UserListPage));
+        Routing.RegisterRoute(nameof(ScheduleTransactionPage), typeof(ScheduleTransactionPage));
     }
 
     private void logoutButton_Clicked(object sender, EventArgs e)

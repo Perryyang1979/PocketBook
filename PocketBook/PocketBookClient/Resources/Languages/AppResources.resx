@@ -363,6 +363,18 @@
   <data name="RepeatPassword" xml:space="preserve">
     <value>Repeat Password:</value>
   </data>
+  <data name="ScheduleTransaction" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="ScheduleTransaction_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ScheduleTransaction_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ScheduleTransaction_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="SettingTitle" xml:space="preserve">
     <value>Setting</value>
   </data>
