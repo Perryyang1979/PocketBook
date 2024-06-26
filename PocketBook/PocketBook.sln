@@ -5,10 +5,6 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketBookClient", "PocketBookClient\PocketBookClient.csproj", "{DE81331D-25E7-4CA9-B197-97422C902C4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcShared", "GrpcShared\GrpcShared.csproj", "{C7BF3BC7-625B-49BA-B5A5-617866F1A068}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketBookServer", "PocketBookServer\PocketBookServer.csproj", "{C107F752-B76F-4DEB-A344-EB4441F6ADDE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,14 +17,6 @@ Global
 		{DE81331D-25E7-4CA9-B197-97422C902C4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE81331D-25E7-4CA9-B197-97422C902C4F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DE81331D-25E7-4CA9-B197-97422C902C4F}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{C7BF3BC7-625B-49BA-B5A5-617866F1A068}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7BF3BC7-625B-49BA-B5A5-617866F1A068}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7BF3BC7-625B-49BA-B5A5-617866F1A068}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7BF3BC7-625B-49BA-B5A5-617866F1A068}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C107F752-B76F-4DEB-A344-EB4441F6ADDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C107F752-B76F-4DEB-A344-EB4441F6ADDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C107F752-B76F-4DEB-A344-EB4441F6ADDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C107F752-B76F-4DEB-A344-EB4441F6ADDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -71,9 +71,9 @@ namespace PocketBookClient.ViewModel
             {
                 var result = await Communication.Instance.ResetPasswordAsync(Email);
 
-                if(result != null)
+                if (result != null)
                 {
-                    if(result.Success)
+                    if (result.Success)
                     {
                         IsConfirmOK = true;
                         IsConfirmNotOK = false;
@@ -109,7 +109,7 @@ namespace PocketBookClient.ViewModel
                 return;
             }
 
-            var result = await Communication.Instance.ChangePasswordAsync(Settings.Current.CurrentUserSetting.UserName, OldPassword,NewPassword);
+            var result = await Communication.Instance.ChangePasswordAsync(Settings.Current.CurrentUserSetting.UserName, OldPassword, NewPassword);
 
             if (result != null)
             {

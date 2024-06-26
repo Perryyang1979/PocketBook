@@ -2,7 +2,8 @@
 using PocketBookClient.View;
 using PocketBookClient.Helper;
 using PocketBookClient.Services;
-using GrpcShared;
+using Microsoft.Maui.Storage;
+
 
 namespace PocketBookClient.ViewModel;
 
@@ -18,6 +19,17 @@ public partial class LoginPageViewModel : BaseViewModel
         IsRunning = false;
         UserName = string.Empty;
         Password = string.Empty;
+
+        var token =  GetCredential();
+        if (!string.IsNullOrEmpty(token))
+        {
+            AutoLoginEnable = true;
+        }
+        else
+        {
+            AutoLoginEnable = false;
+        }
+
     }
 
     [ObservableProperty]
@@ -28,6 +40,8 @@ public partial class LoginPageViewModel : BaseViewModel
 
     [ObservableProperty]
     public string password;
+    [ObservableProperty]
+    public bool  autoLoginEnable;
     [RelayCommand]
     public async Task<bool> LoginAsync()
     {
@@ -50,31 +64,33 @@ public partial class LoginPageViewModel : BaseViewModel
             return false;
         }
 
-        UserLoginResponse result = await Communication.Instance.UserLoginAsync(UserName.Trim(), Password);
+         var result =  Communication.Instance.LoginUser(UserName.Trim(), Password);
+
+        //UserLoginResponse result = await Communication.Instance.UserLoginAsync(UserName.Trim(), Password);
 
         if (result == null)
         {
-             await Shell.Current.DisplayAlert("Missing Password", "Please provide valid Password", "OK");
+            await Shell.Current.DisplayAlert("Missing Password", "Please provide valid User Name or Password", "OK");
             IsRunning = false;
             Settings.Current.LoggedIn = false;
             return false;
         }
 
-        if (!result.Success)
+        var token = $"{UserName}-@{Password}";
+        if (!string.IsNullOrEmpty(token))
         {
-             await Shell.Current.DisplayAlert("Lgin in failed", result.Message, "OK");
-            IsRunning = false;
-            return false;
+            await SaveCredentialAsync(token);
+            // Continue to main application
         }
-
         Settings.Current.LoggedIn = true;
         Settings.Current.CurrentUserSetting =
             new Settings.CurrentUserLoginSetting()
             {
                 UserName = UserName.Trim(),
-                UserGroupId = result.UsergroupId,
+                UserGroupId = result.GroupId,
 
             };
+        await Communication.Instance.CreateDefaultCategoryAsync();
         await Shell.Current.GoToAsync($"//{nameof(AddTransactionPage)}");
         return true;
         // await Shell.Current.DisplayAlert("Lgin in OK", result.Message, "OK");
@@ -89,7 +105,7 @@ public partial class LoginPageViewModel : BaseViewModel
     [RelayCommand]
     public async Task ScannerAsync()
     {
-        await Shell.Current.GoToAsync($"{nameof(ScannerPage)}");
+        await Shell.Current.GoToAsync("ScannerPage");
     }
 
     [RelayCommand]
@@ -100,9 +116,40 @@ public partial class LoginPageViewModel : BaseViewModel
             {"PasswordOperation", 0}
         });
     }
+    [RelayCommand]
+    public async Task AutoLoginAsync()
+    {
+        var token =  GetCredential();
+        if (!string.IsNullOrEmpty(token))
+        {
+            var userPass = token.Split("-@");
+
+            UserName = userPass[0];
+            Password = userPass[1];
+
+            await LoginAsync();
+        }
+        else
+        {
+            AutoLoginEnable = false;
+            await Shell.Current.DisplayAlert("No token exist", "Please input  valid User Name or Password", "OK");
+        }
+    }
+
 
     public async Task GotoPocketOperation()
     {
-        await Shell.Current.GoToAsync($"{nameof(AddTransactionPage)}");
+        await Shell.Current.GoToAsync($"// {nameof(AddTransactionPage)}");
     }
+
+    public async Task SaveCredentialAsync(string token)
+    {
+    await SecureStorage.SetAsync("perry_token", token);
+    }   
+
+    public string GetCredential()
+    {
+        return  SecureStorage.GetAsync("perry_token").Result;
+    }
+
 }

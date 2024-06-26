@@ -11,6 +11,5 @@ namespace PocketBookClient.Data
         public string Date { get; set; }
         public string Category { get; set; }
         public double TotalMoney { get; set; }
-        public string Identification { get; set; }
     }
 }

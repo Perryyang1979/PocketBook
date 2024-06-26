@@ -25,12 +25,27 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(PasswordManagePage), typeof(PasswordManagePage));
         Routing.RegisterRoute(nameof(AdvancedReportPage), typeof(AdvancedReportPage));
         Routing.RegisterRoute(nameof(UserListPage), typeof(UserListPage));
+        Routing.RegisterRoute(nameof(ScheduleTransactionPage), typeof(ScheduleTransactionPage));
     }
 
     private void logoutButton_Clicked(object sender, EventArgs e)
     {
           Settings.Current.LoggedIn = false;
           Settings.Current.CurrentUserSetting = null;
+        try
+        {
+            SecureStorage.Remove("perry_token");
+            var exist = SecureStorage.GetAsync("perry_token").Result;
+
+            if(!string.IsNullOrEmpty(exist))
+            {
+                SecureStorage.SetAsync("perry_token",null);
+            }
+        }
+        catch(Exception ex)
+        {
+
+        }
           Task.Delay(1);
           Shell.Current.GoToAsync($"{nameof(LoginPage)}");
     }

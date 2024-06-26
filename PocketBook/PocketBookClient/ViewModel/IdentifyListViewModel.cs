@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GrpcShared;
 using PocketBookClient.Data;
 using PocketBookClient.Services;
 
@@ -67,20 +66,20 @@ namespace PocketBookClient.ViewModel
         {
             IdentifyList.Clear();
  
-            using (var call = Communication.Instance.GetAllIdentificationStream())
-            {
-                var token = new CancellationToken();
-                while (await call.ResponseStream.MoveNext(token))
-                {
-                    IdentificationInfo responseInfo = call.ResponseStream.Current;
+            //using (var call = Communication.Instance.GetAllIdentificationStream())
+            //{
+            //    var token = new CancellationToken();
+            //    while (await call.ResponseStream.MoveNext(token))
+            //    {
+            //        IdentificationInfo responseInfo = call.ResponseStream.Current;
 
-                        IdentifyList.Add(new TransactionIdentification()
-                        {
-                            IdentifyDescription = responseInfo.Description,
-                        });
+            //            IdentifyList.Add(new TransactionIdentification()
+            //            {
+            //                IdentifyDescription = responseInfo.Description,
+            //            });
                     
-                }
-            }
+            //    }
+            //}
             if(IdentifyList.Any())
             {
                 CurrentSelectedItem=IdentifyList.FirstOrDefault();
@@ -105,16 +104,16 @@ namespace PocketBookClient.ViewModel
 
             if ( confirm)
             {
-                var result = await Communication.Instance.DeleteIdentificationAsync(CurrentSelectedItem);
+                //var result = await Communication.Instance.DeleteIdentificationAsync(CurrentSelectedItem);
 
-                if (result == null)
-                {
-                    await Shell.Current.DisplayAlert("delete Identify failed", "unexpected error.", "OK");
-                }
-                if (!result.Success)
-                {
-                    await Shell.Current.DisplayAlert("delete Identify failed", result.Message, "OK");
-                }
+                //if (result == null)
+                //{
+                //    await Shell.Current.DisplayAlert("delete Identify failed", "unexpected error.", "OK");
+                //}
+                //if (!result.Success)
+                //{
+                //    await Shell.Current.DisplayAlert("delete Identify failed", result.Message, "OK");
+                //}
 
                 GetCurrentIdenitfy();
             }
@@ -139,15 +138,15 @@ namespace PocketBookClient.ViewModel
                 IdentifyDescription = IdentifyDescriptionAdd,
             };
 
-            var result =await Communication.Instance.AddIdentificationAsync(identifyInfo);
+            //var result =await Communication.Instance.AddIdentificationAsync(identifyInfo);
 
-            if(result == null) {
-                await Shell.Current.DisplayAlert("Add Idenitfy failed", "unexpected error.", "OK");
-            }
-            if (!result.Success)
-            {
-                await Shell.Current.DisplayAlert("Add Idenitfy failed", result.Message, "OK");
-            }
+            //if(result == null) {
+            //    await Shell.Current.DisplayAlert("Add Idenitfy failed", "unexpected error.", "OK");
+            //}
+            //if (!result.Success)
+            //{
+            //    await Shell.Current.DisplayAlert("Add Idenitfy failed", result.Message, "OK");
+            //}
 
             IdentifyDescriptionAdd = string.Empty;
 

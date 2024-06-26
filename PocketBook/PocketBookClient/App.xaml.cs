@@ -1,6 +1,4 @@
-﻿using GrpcShared;
-
-using PocketBookClient.View;
+﻿using PocketBookClient.View;
 using PocketBookClient.Services;
 using PocketBookClient.Helper;
 using PocketBookClient.Resources.Languages;
@@ -11,10 +9,9 @@ namespace PocketBookClient;
 
 public partial class App : Application
 {
-    public App(AccountBook.AccountBookClient accountBookClient)
+    public App()
     {
         InitializeComponent();
-        Communication.Instance.AccountBookClient = accountBookClient;
         Settings.Current.LoggedIn = false;
       //  MainPage = new LoginPage(ServiceHelper.GetService<LoginPageViewModel>());
         MainPage = new AppShell();

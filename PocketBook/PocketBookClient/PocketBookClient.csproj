@@ -29,10 +29,18 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net7.0-ios'">
+		<DefineConstants>$(DefineConstants);IOS</DefineConstants>
+	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios'">
 	  <CodesignKey>Apple Development: Created via API (3N5CNP3VS4)</CodesignKey>
 	  <CodesignProvision>VS: com.companyname.pocketbookclient Development</CodesignProvision>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net7.0-android'">
+		<DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -52,7 +60,13 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
-
+	<ItemGroup>
+		<MauiAsset Update="Resources\Raw\googlesheetcredentials.json">
+			<LogicalName>googlesheetcredentials.json</LogicalName>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiAsset>
+	</ItemGroup>
+	
 	<ItemGroup>
 	  <Compile Remove="MainPage.xaml.cs" />
 	  <Compile Remove="ViewModel\PocketOperationViewModel.cs" />
@@ -68,10 +82,13 @@
 	  <None Remove="Resources\AppIcon\myappicon.svg" />
 	  <None Remove="Resources\Images\mathematics.png" />
 	  <None Remove="Resources\Images\math_title.jpg" />
+	  <None Remove="Resources\Images\schedule.png" />
+	  <None Remove="Resources\Json\googlesheetcredentials.json" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Grpc.Net.Client.Web" Version="2.60.0-pre1" />
+		<PackageReference Include="Google.Apis.Sheets.v4" Version="1.67.0.3365" />
+		<PackageReference Include="MailKit" Version="4.6.0" />
 		<PackageReference Include="MaterialDesign.Icons" Version="1.1.0" />
 		<PackageReference Include="Microcharts.Maui" Version="1.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
@@ -79,23 +96,26 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
-		<PackageReference Include="Google.Protobuf" Version="3.25.1" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.59.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.59.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+		<PackageReference Include="MimeKit" Version="4.6.0" />
+		<PackageReference Include="Tesseract" Version="5.2.0" />
 		<PackageReference Include="ZXing.Net.Maui" Version="0.4.0" />
 		<PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
 	</ItemGroup>
 	
 
 	<ItemGroup>
-	  <ProjectReference Include="..\GrpcShared\GrpcShared.csproj" />
-	</ItemGroup>
-	
-
-	<ItemGroup>
+	  <Compile Update="Platforms\MacCatalyst\Camera.cs">
+	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+	  </Compile>
+	  <Compile Update="Platforms\Tizen\Camera.cs">
+	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+	  </Compile>
+	  <Compile Update="Platforms\Windows\Camera.cs">
+	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+	  </Compile>
+	  <Compile Update="View\ScheduleTransactionPage.xaml.cs">
+	    <DependentUpon>ScheduleTransactionPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\IdentifyListPage.xaml.cs">
 	    <DependentUpon>IdentifyListPage.xaml</DependentUpon>
 	  </Compile>
@@ -106,11 +126,21 @@
 	
 
 	<ItemGroup>
+	  <MauiAsset Update="Resources\Raw\googlesheetcredentials.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	</ItemGroup>
+	
+
+	<ItemGroup>
 	  <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 	</ItemGroup>
 	
 
 	<ItemGroup>
+	  <MauiXaml Update="View\ScheduleTransactionPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\AddTransactionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -147,6 +177,25 @@
 	  <MauiXaml Update="View\UserListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+	
+
+	<ItemGroup>
+	  <Folder Include="Resources\Json\" />
+	</ItemGroup>
+	
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-ios'">
+	  <PackageReference Include="Xamarin.MediaGallery.Permision.Maui">
+	    <Version>2.2.1</Version>
+	  </PackageReference>
+	</ItemGroup>
+	
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-maccatalyst'">
+	  <PackageReference Include="Xamarin.MediaGallery.Permision.Maui">
+	    <Version>2.2.1</Version>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>

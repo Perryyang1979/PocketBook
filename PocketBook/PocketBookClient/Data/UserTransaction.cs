@@ -6,14 +6,22 @@ using System.Threading.Tasks;
 
 namespace PocketBookClient.Data
 {
-    public class UserTransaction
+    public partial class UserTransaction:ObservableObject
     {
-        private const string Income = "收入";
-        private const string Expense = "支出";
-        public double Amount { get; set; }
-        public bool IsIncome { get; set; }
-        public string Category { get; set; }
-        public string Date { get; set; }
+        private const string Income = "Inc";
+        private const string Expense = "Exp";
+
+        [ObservableProperty]
+        public double amount;
+
+        [ObservableProperty]
+        public bool isIncome;
+
+        [ObservableProperty]
+        public string category;
+
+        [ObservableProperty]
+        public string date;
 
         public string Comments { get; set; }
 
@@ -25,8 +33,6 @@ namespace PocketBookClient.Data
         }
 
         public string UserName { get; set; }
-
-        public string IdentifyDescription { get; set; }
 
         public string Id { get; set;}
     }

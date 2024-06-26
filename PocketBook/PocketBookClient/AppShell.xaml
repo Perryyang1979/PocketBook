@@ -31,10 +31,11 @@
          IsVisible="{Binding LoginButtonVisible}"
          ></Button>
 
-            <Button x:Name="UserButton" Style="{StaticResource ButtonOutline}" Text="User" WidthRequest="100" HeightRequest="40" Margin="10"
+            <!--<Button x:Name="UserButton" Style="{StaticResource ButtonOutline}" Text="User" WidthRequest="100" HeightRequest="40" Margin="10"
             Clicked="UserButton_Clicked"
             IsVisible="{Binding UserButtonVisible}"
-            ></Button>
+            ></Button>-->
+            <Label Text="@Ver.2025.0.5" HorizontalTextAlignment="Center" ></Label>
             <Label Text="@Copyright Mr.Yang-2024" HorizontalTextAlignment="Center" ></Label>
         </VerticalStackLayout>
     </Shell.FlyoutFooter>
@@ -120,13 +121,17 @@
         ContentTemplate="{DataTemplate view:AdvancedReportPage}"
         Route="AdvancedReportPage" />
 
+        <ShellContent Icon="schedule.png" Title="Schedule" 
+        ContentTemplate="{DataTemplate view:ScheduleTransactionPage}"
+        Route="ScheduleTransactionPage" />
+
         <ShellContent Icon="me.png" Title="Me" 
                ContentTemplate="{DataTemplate view:UserInfoPage}"
            Route="UserInfoPage"  />
 
         <ShellContent 
-ContentTemplate="{DataTemplate view:SettingPage}" Icon="setting.png" Title="Setting"
-Route="SettingPage"></ShellContent>
+        ContentTemplate="{DataTemplate view:SettingPage}" Icon="setting.png" Title="Setting"
+        Route="SettingPage"></ShellContent>
 
     </FlyoutItem>
     

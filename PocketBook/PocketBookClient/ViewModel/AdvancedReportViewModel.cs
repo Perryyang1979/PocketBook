@@ -5,6 +5,7 @@ using PocketBookClient.Services;
 using PocketBookClient.UI;
 using SkiaSharp;
 using PocketBookClient.Helper;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 
 namespace PocketBookClient.ViewModel
 {
@@ -104,6 +105,16 @@ namespace PocketBookClient.ViewModel
             SelectedCurrentCategorys.CollectionChanged += SelectedCurrentCategorys_CollectionChanged;
         }
 
+        public async void RefreshModel()
+        {
+            if (Settings.Current.CurrentUserSetting == null || string.IsNullOrEmpty(Settings.Current.CurrentUserSetting.UserName))
+            {
+                return;
+            }
+            GetCurrentMonthRecord();
+            GetMonthSummary();
+        }
+
         private void  InitGridTitle()
         {
              TitleOfFirstCategory = string.Empty;
@@ -136,10 +147,18 @@ namespace PocketBookClient.ViewModel
                 CategoryChartVisble = true;
                 GridCategorySummaryVisible = true;
                 PopulateCategoryGridDataSource();
+
+
+
+#if ANDROID
                 if (SelectedCategorySummaryList.Count > 1)
                 {
                     LoadMonthCategoryChart();
                 }
+#elif IOS
+                CategoryChart = null;
+                CategoryChartVisble = false;
+#endif
             }
             else
             {
@@ -200,23 +219,9 @@ namespace PocketBookClient.ViewModel
             MonthTransactionList.Clear();
             try
             {
-                using (var call = Communication.Instance.GetDailyTransationsInCurrentMonthAsync())
+               foreach(var usertrans in Communication.Instance.GetDailyTransationsInCurrentMonth())
                 {
-                    var token = new CancellationToken();
-                    while (await call.ResponseStream.MoveNext(token))
-                    {
-                        var responseInfo = call.ResponseStream.Current;
-                        MonthTransactionList.Add(new UserTransaction()
-                        {
-                            Date = responseInfo.TransactionDate,
-                            Category = responseInfo.Category,
-                            IsIncome = responseInfo.IsIncome,
-                            Comments = responseInfo.Comments,
-                            Amount = DoubleHelper.Round(responseInfo.Amount),
-                            UserName = responseInfo.Username,
-                            IdentifyDescription = responseInfo.Identification
-                        });
-                    }
+                    MonthTransactionList.Add(usertrans);
                 }
             }
             catch (Exception ex)
@@ -230,24 +235,14 @@ namespace PocketBookClient.ViewModel
             MonthSummaryList.Clear();
             try
             {
-                using (var call = Communication.Instance.GetMonthlyReport())
+                foreach(var summary in Communication.Instance.GetMonthlyReport())
                 {
-                    var token = new CancellationToken();
-                    while (await call.ResponseStream.MoveNext(token))
-                    {
-                        var responseInfo = call.ResponseStream.Current;
-                        MonthSummaryList.Add(new MonthlySummary()
-                        {
-                            Date = responseInfo.Date,
-                            TotalIncome = DoubleHelper.Round( responseInfo.TotalIncome),
-                            TotalExpense = DoubleHelper.Round(responseInfo.TotalExpense),
-                            Identify = responseInfo.Identify,
-                            UserName = responseInfo.UserName
-                        });
-                    }
+                    MonthSummaryList.Add(summary);
                 }
+        
 
                 GenerateYearlySummary();
+#if ANDROID
                 if (MonthSummaryList.Count >= ThreholdCount)
                 {
                     MonthlyChartEnabled = true;
@@ -256,6 +251,9 @@ namespace PocketBookClient.ViewModel
                 {
                     MonthlyChartEnabled = false;
                 }
+#elif IOS
+                MonthlyChartEnabled = false;
+#endif
             }
             catch (Exception ex)
             {
@@ -273,7 +271,7 @@ namespace PocketBookClient.ViewModel
 
 
             Dictionary<string, YearlySummary> yearlySummaryTotal = new Dictionary<string, YearlySummary>();
-            Dictionary<string, YearlySummary> yearlyIdentifySummaryTotal = new Dictionary<string, YearlySummary>();
+            //Dictionary<string, YearlySummary> yearlyIdentifySummaryTotal = new Dictionary<string, YearlySummary>();
 
             yearlySummaryTotal.Add(FamilyName, new YearlySummary() { UserName = FamilyName });
             foreach (var monthlySummary in MonthSummaryList)
@@ -288,21 +286,6 @@ namespace PocketBookClient.ViewModel
                     yearlySummaryTotal.Add(monthlySummary.UserName, new YearlySummary(monthlySummary));
                 }
 
-                if (yearlyIdentifySummaryTotal.ContainsKey(monthlySummary.Identify))
-                {
-                    yearlyIdentifySummaryTotal[monthlySummary.Identify].TotalIncome += DoubleHelper.Round(monthlySummary.TotalIncome);
-                    yearlyIdentifySummaryTotal[monthlySummary.Identify].TotalExpense +=  monthlySummary.TotalExpense;
-                }
-                else
-                {
-                    yearlyIdentifySummaryTotal.Add(monthlySummary.Identify, new YearlySummary()
-                    { 
-                        UserName = monthlySummary.Identify,
-                        TotalExpense = DoubleHelper.Round( monthlySummary.TotalExpense),
-                        TotalIncome = DoubleHelper.Round(monthlySummary.TotalIncome),
-                    });
-                }
-
 
                 yearlySummaryTotal[FamilyName].TotalIncome += monthlySummary.TotalIncome;
                 yearlySummaryTotal[FamilyName].TotalExpense += monthlySummary.TotalExpense;
@@ -312,17 +295,6 @@ namespace PocketBookClient.ViewModel
                 {
                     YearlySummaryList.Add(summary);
                 }
-
-                foreach (var summary in yearlyIdentifySummaryTotal.Values.OrderBy(y => y.UserName))
-                {
-                    YearlySpecialIdentifySummaryList.Add(summary);
-                }
-
-                if (YearlySpecialIdentifySummaryList.Count > 1)
-                {
-                    YearlyIdentificationSummarylVisible = true;
-                }
-                else YearlyIdentificationSummarylVisible = false;
         }
 
         private async void GetMonthCategorySummary()
@@ -330,44 +302,25 @@ namespace PocketBookClient.ViewModel
             MonthCategorySummaryList.Clear();
             CurrentCategorys.Clear();
 
-            using (var call = Communication.Instance.GetMonthlyCategoryReport())
+
+            foreach(var summary in Communication.Instance.GetMonthlyCategoryReport())
             {
-                var token = new CancellationToken();
-                while (await call.ResponseStream.MoveNext(token))
+                MonthCategorySummaryList.Add(summary);
+
+                if (!CurrentCategorys.Any(c => c.Name.Equals(summary.Category)))
                 {
-                    var responseInfo = call.ResponseStream.Current;
-
-                    var income = double.IsNaN(responseInfo.TotalIncome) ? 0 : DoubleHelper.Round(responseInfo.TotalIncome);
-                    var expense = double.IsNaN(responseInfo.TotalExpense) ? 0 : DoubleHelper.Round(responseInfo.TotalExpense);
-                    MonthCategorySummaryList.Add(new MonthlyCategorySummary()
+                    CurrentCategorys.Add(new SelectOption()
                     {
-                        Date = responseInfo.Date,
-                        Category = responseInfo.Category,
-                        TotalMoney = income > 0 ? income : expense,
-                        Identification = responseInfo.Identification
-
-                    }); ;
-
-                    if (!CurrentCategorys.Any(c => c.Name.Equals(responseInfo.Category)))
-                    {
-                        CurrentCategorys.Add(new SelectOption()
-                        {
-                            Name = responseInfo.Category,
-                            IsSelected = false
-                        });
-                    }
-                    if (!CurrrentIdentifications.Any(c => c.Name.Equals(responseInfo.Identification)))
-                    {
-                        CurrrentIdentifications.Add(new SelectOption()
-                        {
-                            Name = responseInfo.Identification,
-                            IsSelected = false
-                        });
-                    }
+                        Name = summary.Category,
+                        IsSelected = false
+                    });
                 }
-
-                MonthlyCategoryReprotPanelVisible = MonthCategorySummaryList.Count>1;
             }
+
+            MonthlyCategoryReprotPanelVisible = MonthCategorySummaryList.Count > 1;
+
+
+          
         }
 
         [RelayCommand]
@@ -402,6 +355,24 @@ namespace PocketBookClient.ViewModel
             else
             {
                 MonthlyCategoryReprotPanelVisible = false;
+
+                if (SelectedCurrentCategorys.Count > 0)
+                {
+                    for (int i = 0; i < SelectedCurrentCategorys.Count; i++)
+                    {
+                        SelectedCurrentCategorys[i].IsSelected = false;
+                    }
+
+                    for(int i = 0;i<CurrentCategorys.Count;i++ )
+                    {
+                        var current = CurrentCategorys[i];
+                        if(current.IsSelected)
+                        {
+                            current.IsSelected = false;
+                        }
+                    }
+                    SelectedCurrentCategorys.Clear();
+                }
             }
         }
 
@@ -436,6 +407,7 @@ namespace PocketBookClient.ViewModel
             }
 
             var incomeEntries = series[0].Entries;
+#if ANDROID
 
             if (incomeEntries.Count() >= 2)
             {
@@ -449,6 +421,10 @@ namespace PocketBookClient.ViewModel
                 MonthSummaryIncomeChartVisible = false;
 
             }
+#elif IOS
+            IncomeChart = null;
+            MonthSummaryIncomeChartVisible = false;
+#endif
 
             if (series.Count != 2)
             {
@@ -456,7 +432,8 @@ namespace PocketBookClient.ViewModel
             }
 
             var expenseEntries = series[1].Entries;
-            if (expenseEntries.Count() >= 2)
+#if ANDROID
+            if (expenseEntries.Count() >= 2 )
             {
                 MonthSummaryExpenseChartVisible = true;
                 ExpenseChart = new LineChart { Entries = expenseEntries, IsAnimated = true, AnimationDuration = TimeSpan.FromSeconds(1.5f) };
@@ -466,6 +443,10 @@ namespace PocketBookClient.ViewModel
                 ExpenseChart = null;
                 MonthSummaryExpenseChartVisible = false;
             }
+#elif IOS
+            ExpenseChart = null;
+            MonthSummaryExpenseChartVisible = false;
+#endif
             MonthlyChartPanelVisible = MonthSummaryIncomeChartVisible && MonthSummaryExpenseChartVisible;
 
             //Chart = new LineSeriesChart { Series = DrawLineChart.GetChartSerialFromMonthlyReport(MonthSummaryList),

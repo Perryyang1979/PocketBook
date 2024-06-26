@@ -45,12 +45,11 @@
 
                 <!--Monthly summary-->
                 <Label  Text="{Binding LocalizationResourceManager[PocketOperation_Month_ShowReportTitle], Mode=OneWay}" Margin="0,10" HorizontalOptions="Center" TextColor="{StaticResource Primary}" FontSize="Micro"/>
-                <Grid ColumnDefinitions="30*,35*,35*,35*,35*" >
+                <Grid ColumnDefinitions="30*,35*,35*,35*">
                     <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Date], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                     <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_User], Mode=OneWay}" Grid.Row="1" Grid.Column="1" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
-                    <Label Text="{Binding LocalizationResourceManager[Table_Identify_Header], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
-                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Income], Mode=OneWay}" Grid.Row="1" Grid.Column="3" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
-                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Expense], Mode=OneWay}" Grid.Row="1" Grid.Column="4" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Income], Mode=OneWay}" Grid.Row="1" Grid.Column="2" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
+                    <Label Text="{Binding LocalizationResourceManager[AddTranscation_IsIncome_Expense], Mode=OneWay}" Grid.Row="1" Grid.Column="3" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
                 </Grid>
 
                 <CollectionView 
@@ -58,13 +57,12 @@
                   SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="data:MonthlySummary">
-                            <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="30*,35*,35*,35*,35*" VerticalOptions="FillAndExpand">
+                            <Grid Margin="10,2,0,0" RowSpacing="4" RowDefinitions="Auto" ColumnDefinitions="30*,35*,35*,35*" VerticalOptions="FillAndExpand">
                                 <!--<BoxView HeightRequest="0.1"  BackgroundColor="Black" Grid.ColumnSpan="5" VerticalOptions="Start"/>-->
                                 <Label Text="{Binding Date}" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
                                 <Label Text="{Binding UserName}" FontAttributes="Bold" Grid.Row="1" Grid.Column="1"/>
-                                <Label Text="{Binding Identify}" FontAttributes="Bold" Grid.Row="1" Grid.Column="2"/>
-                                <Label Text="{Binding TotalIncome}" FontAttributes="Bold" Grid.Row="1" Grid.Column="3"/>
-                                <Label Text="{Binding TotalExpense}" FontAttributes="Bold" Grid.Row="1" Grid.Column="4"/>
+                                <Label Text="{Binding TotalIncome}" FontAttributes="Bold" Grid.Row="1" Grid.Column="2"/>
+                                <Label Text="{Binding TotalExpense}" FontAttributes="Bold" Grid.Row="1" Grid.Column="3"/>
 
                             </Grid>
                         </DataTemplate>
@@ -96,7 +94,7 @@
                 </CollectionView>
 
                 <!--Optional summary Identify-->
-                <StackLayout IsVisible="{Binding YearlyIdentificationSummarylVisible}">
+                <!--<StackLayout IsVisible="{Binding YearlyIdentificationSummarylVisible}">
 
                     <Grid ColumnDefinitions="30*,35*,35*,35*" >
                         <Label Text="{Binding LocalizationResourceManager[Table_Identify_Header], Mode=OneWay}" Grid.Row="1" Grid.Column="0" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
@@ -120,7 +118,7 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
-                </StackLayout>
+                </StackLayout>-->
                 <!--Optional report-->
                 <HorizontalStackLayout HorizontalOptions="CenterAndExpand">
                     <Label  Text="{Binding LocalizationResourceManager[PocketOperation_Month_ShowChart_Label_Switch], Mode=OneWay}" Margin="5,10" 
@@ -133,7 +131,7 @@
                 </HorizontalStackLayout>
 
 
-                <StackLayout IsVisible="{Binding MonthlyChartPanelVisible}">
+                <StackLayout IsVisible="{Binding MonthlyChartPanelVisible ,Mode=TwoWay}">
 
                     <microcharts:ChartView x:Name="expensechartView"   Margin="10,10,10,10"                                                                                                       
                                                      BackgroundColor="White"
@@ -154,8 +152,10 @@
                           HorizontalOptions="CenterAndExpand" TextColor="{StaticResource Gray300}" FontSize="Small"/>
                 </StackLayout>
 
+            </StackLayout>
 
-                <HorizontalStackLayout Grid.Row="0"  Grid.ColumnSpan="2">
+            <StackLayout Grid.Row="1"  Grid.ColumnSpan="2">
+                <HorizontalStackLayout >
                     <Label  
                   Text="{Binding LocalizationResourceManager[PocketOperation_CategoryMonth_ShowReport], Mode=OneWay}" HeightRequest="60"
                       Margin="5,0,0,0" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small" VerticalTextAlignment="Center">

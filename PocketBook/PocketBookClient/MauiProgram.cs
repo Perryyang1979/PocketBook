@@ -1,13 +1,13 @@
-﻿global using Grpc.Net.Client;
+﻿
 using Microsoft.Extensions.Logging;
-using GrpcShared;
 using Microsoft.Maui.Handlers;
 using Microcharts;
 using Microcharts.Maui;
 using ZXing.Net.Maui;
 using ZXing.Net.Maui.Controls;
-using Grpc.Net.Client.Web;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using PocketBookClient.Services;
+using PocketBookClient.Platforms;
 
 namespace PocketBookClient;
 
@@ -15,8 +15,6 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-        string baseAddress = "https://pocketbookserver20231218194147.azurewebsites.net";
-        //string baseAddress = "https://localhost:7050";
         var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
@@ -39,23 +37,16 @@ public static class MauiProgram
 
         PocketBookClient.Helper.AppHandler.RemoveBorders(); 
 
-        builder.Services.AddScoped(services =>
-        {
-            //var baseUri = new Uri(baseAddress);
-            //var channel = GrpcChannel.ForAddress(baseUri);
-            var baseUri = new Uri(baseAddress);
-            var channel = GrpcChannel.ForAddress(baseUri, new GrpcChannelOptions
-            {
-                HttpHandler = new GrpcWebHandler(new HttpClientHandler())
-            });
-            return new AccountBook.AccountBookClient(channel);
-        });
 
 #if DEBUG
         //  builder.Logging.AddDebug();
 #endif
-// builder.Services.AddLocalization();
         builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
+
+
+        builder.Services.AddSingleton<ICamera,Camera>();
+        builder.Services.AddSingleton<IPhotoProcess, PhotoProcess>();
+        builder.Services.AddSingleton<IScheduleService, ScheduleTransactionService>();
 
         builder.Services.AddTransient<LoginPageViewModel>();
         builder.Services.AddSingleton<SettingPageViewModel>();
@@ -66,6 +57,8 @@ public static class MauiProgram
         builder.Services.AddTransient<UserInfoPageViewModel>();
         builder.Services.AddTransient<PasswordManageViewModel>();
         builder.Services.AddTransient<AdvancedReportViewModel>();
+        builder.Services.AddTransient<UserListViewModel>();
+        builder.Services.AddTransient<ScheduledTransactionsViewModel>();
 
 
         builder.Services.AddTransient<LoginPage>();
@@ -78,6 +71,8 @@ public static class MauiProgram
         builder.Services.AddTransient<ScannerPage>();
         builder.Services.AddTransient<PasswordManagePage>();
         builder.Services.AddTransient<AdvancedReportPage>();
+        builder.Services.AddTransient<UserListPage>();
+        builder.Services.AddTransient<ScheduleTransactionPage>();
 
         return builder.Build();
 	}

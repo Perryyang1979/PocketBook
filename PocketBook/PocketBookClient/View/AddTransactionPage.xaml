@@ -16,6 +16,11 @@
         RowDefinitions="Auto,60,Auto,60,Auto"
         RowSpacing="0">
             <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="5">
+                <StackLayout>
+                    <Button Text="Quick Photo" Margin="20,0" Style="{StaticResource ButtonOutline}"
+                Command="{Binding CameraPhotoTransactionCommand}"></Button>
+                    <Image x:Name="ReceiptImage"  HeightRequest="200" MinimumWidthRequest="300" WidthRequest="600" Source="{Binding ImageReceive}" IsVisible="{Binding PhotoCameraVisible}"/>
+                </StackLayout>
 
                 <StackLayout Orientation="Horizontal" Margin="10,30,0,0">
                     <Label Text="{Binding LocalizationResourceManager[AddTranscation_datePicker_label], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
@@ -60,7 +65,7 @@
                     </Label>
                 </StackLayout>
 
-                <!--Identify-->
+                <!--Identify--><!--
                 <StackLayout Orientation="Horizontal" Margin="10,0">
                     <Label Text="{Binding LocalizationResourceManager[AddTranscation_Identify_lable], Mode=OneWay}"  HorizontalOptions="Start" TextColor="{StaticResource Primary}" WidthRequest="120" VerticalTextAlignment="Center"/>
                     <Picker  WidthRequest="150" TitleColor="Blue" 
@@ -74,7 +79,7 @@
                             <TapGestureRecognizer Command="{Binding  Path= AddIdentifyCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
-                </StackLayout>
+                </StackLayout>-->
 
                 <StackLayout Orientation="Horizontal" Margin="10,0">
                     <!--Comments-->
@@ -91,6 +96,11 @@ Command="{Binding UpdateTransactionCommand}"></Button>
                     <Button Text="{Binding LocalizationResourceManager[Button_Reset], Mode=OneWay}" Margin="20,0" Style="{StaticResource ButtonOutline}"
                 Command="{Binding CancelTransactionCommand}"></Button>
                 </StackLayout>
+                <!--<Label  Text="{Binding LocalizationResourceManager[ScheduleTransaction], Mode=OneWay}" Margin="25,0" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small" VerticalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding  Path= ScheduleTransactionCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>-->
             </VerticalStackLayout>
 
             <Grid ColumnDefinitions="45*,30*,25*,25*,40*" Grid.Row="1">
@@ -101,9 +111,9 @@ Command="{Binding UpdateTransactionCommand}"></Button>
                 <Label Text="{Binding LocalizationResourceManager[PocketOperation_Header_Category], Mode=OneWay}" Grid.Row="1" Grid.Column="4" Padding="10" Style="{StaticResource HeadSmallLabel }"/>
             </Grid>
 
-            <CollectionView Grid.Row="2"
-         ItemsSource="{Binding TransactionList}"
-         SelectionMode="Single"
+            <CollectionView Grid.Row="2" 
+         ItemsSource="{Binding TransactionList}"                
+         SelectionMode="Single"              
          SelectedItem="{Binding CurrentSelectedItem}"
              >
                 <CollectionView.ItemTemplate>
