@@ -336,13 +336,6 @@ namespace PocketBookClient.ViewModel
         });
         }
 
-        [RelayCommand]
-        async Task ScheduleTransactionAsync()
-        {
-            await Shell.Current.GoToAsync($"{nameof(ScheduleTransactionPage)}");
-        }
-
-
         void LoadImageFromStreamAsync(Stream stream)
          {
                ImageReceive = ImageSource.FromStream(() => stream);

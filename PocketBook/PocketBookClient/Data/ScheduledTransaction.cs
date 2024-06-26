@@ -24,6 +24,8 @@ namespace PocketBookClient.Data
         [ObservableProperty]
         public DayOfWeek dayOfWeek;
 
+        public bool IsIncome { get; set; }
+
         partial void OnFrequencyChanged(FrequencyEnum value)
         {
             OnPropertyChanged(nameof(RequireDayOfMonth));

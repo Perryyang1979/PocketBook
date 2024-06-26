@@ -13,6 +13,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converter:DayOfMonthConverter x:Key="DayOfMonthConverter" />
+            <converter:InverseBooleanConverter x:Key="InverseBoolConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -44,6 +45,7 @@
          ItemsSource="{Binding Transactions}"                
          SelectionMode="Single"              
          SelectedItem="{Binding SelectedTransaction}" Grid.Row="0"
+                IsEnabled="{Binding IsRunning,Converter={StaticResource InverseBoolConverter}}"
              >
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="data:ScheduledTransaction">
@@ -75,7 +77,9 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <StackLayout Orientation="Horizontal" Margin="10" HorizontalOptions="Center" Grid.Row="1" >
+            <VerticalStackLayout  Grid.Row="1">
+
+                <StackLayout Orientation="Horizontal" Margin="10" HorizontalOptions="Center" >
                 <Button Text="{Binding LocalizationResourceManager[ScheduleTransaction_Add], Mode=OneWay}" Style="{StaticResource ButtonOutline}" WidthRequest="80" 
                 Command="{Binding AddTransactionCommand}" IsEnabled="{Binding AddButtonEnable,Mode=TwoWay}"></Button>
                 <Button Text="{Binding LocalizationResourceManager[ScheduleTransaction_Edit], Mode=OneWay}" Margin="20,0" Style="{StaticResource ButtonOutline}" WidthRequest="80" 
@@ -84,23 +88,27 @@ Command="{Binding EditTransactionCommand}" IsEnabled="{Binding EditButtonEnable,
                 <Button Text="{Binding LocalizationResourceManager[ScheduleTransaction_Delete], Mode=OneWay}" Margin="0,0" Style="{StaticResource ButtonOutline}" WidthRequest="80" 
                 Command="{Binding DeleteTransactionCommand}" IsEnabled="{Binding DeleteButtonEnable,Mode=TwoWay}"></Button>
             </StackLayout>
+            <ActivityIndicator HeightRequest="50" IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>
+                </VerticalStackLayout>
 
 
-            <StackLayout IsVisible="{Binding IsTransactionSelected}" Grid.Row="2" Grid.Column="0">
+                <StackLayout IsVisible="{Binding IsTransactionSelected}" Grid.Row="2" Grid.Column="0">
                 <HorizontalStackLayout>
                     <Label Text="Category" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End" />
-                    <Picker ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedTransaction.Category}" HorizontalOptions="StartAndExpand"/>
+                    <Picker ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedTransaction.Category}" HorizontalOptions="StartAndExpand"
+                             IsEnabled="{Binding IsRunning,Converter={StaticResource InverseBoolConverter}}"/>
                     <!--<Entry Text="{Binding SelectedTransaction.Category}" HeightRequest="40" Style="{StaticResource SmallEntry}"/>-->
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout>
                     <Label Text="Amount" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End" />
-                    <Entry Text="{Binding SelectedTransaction.Amount}" Keyboard="Numeric" HeightRequest="40" Style="{StaticResource SmallEntry}"/>
+                    <Entry Text="{Binding SelectedTransaction.Amount}" Keyboard="Numeric" HeightRequest="40" Style="{StaticResource SmallEntry}" WidthRequest="120"
+                             IsEnabled="{Binding IsRunning,Converter={StaticResource InverseBoolConverter}}"/>
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout>
                     <Label Text="Frequency" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End" />
-                <Picker SelectedItem="{Binding SelectedTransaction.Frequency}"       HorizontalOptions="StartAndExpand" >
+                    <Picker SelectedItem="{Binding SelectedTransaction.Frequency}"       HorizontalOptions="StartAndExpand"   IsEnabled="{Binding IsRunning,Converter={StaticResource InverseBoolConverter}}">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type data:FrequencyEnum}">
                             <data:FrequencyEnum>Daily</data:FrequencyEnum>
@@ -113,22 +121,22 @@ Command="{Binding EditTransactionCommand}" IsEnabled="{Binding EditButtonEnable,
 
                 <HorizontalStackLayout>
                         <Label Text="Start Date" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
-                        <DatePicker Date="{Binding SelectedTransaction.StartDate}" />
+                    <DatePicker Date="{Binding SelectedTransaction.StartDate}"   IsEnabled="{Binding IsRunning,Converter={StaticResource InverseBoolConverter}}"/>
                   </HorizontalStackLayout>
                     <HorizontalStackLayout>
                         <Label Text="End Date" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End" />
-                <DatePicker Date="{Binding SelectedTransaction.EndDate}" />
+                    <DatePicker Date="{Binding SelectedTransaction.EndDate}"   IsEnabled="{Binding IsRunning,Converter={StaticResource InverseBoolConverter}}"/>
                     </HorizontalStackLayout>
 
                     <HorizontalStackLayout IsVisible="{Binding SelectedTransaction.RequireDayOfMonth,Mode=TwoWay}">
                     <Label Text="Day of Month" TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
                     <Entry Text="{Binding SelectedTransaction.DayOfMonth,Converter={StaticResource DayOfMonthConverter}}" Keyboard="Numeric" 
-                           WidthRequest="40" HeightRequest="40" Style="{StaticResource SmallEntry}" />
+                           WidthRequest="40" HeightRequest="40" Style="{StaticResource SmallEntry}"   IsEnabled="{Binding IsRunning,Converter={StaticResource InverseBoolConverter}}" />
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout IsVisible="{Binding SelectedTransaction.RequireDayOfWeek,Mode=TwoWay}">
                     <Label Text="Day of Week " TextColor="{StaticResource Primary}" WidthRequest="120" HeightRequest="25" VerticalTextAlignment="End"/>
-                    <Picker ItemsSource="{Binding DaysOfWeek}" SelectedItem="{Binding SelectedTransaction.DayOfWeek}" HorizontalOptions="StartAndExpand"/>
+                    <Picker ItemsSource="{Binding DaysOfWeek}" SelectedItem="{Binding SelectedTransaction.DayOfWeek}" HorizontalOptions="StartAndExpand"   IsEnabled="{Binding IsRunning,Converter={StaticResource InverseBoolConverter}}"/>
                     <!--<Picker.ItemsSource ="{Binding DaysOfWeek}">
                         -->
                     <!--<x:Array Type="{x:Type x:DayOfWeek}">

@@ -152,8 +152,10 @@
                           HorizontalOptions="CenterAndExpand" TextColor="{StaticResource Gray300}" FontSize="Small"/>
                 </StackLayout>
 
+            </StackLayout>
 
-                <HorizontalStackLayout Grid.Row="0"  Grid.ColumnSpan="2">
+            <StackLayout Grid.Row="1"  Grid.ColumnSpan="2">
+                <HorizontalStackLayout >
                     <Label  
                   Text="{Binding LocalizationResourceManager[PocketOperation_CategoryMonth_ShowReport], Mode=OneWay}" HeightRequest="60"
                       Margin="5,0,0,0" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Primary}" FontSize="Small" VerticalTextAlignment="Center">

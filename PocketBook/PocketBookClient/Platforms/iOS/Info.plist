@@ -32,5 +32,11 @@
 	<string>This app uses barcode scanning to....</string>
 	<key>CFBundleIdentifier</key>
 	<string></string>
+
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+	</array>
+
 </dict>
 </plist>

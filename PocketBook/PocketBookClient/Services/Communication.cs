@@ -4,6 +4,7 @@ using PocketBookClient.Data;
 using PocketBookClient.GoogleSheeet;
 using PocketBookClient.Helper;
 using System.Globalization;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace PocketBookClient.Services
@@ -869,18 +870,18 @@ namespace PocketBookClient.Services
             _userTransactions.Clear();
             _userTransactions = transactions;
         }
-        public List<ScheduledTransaction> GetAllSheduledTransactions()
+        public async Task<List<ScheduledTransaction>> GetAllSheduledTransactions()
         {
+            List<ScheduledTransaction> transactions = new List<ScheduledTransaction>();
             var checkResult = CheckInternetConnection();
             if (!checkResult.Result)
             {
-                return null;
+                return await Task.FromResult(transactions);
             }
 
-            List<ScheduledTransaction> transactions = new List<ScheduledTransaction>();
             if (CurrentSpreadSheet == null)
             {
-                return null;
+                return await Task.FromResult(transactions);
             }
 
             var range = $"{SheduledSheet}!A1:J10000";
@@ -894,7 +895,7 @@ namespace PocketBookClient.Services
             {
                 foreach (var row in transactionList.ElementAt(0).Values)
                 {
-                    if (row.Count >= 9 && row[1].ToString() == Settings.Current.CurrentUserSetting.UserGroupId)  //make sure there is enough data
+                    if (row.Count >= 10 && row[1].ToString() == Settings.Current.CurrentUserSetting.UserGroupId)  //make sure there is enough data
                                                                                                                  //ID, UserGroup,category,Money,frequncy,startdate,enddate,dayofmonth,dayofweek
                                                                                                                  //
                     {
@@ -907,7 +908,8 @@ namespace PocketBookClient.Services
                             StartDate = DateTime.Parse(row[5].ToString()),
                             EndDate = DateTime.Parse(row[6].ToString()),
                             DayOfMonth = Int32.Parse(row[7].ToString() ),
-                            DayOfWeek = Utils.ParseEnum<DayOfWeek>(row[8].ToString())
+                            DayOfWeek = Utils.ParseEnum<DayOfWeek>(row[8].ToString()),
+                            IsIncome = Boolean.Parse(row[9].ToString()),
                         });
                     }
 
@@ -919,7 +921,7 @@ namespace PocketBookClient.Services
                 Console.WriteLine($"no data found for currrent userId {Settings.Current.CurrentUserSetting.UserGroupId}");
             }
 
-            return transactions;
+            return await Task.FromResult(transactions);
         }
 
 
@@ -937,12 +939,19 @@ namespace PocketBookClient.Services
                 return new MessageResponse { Success = false, Message = "There exist this category Description" };
             }
 
+            var category = Categories.FirstOrDefault(c=>c.CategoryDescription == transaction.Category);
+
+            if(category == null)
+            {
+                return new MessageResponse { Success = false, Message = "There not exist this category Description" };
+            }
+
 
             var newRecordRange = $"{SheduledSheet}!A:J";
             var newRecord = new List<object>() { transaction.Id,
                 Settings.Current.CurrentUserSetting.UserGroupId, transaction.Category,
                 transaction.Frequency, transaction.Amount, transaction.StartDate,
-                 transaction.EndDate, transaction.DayOfMonth,transaction.DayOfWeek };
+                 transaction.EndDate, transaction.DayOfMonth,transaction.DayOfWeek,category.IsIncome};
             try
             {
 
@@ -969,7 +978,16 @@ namespace PocketBookClient.Services
             if (CurrentSpreadSheet == null)
             {
                 return new MessageResponse { Success = false, Message = "There exist this transaction Description" };
+
             }
+
+            var category = Categories.FirstOrDefault(c => c.CategoryDescription == transaction.Category);
+
+            if (category == null)
+            {
+                return new MessageResponse { Success = false, Message = "There not exist this category Description" };
+            }
+
 
             var keyRange = $"{SheduledSheet}!A:A";
 
@@ -978,10 +996,12 @@ namespace PocketBookClient.Services
 
             var updateRange = $"{SheduledSheet}!A{indexToUpdate}:J{indexToUpdate}";
 
+
+
             var newRecord = new List<object>() { transaction.Id,
                 Settings.Current.CurrentUserSetting.UserGroupId, transaction.Category,
                 transaction.Frequency, transaction.Amount, transaction.StartDate,
-                 transaction.EndDate, transaction.DayOfMonth,transaction.DayOfWeek };
+                 transaction.EndDate, transaction.DayOfMonth,transaction.DayOfWeek,category.IsIncome };
 
             try
             {

@@ -42,7 +42,10 @@ namespace PocketBookClient.ViewModel
         private ScheduledTransaction selectedTransaction;
 
         [ObservableProperty]
-        public bool isTransactionSelected;
+        bool isTransactionSelected;
+
+        [ObservableProperty]
+        bool isRunning;
 
         #region private
         private void Init()
@@ -51,19 +54,35 @@ namespace PocketBookClient.ViewModel
             AddButtonEnable = true;
             EditButtonEnable= false;
             DeleteButtonEnable = false;
+            IsRunning = false;
         }
 
-        private void GetAllScheduledTransaction()
+        private async void GetAllScheduledTransaction()
         {
+            if (IsRunning)
+            {
+                return;
+            }
+            IsRunning = true;
             Transactions.Clear();
-            foreach (var schedule in Communication.Instance.GetAllSheduledTransactions())
+
+            var scheduleResult = await Communication.Instance.GetAllSheduledTransactions();
+            foreach (var schedule in scheduleResult)
             {
                 Transactions.Add(schedule);
             }
+
+            IsRunning = false;
         }
 
         private async void GetCurrentCategories()
         {
+            if(IsRunning)
+            {
+                return;
+            }
+
+            IsRunning = true;
             Categories.Clear();
 
             foreach (var category in Communication.Instance.GetCategories().Select(g => g.CategoryDescription))
@@ -74,6 +93,8 @@ namespace PocketBookClient.ViewModel
 
             if (Categories.Count > 0)
                 SelectedTransaction.Category = Categories[0];
+
+            IsRunning = false;
         }
         #endregion
 
@@ -94,6 +115,14 @@ namespace PocketBookClient.ViewModel
             }
         }
 
+        partial void OnSelectedTransactionChanging(ScheduledTransaction value)
+        {
+            if(IsRunning)
+            {
+                return;
+            }
+        }
+
         public void RefreshModel()
         {
             GetAllScheduledTransaction();
@@ -107,7 +136,12 @@ namespace PocketBookClient.ViewModel
         [RelayCommand]
         async Task AddTransactionAsync()
         {
+            if(IsRunning)
+            {
+                return;
+            }
 
+            IsRunning = true;
             if(!Categories.Contains(SelectedTransaction.Category))
             {
                 await Shell.Current.DisplayAlert("Add schedule transaction failed ", "Category need be specified ", "OK");
@@ -136,11 +170,19 @@ namespace PocketBookClient.ViewModel
                 SelectedTransaction.Id = defaultTransaction.Id;
                 await Shell.Current.DisplayAlert("Add schedule transaction failed ", "unexpected error", "OK");
             }
+
+            IsRunning = false;
         }
 
         [RelayCommand]
         async Task EditTransactionAsync()
         {
+            if(IsRunning)
+            {
+                return;
+            }
+
+            IsRunning = true;
             if(SelectedTransaction!=null)
             {
                 var result = await Communication.Instance.UpdateSheduledTransactionAsync(SelectedTransaction);
@@ -155,11 +197,18 @@ namespace PocketBookClient.ViewModel
                     await Shell.Current.DisplayAlert("Edit schedule transaction failed ", "unexpected error", "OK");
                 }
             }
+            IsRunning = false;
         }
 
         [RelayCommand]
         async Task DeleteTransactionAsync()
         {
+            if (IsRunning)
+            {
+                return;
+            }
+
+            IsRunning = true;
             if (SelectedTransaction != null)
             {
 
@@ -177,6 +226,7 @@ namespace PocketBookClient.ViewModel
                     await Shell.Current.DisplayAlert("delete schedule transaction failed ", "unexpected error", "OK");
                 }
             }
+            IsRunning = false;
         }
     }
 }

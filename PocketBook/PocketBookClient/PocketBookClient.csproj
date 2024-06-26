@@ -82,6 +82,7 @@
 	  <None Remove="Resources\AppIcon\myappicon.svg" />
 	  <None Remove="Resources\Images\mathematics.png" />
 	  <None Remove="Resources\Images\math_title.jpg" />
+	  <None Remove="Resources\Images\schedule.png" />
 	  <None Remove="Resources\Json\googlesheetcredentials.json" />
 	</ItemGroup>
 
