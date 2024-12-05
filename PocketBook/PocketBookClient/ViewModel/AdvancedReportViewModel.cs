@@ -194,7 +194,11 @@ namespace PocketBookClient.ViewModel
             for (int i = 0; i< SelectedCategoryDescriptions.Count;i++)
             {
                 var selectedCategory = SelectedCategoryDescriptions[i];
-                foreach (var monthsummary in MonthCategorySummaryList.Where(m => m.Category.Equals(selectedCategory)))
+                if(selectedCategory == string.Empty)
+                {
+                    continue;
+                }
+                foreach (var monthsummary in MonthCategorySummaryList.Where(m => m.Category.Equals(selectedCategory)).OrderBy(m=>m.Date))
                 {
                    if(dictionaryCategoryData.ContainsKey(monthsummary.Date))
                    {
@@ -202,7 +206,7 @@ namespace PocketBookClient.ViewModel
                    }
                    else
                    {     var money = new double[4];
-                        money[0] = (double)monthsummary.TotalMoney;
+                        money[i] = (double)monthsummary.TotalMoney;
                         dictionaryCategoryData.Add(monthsummary.Date, new GridCategoryData(monthsummary.Date, money,SelectedCategoryColumnVisible));
                    }
                 }

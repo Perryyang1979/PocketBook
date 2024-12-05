@@ -1,4 +1,5 @@
-﻿using PocketBookClient.Data;
+﻿using Microsoft.VisualBasic;
+using PocketBookClient.Data;
 using System;
 
 
@@ -31,15 +32,46 @@ namespace PocketBookClient.Services
         }
 
 
+        //private bool CanBeExecute(ScheduledTransaction transaction)
+        //{
+        //    if(DateTime.Today < transaction.StartDate || DateTime.Today> transaction.EndDate)
+        //    {
+        //        return false;
+        //    }
+
+        //    switch(transaction.Frequency)
+        //    {
+        //        case FrequencyEnum.Daily: return true;
+        //        case FrequencyEnum.Weekly: return DateTime.Today.DayOfWeek == transaction.DayOfWeek;
+        //        case FrequencyEnum.Monthly: return DateTime.Today.Day == transaction.DayOfMonth;
+        //        default: return false;
+
+        //    }
+        //}
+
         private bool CanBeExecute(ScheduledTransaction transaction)
         {
-            switch(transaction.Frequency)
-            {
-                case FrequencyEnum.Daily: return true;
-                case FrequencyEnum.Weekly: return DateTime.Today.DayOfWeek == transaction.DayOfWeek;
-                case FrequencyEnum.Monthly: return DateTime.Today.Day == transaction.DayOfMonth;
-                default: return false;
+            if (transaction == null) return false;
 
+            var today = DateTime.Today;
+            if (today < transaction.StartDate.Date || today > transaction.EndDate.Date)
+            {
+                return false;
+            }
+
+            switch (transaction.Frequency)
+            {
+                case FrequencyEnum.Daily:
+                    return true;
+
+                case FrequencyEnum.Weekly:
+                    return today.DayOfWeek == transaction.DayOfWeek;
+
+                case FrequencyEnum.Monthly:
+                    return  today.Day == transaction.DayOfMonth;
+
+                default:
+                    return false;
             }
         }
     }
