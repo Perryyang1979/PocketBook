@@ -1,9 +1,9 @@
-﻿
-
+﻿using static PocketBookClient.Services.Communication;
 namespace PocketBookClient.Services
 {
     public interface IScheduleService
     {
-         Task ExecuteSheduleTransaction();
+         Task<bool> ExecuteSheduleTransaction();
+         bool ExistTaskToBeExecute => false;
     }
 }

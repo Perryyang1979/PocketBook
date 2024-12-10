@@ -13,7 +13,7 @@ public class MainActivity : MauiAppCompatActivity
     {
         base.OnCreate(savedInstanceState);
 
-        SetDailyAlarm();
+      //  SetDailyAlarm();
     }
 
     private void SetDailyAlarm()

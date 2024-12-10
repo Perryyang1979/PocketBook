@@ -35,15 +35,13 @@ public static class MauiProgram
              });
 
 
-        PocketBookClient.Helper.AppHandler.RemoveBorders(); 
+        PocketBookClient.Helper.AppHandler.RemoveBorders();
 
 
 #if DEBUG
         //  builder.Logging.AddDebug();
 #endif
         builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
-
-
         builder.Services.AddSingleton<ICamera,Camera>();
         builder.Services.AddSingleton<IPhotoProcess, PhotoProcess>();
         builder.Services.AddSingleton<IScheduleService, ScheduleTransactionService>();

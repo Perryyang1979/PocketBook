@@ -378,6 +378,9 @@
   <data name="ScheduleTransaction_Edit" xml:space="preserve">
     <value>编辑</value>
   </data>
+  <data name="ScheduleTransaction_Execute" xml:space="preserve">
+    <value>执行预约记录</value>
+  </data>
   <data name="SettingTitle" xml:space="preserve">
     <value>设置</value>
   </data>

@@ -35,7 +35,7 @@
             Clicked="UserButton_Clicked"
             IsVisible="{Binding UserButtonVisible}"
             ></Button>-->
-            <Label Text="@Ver.2025.0.7" HorizontalTextAlignment="Center" 
+            <Label Text="@Ver.2025.1.0" HorizontalTextAlignment="Center" 
                    ></Label>
             <Label Text="@Copyright Mr.Yang-2024" HorizontalTextAlignment="Center" ></Label>
         </VerticalStackLayout>
@@ -113,11 +113,13 @@
     </ShellItem>
 
 
-    <FlyoutItem Title="Home" FlyoutDisplayOptions="AsMultipleItems" IsVisible="{Binding HomeItemEnable}">
+    <FlyoutItem Title="Main" FlyoutDisplayOptions="AsMultipleItems" IsVisible="{Binding HomeItemEnable}">
+
+        <ShellContent Title ="" ContentTemplate="{DataTemplate view:LoginPage}" Route="LoginPage"/>
         <ShellContent Icon="home.png" Title="Home" 
         ContentTemplate="{DataTemplate view:AddTransactionPage}"
         Route="AddTransactionPage" />
-
+        
         <ShellContent Icon="report.png" Title="Report" 
         ContentTemplate="{DataTemplate view:AdvancedReportPage}"
         Route="AdvancedReportPage" />

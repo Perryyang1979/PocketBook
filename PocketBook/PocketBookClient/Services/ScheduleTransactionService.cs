@@ -1,6 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using PocketBookClient.Data;
-using System;
+﻿using PocketBookClient.Data;
+using static PocketBookClient.Services.Communication;
 
 
 namespace PocketBookClient.Services
@@ -9,9 +8,13 @@ namespace PocketBookClient.Services
     {
         public ScheduleTransactionService() { }
 
-        public async Task ExecuteSheduleTransaction()
+        private readonly string ScheduleComments = "schedule task";
+
+        public async Task<bool> ExecuteSheduleTransaction()
         {
-            var scheduleTaskList = await Communication.Instance.GetAllSheduledTransactions();
+            List<ScheduledTransaction> scheduleTaskList = await Communication.Instance.GetAllSheduledTransactions();
+
+            bool execute = true;
 
             foreach (var schedule in scheduleTaskList.Where(s=>CanBeExecute(s)))
             {
@@ -24,31 +27,44 @@ namespace PocketBookClient.Services
                     Amount = schedule.Amount,
                     IsIncome = schedule.IsIncome,
                     Category =schedule.Category,
-                    Comments = "schedule task",
+                    Comments = ScheduleComments,
                 };
 
-                await Communication.Instance.AddTransactionAsync(transaction);
+               var result = await Communication.Instance.AddTransactionAsync(transaction);
+
+                if(!result.Success)
+                {
+                    execute = false;
+                }
             }
+
+            return execute;
         }
 
+        public bool ExistTaskToBeExecute
+        {
+            get
+            {
+                List<ScheduledTransaction> scheduleTaskList = Communication.Instance.GetAllSheduledTransactions().Result;
 
-        //private bool CanBeExecute(ScheduledTransaction transaction)
-        //{
-        //    if(DateTime.Today < transaction.StartDate || DateTime.Today> transaction.EndDate)
-        //    {
-        //        return false;
-        //    }
+                var canbeExecuteTransctions = scheduleTaskList.Where(s => CanBeExecute(s));
+                if ( !canbeExecuteTransctions.Any())
+                {
+                    return false;
+                }
 
-        //    switch(transaction.Frequency)
-        //    {
-        //        case FrequencyEnum.Daily: return true;
-        //        case FrequencyEnum.Weekly: return DateTime.Today.DayOfWeek == transaction.DayOfWeek;
-        //        case FrequencyEnum.Monthly: return DateTime.Today.Day == transaction.DayOfMonth;
-        //        default: return false;
+                foreach(var transaction in canbeExecuteTransctions)
+                {
 
-        //    }
-        //}
+                      var record = Communication.Instance.GetCurrentDailyTransations().
+                            Where(t=>t.Amount == transaction.Amount && t.Category == transaction.Category && t.Comments == ScheduleComments);
+                      return !(record.Any());
+                }
 
+                return true;
+            }
+        }
+            
         private bool CanBeExecute(ScheduledTransaction transaction)
         {
             if (transaction == null) return false;

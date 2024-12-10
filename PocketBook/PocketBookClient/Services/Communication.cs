@@ -750,6 +750,10 @@ namespace PocketBookClient.Services
             return Transactions.OrderBy(t=>t.Date).ToList();
         }
 
+        public List<UserTransaction> GetCurrentDailyTransations()
+        {
+            return Transactions.Where(t => Convert.ToDateTime(t.Date) >= DateTime.Today.Date && Convert.ToDateTime(t.Date) <= DateTime.Today.Date).OrderByDescending(t => Convert.ToDateTime(t.Date)).ToList();
+        }
         public List<UserTransaction> GetDailyTransations(DateTime startDate, DateTime endDate)
         {
             return Transactions.Where(t => Convert.ToDateTime(t.Date) >= startDate && Convert.ToDateTime(t.Date) <= endDate).OrderByDescending(t => Convert.ToDateTime( t.Date)).ToList();

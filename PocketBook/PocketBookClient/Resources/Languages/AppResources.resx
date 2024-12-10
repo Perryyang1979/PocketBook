@@ -375,6 +375,9 @@
   <data name="ScheduleTransaction_Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="ScheduleTransaction_Execute" xml:space="preserve">
+    <value>Execute Schedule Record</value>
+  </data>
   <data name="SettingTitle" xml:space="preserve">
     <value>Setting</value>
   </data>

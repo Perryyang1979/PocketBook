@@ -1,5 +1,6 @@
 ﻿
 using PocketBookClient.Data;
+using PocketBookClient.Helper;
 using PocketBookClient.Services;
 
 namespace PocketBookClient.ViewModel
@@ -9,6 +10,7 @@ namespace PocketBookClient.ViewModel
         public ObservableCollection<ScheduledTransaction> Transactions { get; set; } = new ObservableCollection<ScheduledTransaction>();
         public ObservableCollection<DayOfWeek> DaysOfWeek { get; set; } = new ObservableCollection<DayOfWeek>(Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>());
 
+        private readonly IScheduleService scheduleService;
         //  private const string defaultGuid = "fe387da9-c3f9-44f0-8c8c-36a7e287254c";
         private readonly ScheduledTransaction defaultTransaction = new ScheduledTransaction()
         {
@@ -24,7 +26,13 @@ namespace PocketBookClient.ViewModel
 
         public ScheduledTransactionsViewModel()
         {
-
+            scheduleService = ServiceHelper.GetService<IScheduleService>();
+            if (scheduleService != null)
+            {
+                // Shell.Current.DisplayAlert("shedule check", "shedule checked today!", "OK");
+                // scheduleService.ExecuteSheduleTransaction();
+                IsScheduleCommandVisible = scheduleService.ExistTaskToBeExecute;
+            }
         }
 
         [ObservableProperty]
@@ -45,6 +53,9 @@ namespace PocketBookClient.ViewModel
         bool isTransactionSelected;
 
         [ObservableProperty]
+        bool isScheduleCommandVisible;
+
+        [ObservableProperty]
         bool isRunning;
 
         #region private
@@ -55,6 +66,10 @@ namespace PocketBookClient.ViewModel
             EditButtonEnable= false;
             DeleteButtonEnable = false;
             IsRunning = false;
+            if (scheduleService != null)
+            {
+                IsScheduleCommandVisible = scheduleService.ExistTaskToBeExecute;
+            }
         }
 
         private async void GetAllScheduledTransaction()
@@ -226,6 +241,28 @@ namespace PocketBookClient.ViewModel
                     await Shell.Current.DisplayAlert("delete schedule transaction failed ", "unexpected error", "OK");
                 }
             }
+            IsRunning = false;
+        }
+
+        [RelayCommand]
+        async Task ExecuteTransactionAsync()
+        {
+            if (IsRunning)
+            {
+                return;
+            }
+
+            IsRunning = true;
+            if(scheduleService!= null)
+            {
+                 var result = await scheduleService.ExecuteSheduleTransaction();
+
+                if(!result)
+                {
+                    await Shell.Current.DisplayAlert("schedule transaction failed ", "unexpected error", "OK");
+                }
+            }
+
             IsRunning = false;
         }
     }

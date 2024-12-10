@@ -78,7 +78,6 @@
             </CollectionView>
 
             <VerticalStackLayout  Grid.Row="1">
-
                 <StackLayout Orientation="Horizontal" Margin="10" HorizontalOptions="Center" >
                 <Button Text="{Binding LocalizationResourceManager[ScheduleTransaction_Add], Mode=OneWay}" Style="{StaticResource ButtonOutline}" WidthRequest="80" 
                 Command="{Binding AddTransactionCommand}" IsEnabled="{Binding AddButtonEnable,Mode=TwoWay}"></Button>
@@ -89,7 +88,7 @@ Command="{Binding EditTransactionCommand}" IsEnabled="{Binding EditButtonEnable,
                 Command="{Binding DeleteTransactionCommand}" IsEnabled="{Binding DeleteButtonEnable,Mode=TwoWay}"></Button>
             </StackLayout>
             <ActivityIndicator HeightRequest="50" IsVisible="{Binding IsRunning}" IsRunning="{Binding IsRunning}"/>
-                </VerticalStackLayout>
+            </VerticalStackLayout>
 
 
                 <StackLayout IsVisible="{Binding IsTransactionSelected}" Grid.Row="2" Grid.Column="0">
@@ -153,7 +152,13 @@ Command="{Binding EditTransactionCommand}" IsEnabled="{Binding EditButtonEnable,
 
                 </HorizontalStackLayout>
             </StackLayout>
-            </Grid>
+
+            <StackLayout IsVisible="{Binding IsScheduleCommandVisible}" Grid.Row="3">
+                <Button Text="{Binding LocalizationResourceManager[ScheduleTransaction_Execute], Mode=OneWay}" Margin="0,0" Style="{StaticResource ButtonOutline}" WidthRequest="80" 
+                 Command="{Binding ExecuteTransactionCommand}" ></Button>
+            </StackLayout>
+        
+        </Grid>
     </ScrollView>
 
 </ContentPage>
