@@ -18,15 +18,15 @@ public class MainActivity : MauiAppCompatActivity
 
     private void SetDailyAlarm()
     {
-        var alarmManager = (AlarmManager)GetSystemService(AlarmService);
+        var context = Android.App.Application.Context;
+        var alarmManager = (AlarmManager)context.GetSystemService(Context.AlarmService);
 
-        var intent = new Intent(this, typeof(AlarmReceiver));
-        var pendingIntent = PendingIntent.GetBroadcast(this, 0, intent, PendingIntentFlags.Immutable);
+        var intent = new Intent(context, typeof(AlarmReceiver));
+        var pendingIntent = PendingIntent.GetBroadcast(context, 0, intent, PendingIntentFlags.Immutable);
 
         var calendar = Calendar.Instance;
-      //  calendar.Set(CalendarField.DayOfMonth, 30);
-        calendar.Set(CalendarField.HourOfDay, 9);
-        calendar.Set(CalendarField.Minute, 0);
+        calendar.Set(CalendarField.HourOfDay, 21);
+        calendar.Set(CalendarField.Minute, 40);
 
         calendar.Set(CalendarField.Second, 0);
 

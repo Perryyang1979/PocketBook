@@ -4,6 +4,7 @@ using PocketBookClient.Data;
 using PocketBookClient.GoogleSheeet;
 using PocketBookClient.Helper;
 using System.Globalization;
+using static Org.BouncyCastle.Bcpg.Attr.ImageAttrib;
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -19,6 +20,8 @@ namespace PocketBookClient.Services
         private const string UserGroupSheet = "UserGroup";
         private const string DailySheet = "DailyRecord";
         private const string SheduledSheet = "Sheduled";
+
+        private const string Dateformat = "dd/MM/yyyy";
 
         Dictionary<int, string> sheetIDAndNameDictionary = new Dictionary<int, string>()
         {
@@ -752,7 +755,9 @@ namespace PocketBookClient.Services
 
         public List<UserTransaction> GetDailyTransations(DateTime startDate, DateTime endDate)
         {
-            return Transactions.Where(t => Convert.ToDateTime(t.Date) >= startDate && Convert.ToDateTime(t.Date) <= endDate).OrderByDescending(t => Convert.ToDateTime( t.Date)).ToList();
+         
+            return Transactions.Where(t => DateTime.ParseExact(t.Date, Dateformat, CultureInfo.InvariantCulture) >= startDate && DateTime.ParseExact(t.Date, Dateformat, CultureInfo.InvariantCulture) <= endDate)
+                .OrderByDescending(t => DateTime.ParseExact(t.Date, Dateformat, CultureInfo.InvariantCulture)).ToList();
         }
 
         public List<UserTransaction>  GetDailyTransationsInCurrentMonth()
@@ -777,8 +782,8 @@ namespace PocketBookClient.Services
             return transactions
                     .GroupBy(t => new
                     {
-                        DateTime.Parse(t.Date, CultureInfo.InvariantCulture).Date.Year,
-                        DateTime.Parse(t.Date, CultureInfo.InvariantCulture).Date.Month,
+                        DateTime.ParseExact(t.Date, Dateformat,CultureInfo.InvariantCulture).Date.Year,
+                        DateTime.ParseExact(t.Date, Dateformat, CultureInfo.InvariantCulture).Date.Month,
                         t.UserName,
                     })
                     .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month) // optional
@@ -803,8 +808,8 @@ namespace PocketBookClient.Services
             var categorySummaries = transactions
                   .GroupBy(t => new
                   {
-                      DateTime.Parse(t.Date, CultureInfo.InvariantCulture).Date.Year,
-                      DateTime.Parse(t.Date, CultureInfo.InvariantCulture).Date.Month,
+                      DateTime.ParseExact(t.Date, Dateformat, CultureInfo.InvariantCulture).Date.Year,
+                      DateTime.ParseExact(t.Date, Dateformat, CultureInfo.InvariantCulture).Date.Month,
                       t.Category
                   })
                   .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month) // optional
