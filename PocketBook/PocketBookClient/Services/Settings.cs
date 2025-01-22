@@ -17,6 +17,10 @@ public partial class Settings : ObservableObject
 
     public const string LoggedInKey = "logged_in";
 
+    public RecordYearLimit YearLimit { get; set; } = RecordYearLimit.ThisYear;
+
+    public RecordYearLimit PossibleLimit { get; set; } = RecordYearLimit.ThisYear;
+
     public bool LoggedIn
     {
         get
@@ -54,5 +58,13 @@ public partial class Settings : ObservableObject
     {
         public string UserName { get; set; }
         public string UserGroupId { get; set; }
+    }
+
+
+    public enum RecordYearLimit
+    {
+        ThisYear = 0,
+        LastYear = 1,
+        TheYearBeforeLastYear = 2,
     }
 }

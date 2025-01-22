@@ -1,6 +1,8 @@
-﻿using PocketBookClient.Data;
+﻿
+using PocketBookClient.Data;
 using PocketBookClient.Helper;
 using PocketBookClient.Services;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace PocketBookClient.ViewModel
@@ -248,7 +250,7 @@ namespace PocketBookClient.ViewModel
             {
                 Id = Guid.NewGuid().ToString(),
                 UserName = Settings.Current.CurrentUserSetting.UserName,
-                Date = SelectedDate.ToShortDateString(),
+                Date = SelectedDate.ToString("MM/dd/yyyy",CultureInfo.InvariantCulture),
                 Amount = convertMoney,
                 IsIncome = CurrentMoneyChangeType.Equals(IsIncome),
                 Category = Categories[CategorySelectedIndex].CategoryDescription,
@@ -290,7 +292,7 @@ namespace PocketBookClient.ViewModel
             var transaction = new UserTransaction()
             {
                 UserName = Settings.Current.CurrentUserSetting.UserName,
-                Date = SelectedDate.ToShortDateString(),
+                Date = SelectedDate.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                 Amount = convertMoney,
                 IsIncome = CurrentMoneyChangeType.Equals(IsIncome),
                 Category = Categories[CategorySelectedIndex].CategoryDescription,

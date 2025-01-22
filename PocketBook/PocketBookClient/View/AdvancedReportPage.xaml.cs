@@ -16,4 +16,13 @@ public partial class AdvancedReportPage : ContentPage
         var viewModel = BindingContext as AdvancedReportViewModel;
         viewModel?.RefreshModel();
     }
+
+    private void OnCheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        var viewModel = BindingContext as AdvancedReportViewModel;
+        if (viewModel != null)
+        {
+            viewModel.OnCheckBoxCheckedChanged(e.Value);
+        }
+    }
 }

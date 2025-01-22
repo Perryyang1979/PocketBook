@@ -28,7 +28,7 @@ namespace PocketBookClient.Services
             { 52291343, UserSheet },
             { 721815880, CategorySheet },
             { 1834737748, DailySheet },
-            {22594778,SheduledSheet }
+            { 22594778,SheduledSheet }
 
         };
 
@@ -165,6 +165,13 @@ namespace PocketBookClient.Services
                 return _userTransactions;
             }
         }
+
+        public void ForceUpdateTransactions()
+        {
+            GetAllTransactions();
+        }
+
+        private List<UserTransaction> _allUserTransactions = new List<UserTransaction>();
 
         public async Task<MessageResponse> RegisterUserAsync(PocketBookClient.Data.User user)
         {
@@ -615,8 +622,12 @@ namespace PocketBookClient.Services
             {
 
                 var response = await _sheetsManager.CreateSingleValueAsync(CurrentSpreadSheet.SpreadsheetId, newRecordRange, newRecord);
-
+                //format on mobile phone should be dd//MM/yyyy ,but saved on google sheet should be MM/dd/yyyy
+                //there is different 
+                var phaseDate = DateTime.ParseExact(transaction.Date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                transaction.Date = phaseDate.ToString(Dateformat, CultureInfo.InvariantCulture);
                 _userTransactions.Add(transaction);
+                _allUserTransactions.Add(transaction);
 
                 return new MessageResponse { Success = true };
 
@@ -671,6 +682,10 @@ namespace PocketBookClient.Services
                 var updateTransaction = _userTransactions.SingleOrDefault(t=>t.Id ==  transaction.Id);
                 if(updateTransaction!=null)
                 {
+                    //format on mobile phone should be dd//MM/yyyy ,but saved on google sheet should be MM/dd/yyyy
+                    //there is different 
+                    var phaseDate = DateTime.ParseExact(transaction.Date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                    transaction.Date = phaseDate.ToString(Dateformat, CultureInfo.InvariantCulture);
                     updateTransaction.UserName = transaction.UserName;
                     updateTransaction.Comments = transaction.Comments;
                     updateTransaction.Amount = transaction.Amount;
@@ -735,6 +750,7 @@ namespace PocketBookClient.Services
                 UserTransaction deleteTransaction = _userTransactions.SingleOrDefault(t => t.Id == transaction.Id);
 
                 _userTransactions.Remove(deleteTransaction);
+                _allUserTransactions.Remove(deleteTransaction);
 
                 return new MessageResponse { Success = true };
 
@@ -837,6 +853,24 @@ namespace PocketBookClient.Services
                 return;
             }
 
+            var recordYear = DateTime.Today.Year;
+
+            switch(Settings.Current.YearLimit)
+            {
+
+                case Settings.RecordYearLimit.LastYear:
+                    recordYear -- ; 
+                    break;
+                case Settings.RecordYearLimit.TheYearBeforeLastYear:
+                    recordYear = recordYear - 2;
+                    break;
+
+                case Settings.RecordYearLimit.ThisYear:
+                default:
+                    break;
+
+            }
+
             var range = $"{DailySheet}!A1:H10000";
             string[] valueRange = new[] { range };
 
@@ -852,7 +886,20 @@ namespace PocketBookClient.Services
                         //ID, UserGroup,UserName,Date,InCome,Money,CategaryDescription,Comments
                         //
                     {
-                        transactions.Add(new UserTransaction()
+                        var transactionDate = row[3].ToString();
+                        var year = DateTime.ParseExact(transactionDate, Dateformat, CultureInfo.InvariantCulture).Date.Year;
+
+                        //Last year
+                        if(year == DateTime.Today.Year -1)
+                        {
+                            Settings.Current.PossibleLimit = Settings.RecordYearLimit.LastYear;
+                        }
+                        else if(year == DateTime.Today.Year - 2)
+                        {
+                            Settings.Current.PossibleLimit = Settings.RecordYearLimit.TheYearBeforeLastYear;
+                        }
+
+                        var current = new UserTransaction()
                         {
                             Id = row[0].ToString(),
                             UserName = row[2].ToString(),
@@ -860,8 +907,15 @@ namespace PocketBookClient.Services
                             IsIncome = row[4].ToString() == "TRUE",
                             Amount = Double.Parse(row[5].ToString()),
                             Category = row[6].ToString(),
-                            Comments = row.Count == 8 ?row[7].ToString():string.Empty
-                        });
+                            Comments = row.Count == 8 ? row[7].ToString() : string.Empty
+                        };
+
+                        _allUserTransactions.Add(current);
+
+                        if (year >= recordYear)
+                        {
+                            transactions.Add(current);
+                        }
                     }
 
                 };

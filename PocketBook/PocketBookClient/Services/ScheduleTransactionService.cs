@@ -1,5 +1,6 @@
 ﻿using PocketBookClient.Data;
 using System;
+using System.Globalization;
 
 
 namespace PocketBookClient.Services
@@ -19,7 +20,7 @@ namespace PocketBookClient.Services
                 {
                     Id = Guid.NewGuid().ToString(),
                     UserName = Settings.Current.CurrentUserSetting.UserName,
-                    Date = DateTime.Now.ToShortDateString(),
+                    Date = DateTime.Now.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                     Amount = schedule.Amount,
                     IsIncome = schedule.IsIncome,
                     Category =schedule.Category,

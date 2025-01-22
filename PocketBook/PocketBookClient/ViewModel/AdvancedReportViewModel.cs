@@ -60,6 +60,21 @@ namespace PocketBookClient.ViewModel
         [ObservableProperty]
         bool gridCategorySummaryVisible = false;
 
+        //support report can be selected last year 
+        [ObservableProperty]
+        bool yearStackPanelVisible = Settings.Current.PossibleLimit != Settings.RecordYearLimit.ThisYear;
+        [ObservableProperty]
+        bool lastYearStackVisible = Settings.Current.PossibleLimit == Settings.RecordYearLimit.LastYear;
+        [ObservableProperty]
+        string lastYear = (DateTime.Now.Year - 1).ToString();
+        [ObservableProperty]
+        bool lastYearIsSelected = false;
+
+        //[ObservableProperty]
+        //bool twoYearStackVisible = Settings.Current.PossibleLimit == Settings.RecordYearLimit.TheYearBeforeLastYear;
+        //[ObservableProperty]
+        //string twoYear = (DateTime.Now.Year - 2).ToString();
+
         //grid not support array
         //[ObservableProperty]
         // List<string> selectedCategoryDescriptions  = new List<string>();
@@ -376,6 +391,25 @@ namespace PocketBookClient.ViewModel
             }
         }
 
+        public void OnCheckBoxCheckedChanged(bool value)
+        {
+            if(value)
+            {
+                LastYearIsSelected = true;
+                Settings.Current.YearLimit = Settings.RecordYearLimit.LastYear;
+            }
+            else
+            {
+                LastYearIsSelected = false;
+                Settings.Current.YearLimit = Settings.RecordYearLimit.ThisYear;
+            }
+            Communication.Instance.ForceUpdateTransactions();
+            GetMonthSummary();
+            ReportSwtichToggled = false;
+            CategoryReportSwtichToggled = false;
+            MonthlyChartSwtichToggled = false;
+        }
+
         partial void OnMonthlyChartSwtichToggledChanged(bool value)
         {
             if (MonthlyChartSwtichToggled)
@@ -392,6 +426,8 @@ namespace PocketBookClient.ViewModel
                 MonthlyChartPanelVisible = MonthSummaryIncomeChartVisible && MonthSummaryExpenseChartVisible;
             }
         }
+
+
 
         private void LoadMonthChart()
         {

@@ -43,6 +43,18 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
+                <VerticalStackLayout IsVisible="{Binding YearStackPanelVisible}" Margin="5,20,0,0">
+                    <!--<HorizontalStackLayout IsVisible="{Binding TwoYearStackVisible}">
+                        <CheckBox x:Name="TwoYearCheckBox" IsChecked="{Binding TwoYearIsSelected}" Margin="0,-8" HeightRequest="20" CheckedChanged="{Binding TwoYearCheckedChanged}"/>
+                        <Label  Padding="5" FontSize="Small" Text="{Binding TwoYear}"  Margin="0,-6"></Label>
+                    </HorizontalStackLayout>-->
+
+                    <HorizontalStackLayout IsVisible="{Binding LastYearStackVisible}">
+                        <CheckBox x:Name="lastYearCheckBox" IsChecked="{Binding LastYearIsSelected}" Margin="0,-8" HeightRequest="20" CheckedChanged="OnCheckedChanged" />
+                        <Label  Padding="5" FontSize="Small" Text="{Binding LastYear}"  Margin="0,-6"></Label>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+                
                 <!--Monthly summary-->
                 <Label  Text="{Binding LocalizationResourceManager[PocketOperation_Month_ShowReportTitle], Mode=OneWay}" Margin="0,10" HorizontalOptions="Center" TextColor="{StaticResource Primary}" FontSize="Micro"/>
                 <Grid ColumnDefinitions="30*,35*,35*,35*">
