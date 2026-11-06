@@ -10,6 +10,7 @@
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>c3e8a91f-4b27-4d6e-9c1a-7f2e5b8d0a44</UserSecretsId>
 
 		<!-- Display name -->
 		<ApplicationTitle>Pocket Book</ApplicationTitle>
@@ -58,13 +59,7 @@
 		<MauiFont Include="Resources\Fonts\*" />
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-	</ItemGroup>
-	<ItemGroup>
-		<MauiAsset Update="Resources\Raw\googlesheetcredentials.json">
-			<LogicalName>googlesheetcredentials.json</LogicalName>
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</MauiAsset>
+		<MauiAsset Include="Resources\Raw\**" Exclude="Resources\Raw\*credentials*.json" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -83,7 +78,6 @@
 	  <None Remove="Resources\Images\mathematics.png" />
 	  <None Remove="Resources\Images\math_title.jpg" />
 	  <None Remove="Resources\Images\schedule.png" />
-	  <None Remove="Resources\Json\googlesheetcredentials.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -125,12 +119,6 @@
 	</ItemGroup>
 	
 
-	<ItemGroup>
-	  <MauiAsset Update="Resources\Raw\googlesheetcredentials.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </MauiAsset>
-	</ItemGroup>
-	
 
 	<ItemGroup>
 	  <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />

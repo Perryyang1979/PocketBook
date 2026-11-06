@@ -11,9 +11,8 @@ namespace PocketBookClient.Services
 {
     public  class Communication
     {
-        private const string googleClientId = "91971851610-v664ka8th2qpbfbm8qshuq8eaj1721ht.apps.googleusercontent.com";
-        private const string googleClientSecret = "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";
-        private const string spreadSheetId = "1fVhez65UqRgRq9Dz0Wpnu7SsAOPwZ9AluB-T18K7T18";
+        private static string SpreadSheetId =>
+            SecretConfiguration.GetRequired(SecretConfiguration.GoogleSpreadsheetIdKey, SecretConfiguration.GoogleSpreadsheetIdEnv);
         private const string UserSheet = "User";
         private const string CategorySheet = "Category";
         private const string UserGroupSheet = "UserGroup";
@@ -97,7 +96,7 @@ namespace PocketBookClient.Services
 
                 if(_spreadsheet == null)
                 {
-                    _spreadsheet = CurrentSheetsManager.GetSpreadsheet(spreadSheetId);
+                    _spreadsheet = CurrentSheetsManager.GetSpreadsheet(SpreadSheetId);
                 }
 
                 return _spreadsheet;   
@@ -171,7 +170,7 @@ namespace PocketBookClient.Services
                 return  new MessageResponse { Success = false }; 
             }
 
-            var spreadSheet = CurrentSheetsManager.GetSpreadsheet(spreadSheetId);
+            var spreadSheet = CurrentSheetsManager.GetSpreadsheet(SpreadSheetId);
 
             var newRecordRange = $"{UserSheet}!A:F";
             var newRecord = new List<object>() { DateTime.Today.ToShortDateString(), user.Name, RSAService.EncryptData(user.Password), user.PhoneNumber, user.Email, user.GroupId };
