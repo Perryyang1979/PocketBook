@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Local secrets, credentials, and SQLite databases — never commit real values
+*credentials*.json
+!*credentials*.example.json
+*.db
+*.db-shm
+*.db-wal
+appsettings.*.local.json
+appsettings.local.json
+secrets.json

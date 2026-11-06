@@ -1,10 +1,13 @@
 global using Grpc.Core;
 global using GrpcShared;
 using Microsoft.EntityFrameworkCore;
+using PocketBookClient.Helper;
 using PocketBookServer.Data;
 using PocketBookServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+ApplySecretsFromConfiguration(builder.Configuration);
 
 builder.Services.AddDbContext<AppDbContext>(opt=>opt.UseSqlite("dataSource = PocketBook.db"));
 
@@ -40,3 +43,27 @@ app.UseCors();
 app.MapGrpcService<AccountBookService>().EnableGrpcWeb().RequireCors("AllowAll");
 
 app.Run();
+
+static void ApplySecretsFromConfiguration(IConfiguration configuration)
+{
+    string[] keys =
+    {
+        SecretConfiguration.SmtpHostKey,
+        SecretConfiguration.SmtpPortKey,
+        SecretConfiguration.SmtpUserKey,
+        SecretConfiguration.SmtpPasswordKey,
+        SecretConfiguration.SmtpFromNameKey,
+        SecretConfiguration.RsaPublicKeyKey,
+        SecretConfiguration.RsaPrivateKeyKey,
+        SecretConfiguration.GoogleClientIdKey,
+        SecretConfiguration.GoogleClientSecretKey,
+        SecretConfiguration.GoogleSpreadsheetIdKey,
+        SecretConfiguration.GoogleCredentialsPathKey,
+        SecretConfiguration.GoogleCredentialsJsonKey
+    };
+
+    foreach (var key in keys)
+    {
+        SecretConfiguration.ApplyConfigurationValue(key, configuration[key]);
+    }
+}

@@ -1,11 +1,7 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Sheets.v4;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using PocketBookClient.Helper;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace PocketBookClient.GoogleSheeet
 {
@@ -23,6 +19,13 @@ namespace PocketBookClient.GoogleSheeet
             return GoogleWebAuthorizationBroker.AuthorizeAsync(clientSecrets, scopes, "user", CancellationToken.None).Result;
         }
 
+        public static UserCredential Login(string[] scopes)
+        {
+            var googleClientId = SecretConfiguration.GetRequired(SecretConfiguration.GoogleClientIdKey, SecretConfiguration.GoogleClientIdEnv);
+            var googleClientSecret = SecretConfiguration.GetRequired(SecretConfiguration.GoogleClientSecretKey, SecretConfiguration.GoogleClientSecretEnv);
+            return Login(googleClientId, googleClientSecret, scopes);
+        }
+
         public static async Task<UserCredential> LoginAsync(string googleClientId, string googleClientSecret, string[] scopes)
         {
             ClientSecrets clientSecrets = new ClientSecrets()
@@ -34,26 +37,37 @@ namespace PocketBookClient.GoogleSheeet
             return await GoogleWebAuthorizationBroker.AuthorizeAsync(clientSecrets, scopes, "user", CancellationToken.None);
         }
 
-        public static async Task<GoogleCredential> ReadTextFile(string filePath)
+        public static Task<UserCredential> LoginAsync(string[] scopes)
         {
-            using (Stream fileStream = await FileSystem.Current.OpenAppPackageFileAsync(filePath))
-            {
-                GoogleCredential credential;
-                credential = GoogleCredential.FromStream(fileStream).CreateScoped(Scopes);
-                return credential;
-            };
+            var googleClientId = SecretConfiguration.GetRequired(SecretConfiguration.GoogleClientIdKey, SecretConfiguration.GoogleClientIdEnv);
+            var googleClientSecret = SecretConfiguration.GetRequired(SecretConfiguration.GoogleClientSecretKey, SecretConfiguration.GoogleClientSecretEnv);
+            return LoginAsync(googleClientId, googleClientSecret, scopes);
         }
 
         public static GoogleCredential LoginCredential()
         {
-            GoogleCredential credential = ReadTextFile($"googlesheetcredentials.json").Result;
+            var json = SecretConfiguration.Get(SecretConfiguration.GoogleCredentialsJsonKey, SecretConfiguration.GoogleCredentialsJsonEnv);
+            if (!string.IsNullOrWhiteSpace(json))
+            {
+                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+                {
+                    return GoogleCredential.FromStream(stream).CreateScoped(Scopes);
+                }
+            }
 
-            //using (FileStream stream = new FileStream($"googlesheetcredentials.json", FileMode.Open, FileAccess.ReadWrite))
-            //{
-            //    credential = GoogleCredential.FromStream(stream).CreateScoped(Scopes);
-            //}
+            var path = SecretConfiguration.FindGoogleCredentialsPath();
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                using (var stream = File.OpenRead(path))
+                {
+                    return GoogleCredential.FromStream(stream).CreateScoped(Scopes);
+                }
+            }
 
-            return credential;
+            throw new InvalidOperationException(
+                "Google Sheets service-account credentials were not found. " +
+                "Set POCKETBOOK_GOOGLE_CREDENTIALS_JSON or POCKETBOOK_GOOGLE_CREDENTIALS_PATH, " +
+                "or place a gitignored googlesheetcredentials.json next to the app.");
         }
     }
 }

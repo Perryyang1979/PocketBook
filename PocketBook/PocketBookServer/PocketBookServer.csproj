@@ -4,10 +4,12 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>a19d4c72-8e35-4f0b-b6a1-3c7e9d2f5b80</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <Compile Include="..\PocketBookClient\Helper\RSAService.cs" Link="Service\RSAService.cs" />
+	  <Compile Include="..\PocketBookClient\Helper\SecretConfiguration.cs" Link="Service\SecretConfiguration.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
